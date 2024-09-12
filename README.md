@@ -35,12 +35,15 @@ para cada critério de avaliação em uma determinada Sprint;
 <div align="justify">O desenvolvimento do projeto segue a metodologia Scrum, uma metodologia ágil a fim de otimizar o tempo e garantir flexibilidade e autonomia para os membro da equipe, dividindo-o em etapas de desenvolvimento que incluem análise de requisitos, desenvolvimento da interface, implementação das funcionalidades, casos de teste e integração de todas as partes. No decorrer da elaboração do produto serão utilizadas boas práticas de programação, documentação detalhada e revisões regulares para garantir a qualidade e robustez da calculadora, além de reuniões para identificar as necessidades e prioridades da equipe, como um todo.</div>
 
 ### Tecnologias utilizadas     
-* <b>Linguagem de programação:</b> A linguagem de programação utilizada para o desenvolvimento do produto será Java, e o acesso ao banco de dados será feito com SQL;
+* <b>Linguagem de programação:</b> A linguagem de programação utilizada para o desenvolvimento do produto será Java, e o acesso ao banco de dados será feito com SQL. Para a visualização e criação da interface gráfica será utilizado o JavaFX Scene Builder;
 * <b>IDE:</b> A IDE utilizada pela equipe será o IntelliJ IDEA;
+* <b>SGBD:</b> O sistema gerenciador de banco de dados utilizado será o PostgreSQL;
+* <b>Wireframe:</b> Para o desenho do wireframe do projeto, será utilizado o Figma;
+* <b>Gerenciamento da equipe e do projeto:</b> Para o gerenciamento da equipe, serão utilizados o Jira, o Miro e o Github.
 
 <p align="center">
   <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=github,java,mysql,idea,figma" />
+    <img src="https://skillicons.dev/icons?i=github,java,postgres,idea,figma" />
   </a>
 </p>
 

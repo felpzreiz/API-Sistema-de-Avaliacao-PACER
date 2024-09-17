@@ -1,8 +1,8 @@
 # Sistema de Avaliação PACER
 
-<br>
+<i>Um projeto da equipe Alpha Code!</i>
 
-# Índice 
+### Índice 
 
 * [Descrição do Projeto e Funcionalidades](#descrição-do-projeto-e-funcionalidades)
 * [Backlog do Produto](#backlog-do-produto)
@@ -32,7 +32,7 @@ para cada critério de avaliação em uma determinada Sprint;
 
 ### Metodologia de Desenvolvimento
 
-<div align="justify">O desenvolvimento do projeto segue a metodologia Scrum, uma metodologia ágil a fim de otimizar o tempo e garantir flexibilidade e autonomia para os membro da equipe, dividindo-o em etapas de desenvolvimento que incluem análise de requisitos, desenvolvimento da interface, implementação das funcionalidades, casos de teste e integração de todas as partes. No decorrer da elaboração do produto serão utilizadas boas práticas de programação, documentação detalhada e revisões regulares para garantir a qualidade e robustez da calculadora, além de reuniões para identificar as necessidades e prioridades da equipe, como um todo.</div>
+<div align="justify">O desenvolvimento do projeto segue a metodologia Scrum, uma metodologia ágil a fim de otimizar o tempo e garantir flexibilidade e autonomia para os membro da equipe, dividindo-o em etapas de desenvolvimento que incluem análise de requisitos, desenvolvimento da interface, implementação das funcionalidades, casos de teste e integração de todas as partes. No decorrer da elaboração do produto serão utilizadas boas práticas de programação, documentação detalhada e revisões regulares para garantir a qualidade e robustez do software, além de reuniões para identificar as necessidades e prioridades da equipe, como um todo.</div>
 
 ### Tecnologias utilizadas     
 * <b>Linguagem de programação:</b> A linguagem de programação utilizada para o desenvolvimento do produto será Java, e o acesso ao banco de dados será feito com SQL. Para a visualização e criação da interface gráfica será utilizado o JavaFX Scene Builder;

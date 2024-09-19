@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="fundo" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="671.0" layoutY="379.0" prefHeight="42.0" prefWidth="510.0" text="Sistema de Avaliação PACER">
+         <font>
+            <Font name="Arial Bold" size="35.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="140.0" fitWidth="310.0" layoutX="757.0" layoutY="69.0">
+         <image>
+            <Image url="@images/Imagem1.png" />
+         </image>
+      </ImageView>
+      <AnchorPane fx:id="ladodireito" layoutX="250.0" layoutY="70.4" prefHeight="800.0" prefWidth="248.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1032.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane fx:id="ladoesquerdo" prefHeight="430.0" prefWidth="245.0" style="-fx-background-color: #A9B8A7;" AnchorPane.bottomAnchor="0.7999999999999545" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Button fx:id="botaogerenciaraluno" layoutX="1.0" layoutY="223.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="246.0" text="Gerenciar Aluno">
+                     <font>
+                        <Font name="Arial Bold" size="20.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="botaohome" layoutX="1.0" layoutY="160.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="246.0" text="Home">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="botaogerenciarnotas" layoutX="1.0" layoutY="412.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="246.0" text="Gerenciar Notas">
+                     <font>
+                        <Font name="Arial Bold" size="20.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="botaogerenciarsprints" layoutX="1.0" layoutY="349.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="246.0" text="Gerenciar Sprints">
+                     <font>
+                        <Font name="Arial Bold" size="20.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="botaogerenciargrupos" layoutX="1.0" layoutY="286.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="246.0" text="Gerenciar Grupos">
+                     <font>
+                        <Font name="Arial Bold" size="20.0" />
+                     </font>
+                  </Button>
+                  <ImageView fx:id="imagemusuario" fitHeight="92.0" fitWidth="114.0" layoutX="75.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/imagemuser.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </AnchorPane>
+         </children></AnchorPane>
+   </children>
+</AnchorPane>

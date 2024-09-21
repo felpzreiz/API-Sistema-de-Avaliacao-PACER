@@ -10,6 +10,7 @@ module org.example.paceralphacode {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires java.desktop;
 
     opens org.example.paceralphacode to javafx.fxml;
     exports org.example.paceralphacode;

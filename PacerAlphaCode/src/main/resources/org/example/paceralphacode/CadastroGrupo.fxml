@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="fundo" prefHeight="528.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.paceralphacode.TelaCadastroGrupo">
+   <children>
+      <Text fx:id="textnomedogrupo" layoutX="123.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome do Grupo aparecera aqui" wrappingWidth="331.73667907714844">
+         <font>
+            <Font name="Arial Bold" size="21.0" />
+         </font>
+      </Text>
+      <Text fx:id="textinsiranemaildosalunos" layoutX="148.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="insira o email dos alunos:" wrappingWidth="271.73667907714844">
+         <font>
+            <Font name="Arial Bold" size="21.0" />
+         </font>
+      </Text>
+      <Button fx:id="botaocancelargrupo" layoutX="47.0" layoutY="417.0" mnemonicParsing="false" prefHeight="74.0" prefWidth="195.0" text="Cancelar">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Button>
+      <Button fx:id="botaosalvargrupo" layoutX="309.0" layoutY="417.0" mnemonicParsing="false" prefHeight="74.0" prefWidth="195.0" text="Salvar Grupo">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Button>
+      <TextField fx:id="email1" layoutX="111.0" layoutY="180.0" prefHeight="26.0" prefWidth="345.0" />
+      <TextField fx:id="email2" layoutX="111.0" layoutY="220.0" prefHeight="26.0" prefWidth="345.0" />
+      <TextField fx:id="email3" layoutX="111.0" layoutY="260.0" prefHeight="26.0" prefWidth="345.0" />
+      <TextField fx:id="email4" layoutX="111.0" layoutY="300.0" prefHeight="26.0" prefWidth="345.0" />
+      <TextField fx:id="email5" layoutX="111.0" layoutY="340.0" prefHeight="26.0" prefWidth="345.0" />
+   </children>
+</AnchorPane>

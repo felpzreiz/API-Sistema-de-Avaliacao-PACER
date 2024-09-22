@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="103.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.paceralphacode.TelaDefinirNomeGrupo">
+    <children>
+        <TextField fx:id="inserirnomedogrupo" layoutX="47.0" layoutY="48.0" prefHeight="40.0" prefWidth="350.0" promptText="Insira o nome do grupo">
+            <font>
+                <Font name="Arial" size="20.0" />
+            </font>
+        </TextField>
+        <Button fx:id="botaodefinirnome" layoutX="398.0" layoutY="49.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="147.0" text="Confirmar Nome">
+            <font>
+                <Font name="Arial Bold" size="15.0" />
+            </font>
+        </Button>
+        <Text fx:id="definaonomedogrupo" layoutX="47.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Defina o nome do Grupo:" wrappingWidth="213.98313331604004">
+            <font>
+                <Font name="System Bold" size="17.0" />
+            </font>
+        </Text>
+    </children>
+</AnchorPane>

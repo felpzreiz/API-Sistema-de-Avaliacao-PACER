@@ -8,16 +8,16 @@
 <?import javafx.scene.text.Text?>
 
 
-<ScrollPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.paceralphacode.GerenciarGrupoController">
    <content>
-      <AnchorPane fx:id="gGroups" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="798.0" prefWidth="1170.0">
+      <AnchorPane fx:id="gGroups" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="798.0" prefWidth="1170.0" >
          <children>
             <Label layoutX="42.0" layoutY="23.0" text="GRUPOS">
                <font>
                   <Font name="System Bold" size="37.0" />
                </font>
             </Label>
-            <Button fx:id="botaoaddgrupo" layoutX="42.0" layoutY="126.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="150.0" text="Adicionar Grupo" />
+            <Button fx:id="botaoaddgrupo" onAction="#adicionargrupo" layoutX="42.0" layoutY="126.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="150.0" text="Adicionar Grupo" />
             <Text layoutX="98.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="os grupos criados aparecerão abaixo" wrappingWidth="735.7368011474609">
                <font>
                   <Font name="System Bold" size="40.0" />

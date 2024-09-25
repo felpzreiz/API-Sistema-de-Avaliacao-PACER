@@ -1,41 +1,38 @@
 package org.example.paceralphacode;
 
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 public class TelaCadastroGrupo {
 
     @FXML
-    private Button botaocancelargrupo;
+    private Button addaluno;
 
     @FXML
-    private Button botaosalvargrupo;
+    private Button btcancelar;
 
     @FXML
-    private TextField email1;
+    private Button btsalvar;
 
     @FXML
-    private TextField email2;
-
-    @FXML
-    private TextField email3;
-
-    @FXML
-    private TextField email4;
-
-    @FXML
-    private TextField email5;
+    private TableColumn<User,String> email;
 
     @FXML
     private AnchorPane fundo;
 
     @FXML
-    private Text textinsiranemaildosalunos;
+    private TextField inseriremail;
 
     @FXML
-    private Text textnomedogrupo;
+    private TableView<User> table;
+    private ObservableList<User>users;
 
 }

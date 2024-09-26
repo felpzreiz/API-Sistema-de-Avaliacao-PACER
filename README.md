@@ -6,7 +6,7 @@
 
 * [Descrição do Projeto e Funcionalidades](#descrição-do-projeto-e-funcionalidades)
 * [Backlog do Produto](#backlog-do-produto)
-* [Autores do Projeto](#autores-do-projeto)
+* [Autores do Projeto](#autores-do-projeto-equipe-alpha-code)
 
 
 # Descrição do Projeto e Funcionalidades
@@ -91,7 +91,7 @@ para cada critério de avaliação em uma determinada Sprint;
 ### Sprint 4. Finalização do Projeto
 <br>
 
-# Autores do Projeto
+# Autores do Projeto Equipe Alpha Code
 |    Função     | Nome                                  |                                                                                                                                                      LinkedIn & GitHub                                                                                                                                                      |
 | :-----------: | :------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 | Product Owner | José Wesley |[![Linkedin Badge](https://img.shields.io/badge/Linkedin-blue?style=flat-square&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/jwesley) [![GitHub Badge](https://img.shields.io/badge/GitHub-111217?style=flat-square&logo=github&logoColor=white)](https://github.com/jwesleey) |

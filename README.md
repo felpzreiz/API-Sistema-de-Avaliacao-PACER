@@ -53,7 +53,12 @@ para cada critério de avaliação em uma determinada Sprint;
 | RANK  | PRIORIDADE | USER STORIES | ESTIMATIVA | SPRINT | REQUISITO DO PARCEIRO |
 | :-----------: | :-----------------: | :--------: | :---------------: | :------------------: | :----: |
 |1|ALTA|Como professor, eu quero criar e verificar, grupos de avaliação, para que eu possa obter as informações de forma rápida e intuitiva.|15 Dias|1|1|
-|2|MÉDIA|Como professor, eu quero que os alunos possam se autoavaliar e avaliar o grupo, para que eu não precise digitar as notas, afim de evitar possíveis erros.|15 Dias|2|3|
+|2|MÉDIA|Como professor, eu quero que os alunos possam se autoavaliar e avaliar o grupo, para que eu não precise digitar as notas, afim de evitar possíveis erros.|15 Dias|2|2|
+|3|MÉDIA|Como professor, eu quero criar e verificar grupos de avaliação, para que eu possa obter as informações de forma rápida e intuitiva.|15 Dias|2|3|
+|4|ALTA|Como professor, eu quero definir o início e o fim das Sprints, para que os alunos tenham prazos para participarem das avaliações|21 Dias|3|4|
+|5|ALTA|Como professor, eu quero que os alunos possam se autoavaliar e avaliar o grupo, para que eu não precise digitar as notas, a fim de evitar possíveis erros|21 Dias|3|5|
+|6|ALTA|Como professor, eu desejo ver as notas e médias dos alunos e grupos avaliados, para que eu possa acompanhar os resultados de forma simples e rápida|15 Dias|4|6|
+|7|BAIXA|Como professor, eu quero informar os alunos e os grupos que vão se avaliar de forma fácil e rápida, a fim de otimizar o meu tempo e evitar possíveis erros|15 Dias|4|7|
 
 </div>
 

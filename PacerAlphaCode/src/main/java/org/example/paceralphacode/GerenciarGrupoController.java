@@ -8,27 +8,29 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
 
 public class GerenciarGrupoController {
-
     @FXML
-    private Button botaoaddgrupo;
+
+     private Button botaoaddgrupo;
 
     @FXML
     private AnchorPane gGroups;
 
     @FXML
     void adicionargrupo(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ExecuteApplication.class.getResource("CadastroGrupo.fxml"));       //  Instancia uma nova cena que vai da Login.fxml para Home.fxml
+        FXMLLoader fxmlLoader = new FXMLLoader(ExecuteApplication.class.getResource("DefinirNomeGrupo.fxml"));       //  Instancia uma nova cena que vai da Login.fxml para Home.fxml
         Scene scene = new Scene(fxmlLoader.load());                                                                                                           // Carrega a Classe FXML para criar uma Cena
         Stage newstage = new Stage();                                                                                                                                   // Stage é como Window, aqui é instanciado uma nova WINDOW
-        newstage.setTitle("Cadastro Grupos");                                                                                                                          // Declarado o título da window
+        newstage.setTitle("Definir nome");                                                                                                                          // Declarado o título da window
         newstage.setScene(scene);
-        newstage.setMaximized(true);
         newstage.show();
+
+        }
 
 
     }
 
-}
+

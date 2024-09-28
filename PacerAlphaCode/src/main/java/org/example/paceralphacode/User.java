@@ -3,20 +3,21 @@ package org.example.paceralphacode;
 import javafx.beans.property.SimpleStringProperty;
 
 public class User {
-    private final SimpleStringProperty email;
-    public User(String email) {
-        this.email = new SimpleStringProperty(email);
-    }
-    public String getEmail() {
-        return email.get();
-    }
-    public void setEmail(String email) {
-        this.email.set(email);
-    }
-    public SimpleStringProperty emailProperty() {
-        return email;
+    private final SimpleStringProperty name;
+
+    public User(String name) {
+        this.name = new SimpleStringProperty(name);
     }
 
+    public String getName() {
+        return name.get();
+    }
 
+    public void setName(String name) {
+        this.name.set(name);
+    }
 
+    public SimpleStringProperty nameProperty() {
+        return name;
+    }
 }

@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane fx:id="fundo" prefHeight="528.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.paceralphacode.TelaCadastroGrupo">
+<AnchorPane fx:id="fundo" prefHeight="528.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.paceralphacode.TelaCadastroGrupoController">
    <children>
-      <GridPane layoutX="106.0" layoutY="37.0" prefHeight="84.0" prefWidth="310.0">
+      <GridPane layoutX="106.0" layoutY="37.0" prefHeight="84.0" prefWidth="344.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="257.59996337890624" minWidth="10.0" prefWidth="255.99998779296874" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="132.39996337890625" minWidth="10.0" prefWidth="53.800012207031216" />
@@ -21,8 +21,8 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="inseriremail" />
-            <Button fx:id="addaluno" mnemonicParsing="false" prefHeight="26.0" prefWidth="66.0" text="Button" GridPane.columnIndex="1" />
+            <TextField fx:id="inseriremail" onAction="#inseriremail2" promptText="Insira o E-mail do aluno" />
+            <Button fx:id="addaluno" mnemonicParsing="false" onAction="#add" prefHeight="26.0" prefWidth="90.0" text="Adicionar" GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <TableView fx:id="tabelaemails" layoutX="30.0" layoutY="112.0" prefHeight="290.0" prefWidth="482.0">
@@ -39,8 +39,8 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="btcancelar" mnemonicParsing="false" prefHeight="51.0" prefWidth="196.0" text="Cancelar" />
-            <Button fx:id="btsalvar" mnemonicParsing="false" prefHeight="46.0" prefWidth="198.0" text="Salvar" GridPane.columnIndex="1" />
+            <Button fx:id="btcancelar" mnemonicParsing="false" onAction="#cancelar" prefHeight="51.0" prefWidth="196.0" text="Cancelar" />
+            <Button fx:id="btsalvar" mnemonicParsing="false" onAction="#salvar" prefHeight="46.0" prefWidth="198.0" text="Salvar" GridPane.columnIndex="1" />
          </children>
       </GridPane>
    </children>

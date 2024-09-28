@@ -1,20 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="gAlunos" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="798.0" prefWidth="1170.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="gGroups" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="798.0" prefWidth="1170.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="280.0" layoutY="377.0" text="Neste campo será desenvolvido a área de gerenciamento de alunos">
-         <font>
-            <Font name="Arial" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="42.0" layoutY="23.0" text="GERENCIAR ALUNOS">
+      <Label layoutX="42.0" layoutY="23.0" text="Alunos">
          <font>
             <Font name="System Bold" size="37.0" />
          </font>
       </Label>
+      <Pane layoutX="76.0" layoutY="121.0" prefHeight="624.0" prefWidth="1013.0" style="-fx-background-color: #ffff;" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="80.39999999999998">
+         <children>
+            <GridPane layoutX="34.0" layoutY="34.0" prefHeight="41.0" prefWidth="536.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.3333984375" minWidth="10.0" prefWidth="393.3333984375" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="193.59991455078125" minWidth="10.0" prefWidth="133.86660156250002" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="buttonAddStudent" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" style="-fx-background-color: #14AE5C;" text="ADICIONAR" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Button>
+                  <TextField fx:id="addStudent" prefHeight="47.0" prefWidth="302.0" promptText="Email do aluno..." />
+               </children>
+            </GridPane>
+         </children>
+      </Pane>
+      <TableView fx:id="viewStudent" layoutX="108.0" layoutY="216.0" prefHeight="402.0" prefWidth="941.0" AnchorPane.leftAnchor="108.0" AnchorPane.rightAnchor="120.39999999999998">
+        <columns>
+          <TableColumn fx:id="tableViewStudent" maxWidth="892.0" minWidth="-Infinity" prefWidth="892.0" text="Email" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>

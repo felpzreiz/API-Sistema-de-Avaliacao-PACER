@@ -11,8 +11,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.swing.*;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -38,6 +36,10 @@ public class HomeController {
 
     @FXML
     private ImageView fatec;
+
+    @FXML
+    private Button botaocriterio;
+
 
 
     @FXML
@@ -85,4 +87,12 @@ public class HomeController {
         String css = Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm();                   // Instancia o arquivo styles.css em uma String que está salva com os arquivos fxml
         menuFix.getStylesheets().add(css);                                                                                                                           // menuFix é uma estrutura com vários botões, aqui o arquivo css muda sua interface
     }
+    @FXML
+    void pageCriterios(ActionEvent event) throws IOException{
+        Homepage.getChildren().clear();
+        Parent gCriterios =FXMLLoader.load(getClass().getResource("GerenciarCriterios.fxml"));
+        Homepage.getChildren().add(gCriterios);
+
+    }
+
 }

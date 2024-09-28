@@ -10,43 +10,54 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane fx:id="pacer" dividerPositions="0.15" focusTraversable="false" prefHeight="800.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.paceralphacode.HomeController">
+<SplitPane fx:id="pacer" dividerPositions="0.15" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.paceralphacode.HomeController">
    <items>
-      <VBox fx:id="menuFix" alignment="CENTER" fillWidth="false" prefHeight="528.0" prefWidth="222.0" style="-fx-background-color: 000000;" SplitPane.resizableWithParent="false">
+      <VBox fx:id="menuFix" alignment="CENTER" fillWidth="false" prefHeight="800.0" prefWidth="200.0" style="-fx-background-color: #696969;" SplitPane.resizableWithParent="false">
          <children>
-            <Button fx:id="botaohome" mnemonicParsing="false" onAction="#pageHome" prefHeight="62.0" prefWidth="423.0" text="Home">
+            <Button fx:id="botaohome" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#pageHome" prefHeight="62.0" prefWidth="423.0" text="Home">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
                <VBox.margin>
-                  <Insets top="250.0" />
+                  <Insets top="5.0" />
+               </VBox.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Button>
+            <Button fx:id="botaogerenciaraluno" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#pageAlunos" prefHeight="62.0" prefWidth="417.0" text="Alunos">
+               <font>
+                  <Font name="Arial Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="botaogerenciargrupos" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#pageGroup" prefHeight="62.0" prefWidth="530.0" styleClass="hove" text="Grupos">
+               <font>
+                  <Font name="Arial Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="botaocriterio" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#pageCriterios" prefHeight="62.0" prefWidth="476.0" text="Critérios">
+               <font>
+                  <Font name="Arial Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="botaogerenciarsprints" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#pageSprint" prefHeight="62.0" prefWidth="476.0" text="Sprints">
+               <font>
+                  <Font name="Arial Bold" size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="2.0" top="2.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="botaogerenciaraluno" mnemonicParsing="false" onAction="#pageAlunos" prefHeight="62.0" prefWidth="417.0" text="Gerenciar Alunos">
-               <font>
-                  <Font name="Arial Bold" size="20.0" />
-               </font>
-            </Button>
-            <Button fx:id="botaogerenciargrupos" mnemonicParsing="false" onAction="#pageGroup" prefHeight="62.0" prefWidth="530.0" text="Gerenciar Grupos">
-               <font>
-                  <Font name="Arial Bold" size="20.0" />
-               </font>
-            </Button>
-            <Button fx:id="botaogerenciarsprints" mnemonicParsing="false" onAction="#pageSprint" prefHeight="62.0" prefWidth="476.0" text="Gerenciar Sprints">
-               <font>
-                  <Font name="Arial Bold" size="20.0" />
-               </font>
-            </Button>
-            <Button fx:id="exit" mnemonicParsing="false" onAction="#exitPacer" text="Sair" textFill="#ff4c4c">
+            <Button fx:id="exit" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#exitPacer" text="Sair" textFill="#ff4c4c">
                <VBox.margin>
-                  <Insets left="150.0" top="250.0" />
+                  <Insets bottom="10.0" left="150.0" top="480.0" />
                </VBox.margin>
             </Button>
          </children>
       </VBox>
-      <AnchorPane fx:id="Homepage" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="798.0" prefWidth="1170.0" SplitPane.resizableWithParent="false">
+      <AnchorPane fx:id="Homepage" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0" SplitPane.resizableWithParent="false">
          <children>
-            <ImageView fx:id="fatec" fitHeight="120.0" fitWidth="268.0" layoutX="1091.0" layoutY="1.0" nodeOrientation="INHERIT" preserveRatio="true">
+            <ImageView fx:id="fatec" fitHeight="120.0" fitWidth="268.0" layoutX="526.0" layoutY="14.0" nodeOrientation="INHERIT" preserveRatio="true">
                <image>
                   <Image url="@images/Imagem1.png" />
                </image>

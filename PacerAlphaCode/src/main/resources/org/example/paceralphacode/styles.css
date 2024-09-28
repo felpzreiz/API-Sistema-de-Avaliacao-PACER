@@ -1,14 +1,14 @@
 .button {
-    -fx-background-color: #5884e5;
+    -fx-background-color: #696969;
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-font-family: "Arial";
 }
 
 .button:hover {
-    -fx-background-color: #4d52ff;
+    -fx-background-color: #555555;
 }
 
 .button:pressed {
-    -fx-background-color: #0618d5;
+    -fx-background-color: #555555;
 }

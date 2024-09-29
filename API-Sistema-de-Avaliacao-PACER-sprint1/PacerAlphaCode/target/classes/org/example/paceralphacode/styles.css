@@ -1,0 +1,53 @@
+.button {
+    -fx-background-color: #696969;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+.button:hover {
+    -fx-background-color: #555555;
+}
+
+.button:pressed {
+    -fx-background-color: #555555;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+.button.buttonAddStudent {
+    -fx-background-color: green;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+.button.buttonAddStudent:hover {
+    -fx-background-color: darkgreen;
+}
+
+.button.buttonAddStudent:pressed {
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+.button.buttonRemoveStudent {
+    -fx-background-color: #f55757;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+.button.buttonRemoveStudent:hover {
+    -fx-background-color: red;
+}
+
+.split-pane > .divider{
+    -fx-background-color: red;
+    -fx-border-color: red;
+}
+
+.pacer > .divider{
+    -fx-background-color: red;
+    -fx-border-color: red;
+}

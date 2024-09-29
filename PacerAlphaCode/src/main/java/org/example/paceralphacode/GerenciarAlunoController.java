@@ -10,17 +10,19 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 
+import javafx.event.ActionEvent;
+
 import java.io.IOException;
+
 
 public class GerenciarAlunoController {
 
 
-    @FXML
-    private TextField addStudent;
+
 
     @FXML
     private Button buttonAddStudent;
-    private ObservableList<Alunos> Alunos;
+    private ObservableList<Alunos> alunos;
     @FXML
     private AnchorPane gGroups;
 
@@ -28,16 +30,43 @@ public class GerenciarAlunoController {
     private TableColumn<Alunos, String> tableViewStudent;
 
     @FXML
+    private TextField whriteStudent;
+
+    @FXML
     private TableView<Alunos> viewStudent;
+    private TelaCadastroGrupoController Alunos;
+
+    public void initialize() {
+        alunos = FXCollections.observableArrayList();
+
+
+        tableViewStudent.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        tableViewStudent.setCellFactory(TextFieldTableCell.forTableColumn());
 
 
 
+        buttonAddStudent.setOnAction(event -> buttonAddStudent());
 
-    private void buttonAddStudent() throws IOException {
-        String email = this.addStudent.getText();
+
+        viewStudent.setItems(alunos);
+    }
+    private void buttonAddStudent() {
+        String email = whriteStudent.getText();
         if (email != null && !email.isEmpty()) {
-            this.Alunos.add(new Alunos(email));
-            this.addStudent.clear();
+            alunos.add(new Alunos(email));
+            whriteStudent.clear();
         }
     }
+
+    @FXML
+    void ActionbuttonAddStudent(ActionEvent event) {
+
+    }
+
+
+    @FXML
+    void ActionwhriteStrudent(ActionEvent event) {
+
+    }
+
 }

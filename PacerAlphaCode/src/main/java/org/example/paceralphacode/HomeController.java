@@ -40,8 +40,6 @@ public class HomeController {
     @FXML
     private Button botaocriterio;
 
-
-
     @FXML
     private VBox menuFix;
 
@@ -87,12 +85,14 @@ public class HomeController {
         String css = Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm();                   // Instancia o arquivo styles.css em uma String que está salva com os arquivos fxml
         menuFix.getStylesheets().add(css);                                                                                                                           // menuFix é uma estrutura com vários botões, aqui o arquivo css muda sua interface
     }
+
     @FXML
-    void pageCriterios(ActionEvent event) throws IOException{
+    void pageCriterios(ActionEvent event) throws IOException {
         Homepage.getChildren().clear();
-        Parent gCriterios =FXMLLoader.load(getClass().getResource("GerenciarCriterios.fxml"));
+        Parent gCriterios = FXMLLoader.load(getClass().getResource("GerenciarCriterios.fxml"));
         Homepage.getChildren().add(gCriterios);
 
     }
+
 
 }

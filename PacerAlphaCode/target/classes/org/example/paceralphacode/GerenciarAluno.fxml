@@ -1,31 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="gGroups" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="798.0" prefWidth="1170.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="gAlunos" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.paceralphacode.GerenciarAlunoController">
    <children>
       <Label layoutX="42.0" layoutY="23.0" text="Alunos">
          <font>
-            <Font name="System Bold" size="37.0" />
+            <Font name="Arial Bold" size="37.0" />
          </font>
       </Label>
-      <Pane layoutX="76.0" layoutY="121.0" prefHeight="624.0" prefWidth="1013.0" style="-fx-background-color: #ffff;" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="80.39999999999998">
+      <Pane layoutX="88.0" layoutY="180.0" prefHeight="599.0" prefWidth="994.0" style="-fx-background-color: #ffff;" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="88.0">
          <children>
-            <TextField fx:id="whriteStudent" layoutX="36.0" layoutY="55.0" onAction="#ActionbuttonAddStudent" prefHeight="30.0" prefWidth="302.0" promptText="Email do aluno..." />
-            <Button fx:id="buttonAddStudent" layoutX="338.0" layoutY="55.0" mnemonicParsing="false" onAction="#ActionbuttonAddStudent" prefHeight="30.0" prefWidth="150.0" style="-fx-background-color: #14AE5C;" text="ADICIONAR" />
+            <GridPane hgap="1.0" layoutX="30.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="520.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.3333984375" minWidth="10.0" prefWidth="393.3333984375" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="193.59991455078125" minWidth="10.0" prefWidth="133.86660156250002" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Button fx:id="buttonAddStudent" mnemonicParsing="false" onAction="#buttonAddStudent" prefHeight="30.0" prefWidth="142.0" styleClass="buttonAddStudent" text="ADICIONAR" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Button>
+                  <TextField fx:id="writeStudent" prefHeight="30.0" prefWidth="302.0" promptText="Email do aluno...">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </GridPane>
+            <Label fx:id="checkStudent" layoutX="37.0" layoutY="63.0" prefHeight="17.0" prefWidth="413.0" text="Label" textFill="RED" visible="false">
+               <font>
+                  <Font name="Arial" size="12.0" />
+               </font>
+            </Label>
+            <Button fx:id="buttonRemoveStudent" layoutX="932.0" layoutY="509.0" mnemonicParsing="false" onAction="#removeSelectedStudent" prefHeight="30.0" prefWidth="145.0" styleClass="buttonRemoveStudent" text="REMOVER" />
+            <Label fx:id="checkStudent1" alignment="CENTER_RIGHT" layoutX="843.0" layoutY="555.0" prefHeight="17.0" prefWidth="233.0" text="Label" textFill="RED" visible="false">
+               <font>
+                  <Font name="Arial" size="12.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
-      <TableView fx:id="viewStudent" layoutX="108.0" layoutY="216.0" prefHeight="402.0" prefWidth="941.0" AnchorPane.leftAnchor="108.0" AnchorPane.rightAnchor="120.39999999999998">
-        <columns>
-          <TableColumn fx:id="tableViewStudent" maxWidth="892.0" minWidth="-Infinity" prefWidth="892.0" text="Email" />
-        </columns>
+      <TableView fx:id="viewStudent" editable="true" layoutX="108.0" layoutY="268.0" prefHeight="404.0" prefWidth="918.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="132.0">
+         <columns>
+            <TableColumn fx:id="tableViewStudent" maxWidth="1047.2000198364258" minWidth="-Infinity" prefWidth="1047.2000198364258" text="Email" />
+         </columns>
       </TableView>
+      <Pane layoutX="89.0" layoutY="88.0" prefHeight="76.0" prefWidth="994.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="88.0">
+         <children>
+            <GridPane alignment="CENTER" layoutX="522.0" layoutY="2.0" prefHeight="74.0" prefWidth="100.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="55.0" prefWidth="100.0" text="Total" textFill="#535353" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="nStudents" alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefHeight="77.0" prefWidth="100.0" text="0" textFill="#535353">
+                     <font>
+                        <Font name="Arial" size="25.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

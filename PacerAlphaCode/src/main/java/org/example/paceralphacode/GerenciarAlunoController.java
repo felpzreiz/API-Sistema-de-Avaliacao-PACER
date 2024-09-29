@@ -3,70 +3,99 @@ package org.example.paceralphacode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 
-import javafx.event.ActionEvent;
-
-import java.io.IOException;
-
+import java.util.Objects;
 
 public class GerenciarAlunoController {
 
 
-
+    @FXML
+    private TextField writeStudent;
 
     @FXML
     private Button buttonAddStudent;
-    private ObservableList<Alunos> alunos;
-    @FXML
-    private AnchorPane gGroups;
 
     @FXML
-    private TableColumn<Alunos, String> tableViewStudent;
+    public Button buttonRemoveStudent;
 
     @FXML
-    private TextField whriteStudent;
+    private Label checkStudent;
 
     @FXML
-    private TableView<Alunos> viewStudent;
-    private TelaCadastroGrupoController Alunos;
+    private Label checkStudent1;
+
+    @FXML
+    private Label nStudents;
+
+    private ObservableList<org.example.paceralphacode.Alunos> Alunos;
+
+    @FXML
+    private AnchorPane gAlunos;
+
+    @FXML
+    private TableColumn<org.example.paceralphacode.Alunos, String> tableViewStudent;
+
+    @FXML
+    private TableView<org.example.paceralphacode.Alunos> viewStudent;
 
     public void initialize() {
-        alunos = FXCollections.observableArrayList();
-
+        Alunos = FXCollections.observableArrayList();
 
         tableViewStudent.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         tableViewStudent.setCellFactory(TextFieldTableCell.forTableColumn());
 
-
+        tableViewStudent.setOnEditCommit(event -> {
+            org.example.paceralphacode.Alunos aluno = event.getRowValue();
+            aluno.setName(event.getNewValue());
+        });
 
         buttonAddStudent.setOnAction(event -> buttonAddStudent());
 
-
-        viewStudent.setItems(alunos);
+        viewStudent.setItems(Alunos);
+        style();
     }
+
+    @FXML
     private void buttonAddStudent() {
-        String email = whriteStudent.getText();
-        if (email != null && !email.isEmpty()) {
-            alunos.add(new Alunos(email));
-            whriteStudent.clear();
+        String Aluno = writeStudent.getText();
+        if (writeStudent.getText().isEmpty()) {
+            checkStudent.setText("Informe o e-mail do aluno.");
+            checkStudent.setVisible(true);
+        } else {
+            checkStudent.setVisible(false);
+        }
+        if (Aluno != null && !Aluno.isEmpty()) {
+            Alunos.add(new Alunos(Aluno));
+            writeStudent.clear();
+            nStudents();
+        }
+    }
+
+    private void nStudents() {
+        int qtd = Alunos.size();
+        nStudents.setText(String.valueOf(qtd));
+    }
+
+    @FXML
+    private void removeSelectedStudent() {
+        org.example.paceralphacode.Alunos selectedStudent = viewStudent.getSelectionModel().getSelectedItem();
+        if (selectedStudent != null) {
+            Alunos.remove(selectedStudent);
+            checkStudent.setVisible(false);
+            nStudents();
+        } else {
+            checkStudent1.setText("Selecione um aluno para remover.");
+            checkStudent1.setVisible(true);
         }
     }
 
     @FXML
-    void ActionbuttonAddStudent(ActionEvent event) {
-
+    public void style() {
+        String css = Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm();
+        buttonAddStudent.getStylesheets().add(css);
+        buttonRemoveStudent.getStylesheets().add(css);
     }
-
-
-    @FXML
-    void ActionwhriteStrudent(ActionEvent event) {
-
-    }
-
 }

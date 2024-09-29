@@ -16,10 +16,10 @@ import javafx.stage.Stage;
 public class TelaCadastroGrupoController {
 
     @FXML
-    private TableView<User> tabelaemails;
+    private TableView<org.example.paceralphacode.User> tabelaemails;
 
     @FXML
-    private TableColumn<User, String> email;
+    private TableColumn<org.example.paceralphacode.User, String> email;
 
     @FXML
     private TextField inseriremail;
@@ -33,7 +33,7 @@ public class TelaCadastroGrupoController {
     @FXML
     private Button btsalvar;
 
-    private ObservableList<User> users;
+    private ObservableList<org.example.paceralphacode.User> users;
 
     public void initialize() {
         users = FXCollections.observableArrayList();

@@ -84,7 +84,7 @@ public class GerenciarAlunoController {
         org.example.paceralphacode.Alunos selectedStudent = viewStudent.getSelectionModel().getSelectedItem();
         if (selectedStudent != null) {
             Alunos.remove(selectedStudent);
-            checkStudent.setVisible(false);
+            checkStudent1.setVisible(false);
             nStudents();
         } else {
             checkStudent1.setText("Selecione um aluno para remover.");

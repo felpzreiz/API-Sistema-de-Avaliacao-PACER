@@ -51,9 +51,11 @@ CREATE TABLE avaliacao(
     aluno_avaliado VARCHAR(100),
     aluno_avaliador VARCHAR(100),
     id_sprint INTEGER NOT NULL,
-    PRIMARY KEY (id_avaliacao)
+    PRIMARY KEY (id_avaliacao),
     FOREIGN KEY (id_sprint) REFERENCES sprint(id_sprint),
     FOREIGN KEY (aluno_avaliado) REFERENCES aluno(email),
     FOREIGN KEY (aluno_avaliador) REFERENCES aluno(email)
 )
+
+ALTER TABLE avaliacao ADD nota DECIMAL(3,2);
 

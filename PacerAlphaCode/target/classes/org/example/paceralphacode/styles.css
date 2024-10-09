@@ -32,7 +32,25 @@
 }
 
 .button.buttonRemoveStudent {
-    -fx-background-color: #f55757;
+    -fx-background-color: #dd2828;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+.button.buttonEditStudent {
+    -fx-background-color: #ec7212;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+.button.buttonImportStudent {
+    -fx-background-color: #3e3c3c;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+.button.buttonBuscarStudent {
+    -fx-background-color: #2fa5a5;
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-font-family: "Arial";

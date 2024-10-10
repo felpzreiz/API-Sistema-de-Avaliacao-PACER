@@ -11,6 +11,7 @@ module org.example.paceralphacode {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.desktop;
+    requires java.sql;
 
     opens org.example.paceralphacode to javafx.fxml;
     exports org.example.paceralphacode;

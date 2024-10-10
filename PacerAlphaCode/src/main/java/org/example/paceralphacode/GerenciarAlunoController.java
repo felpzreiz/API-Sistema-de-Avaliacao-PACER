@@ -2,6 +2,7 @@ package org.example.paceralphacode;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -20,6 +21,12 @@ public class GerenciarAlunoController {
 
     @FXML
     public Button buttonRemoveStudent;
+    @FXML
+    public Button buttonEditStudent;
+    @FXML
+    public Button buttonImportStudent;
+    @FXML
+    public Button buttonBuscarStudent;
 
     @FXML
     private Label checkStudent;
@@ -97,5 +104,20 @@ public class GerenciarAlunoController {
         String css = Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm();
         buttonAddStudent.getStylesheets().add(css);
         buttonRemoveStudent.getStylesheets().add(css);
+        buttonImportStudent.getStylesheets().add(css);
+        buttonEditStudent.getStylesheets().add(css);
+        buttonBuscarStudent.getStylesheets().add(css);
+
+
+    }
+
+    public void EditedSelectedStudent(ActionEvent actionEvent) {
+    }
+
+    public void ImportSelectedStudent(ActionEvent actionEvent) {
+    }
+
+    public void buttonBuscarStudent(ActionEvent actionEvent) {
     }
 }
+

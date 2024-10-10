@@ -3,24 +3,36 @@ package org.example.paceralphacode;
 import java.sql.*;
 
 public class Conexao {
-    public static void main(String[] args) throws SQLException {
-        Connection conexao = null;
-        try{
-            Class.forName("org.postgresql.Driver");//INDICA O DRIVER DO POSTGRES
-            conexao = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pacer", "AdminPacer", "AdminPacer1234");//CONEXAO COM O BANCO, COM USUARIO E SENHA
-            ResultSet rsCliente = conexao.createStatement().executeQuery("select * from cliente");
-            while(rsCliente.next()){
-                System.out.println("Nome: " + rsCliente.getString("nome_cli") + " | Endereço: " + rsCliente.getString("endereco_cli"));
+    
+    // esse métod não pode ser main!
+
+    public static void main(String[] args){
+        try {
+            Connection conexao = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pacer",
+                    "adminpacer", "AdminPacer1234"); // DRIVER E ACESSOS AO BANCO DE DADOS.
+            if (conexao != null) {
+                System.out.println("Conectado com sucesso!");
+                Statement stm = conexao.createStatement();
+                consultarDados(stm); //REFERENCIA O METHOD.
+            }else{
+                System.out.println("Erro ao conectar ao Banco de Dados!");
             }
-        }catch(ClassNotFoundException ex){
-            System.out.println("Driver do Banco de Dados não encontrado.");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
-        catch(SQLException ex){
-            System.out.println("Erro ao conectar ao Banco de Dados: " + ex.getMessage());
-        } finally {
-            if(conexao != null){
-                conexao.close();
+    }
+
+    // esse métod não ficará aqui, e sim em uma classe fora, onde estarão todos os métodos.
+
+    static void consultarDados(Statement stm){ // METHOD PARA FAZER UM SELECT.
+        String query = "select * from aluno"; // QUERY DESEJADA.
+        try {
+            ResultSet result = stm.executeQuery(query);
+            while(result.next()){ // result.next() roda enquanto existirem dados no banco.
+                System.out.println("Senha: " + result.getString("senha"));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

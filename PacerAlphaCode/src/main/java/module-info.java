@@ -15,4 +15,6 @@ module org.example.paceralphacode {
 
     opens org.example.paceralphacode to javafx.fxml;
     exports org.example.paceralphacode;
+    exports conexao;
+    opens conexao to javafx.fxml;
 }

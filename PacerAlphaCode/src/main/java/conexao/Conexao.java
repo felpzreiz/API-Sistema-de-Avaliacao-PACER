@@ -1,9 +1,9 @@
-package org.example.paceralphacode;
+package conexao;
 
 import java.sql.*;
 
 public class Conexao {
-    
+
     // esse métod não pode ser main!
 
     public static void main(String[] args){

@@ -1,4 +1,4 @@
-package operacoes;
+package conexao;
 
 public class OperacoesSQL {
 

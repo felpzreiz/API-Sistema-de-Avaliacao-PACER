@@ -20,7 +20,7 @@ public class TelaCadastroGrupoController {
     private TableView<org.example.paceralphacode.User> tabelaemails;
 
     @FXML
-    private TableColumn<org.example.paceralphacode.User, String> nometable; // A coluna de nome deve ser do tipo User
+    private TableColumn<org.example.paceralphacode.User, String> nometable;
     @FXML
     private TableColumn<org.example.paceralphacode.User, String> email;
 

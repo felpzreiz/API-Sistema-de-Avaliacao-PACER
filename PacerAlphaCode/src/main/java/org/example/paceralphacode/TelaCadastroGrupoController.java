@@ -47,15 +47,15 @@ public class TelaCadastroGrupoController {
         email.setCellFactory(TextFieldTableCell.forTableColumn());
 
         // Aplicar classes CSS aos botões
-        addaluno1.getStyleClass().add("buttonAddStudent"); // Adiciona a classe para o botão de adicionar aluno
-        buttonRemoveStudent1.getStyleClass().add("buttonRemoveStudent1"); // Adiciona a classe para o botão de remover aluno
-        btsalvar.getStyleClass().add("btsalvar"); // Adiciona a classe para o botão de salvar
-        btcancelar.getStyleClass().add("btcancelar"); // Adiciona a classe para o botão de cancelar
+        addaluno1.getStyleClass().add("buttonAddStudent");
+        buttonRemoveStudent1.getStyleClass().add("buttonRemoveStudent1");
+        btsalvar.getStyleClass().add("btsalvar");
+        btcancelar.getStyleClass().add("btcancelar");
 
         addaluno1.setOnAction(event -> addAluno1());
         tabelaemails.setItems(users);
 
-        style1(); // Chame o método para aplicar o CSS globalmente, se necessário
+        style1();
     }
 
     private void addAluno1() {

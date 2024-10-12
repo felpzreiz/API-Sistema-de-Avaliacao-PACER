@@ -19,10 +19,18 @@ public class OperacoesSQL {
         try {
             ResultSet result = stm.executeQuery(query);
             while(result.next()){ // result.next() roda enquanto existirem dados no banco.
-                System.out.println("Senha: " + result.getString("senha"));
+                System.out.println("Email: " + result.getString("email"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    public static void inserir(Statement stm, String query){ // METHOD PARA FAZER UM SELECT.
+        try {
+            stm.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -12,12 +12,15 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.util.Objects;
 
 public class TelaCadastroGrupoController {
 
     @FXML
     private TableView<org.example.paceralphacode.User> tabelaemails;
 
+    @FXML
+    private TableColumn<org.example.paceralphacode.User, String> nometable; // A coluna de nome deve ser do tipo User
     @FXML
     private TableColumn<org.example.paceralphacode.User, String> email;
 
@@ -27,7 +30,9 @@ public class TelaCadastroGrupoController {
     private AnchorPane fundo;
 
     @FXML
-    private Button addaluno;
+    private Button buttonRemoveStudent1;
+    @FXML
+    private Button addaluno1;
     @FXML
     private Button btcancelar;
     @FXML
@@ -37,44 +42,56 @@ public class TelaCadastroGrupoController {
 
     public void initialize() {
         users = FXCollections.observableArrayList();
-
-        // Configurando a coluna para exibir os nomes dos alunos
-        email.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        nometable.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        email.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
         email.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        /*Permitindo edição dos nomes
-        tableUsers.setOnEditCommit(event -> {
-            User user = event.getRowValue();
-            user.setName(event.getNewValue());
-        });*/
+        // Aplicar classes CSS aos botões
+        addaluno1.getStyleClass().add("buttonAddStudent"); // Adiciona a classe para o botão de adicionar aluno
+        buttonRemoveStudent1.getStyleClass().add("buttonRemoveStudent1"); // Adiciona a classe para o botão de remover aluno
+        btsalvar.getStyleClass().add("btsalvar"); // Adiciona a classe para o botão de salvar
+        btcancelar.getStyleClass().add("btcancelar"); // Adiciona a classe para o botão de cancelar
 
-        // Adicionando alunos ao clicar no botão
-        addaluno.setOnAction(event -> addAluno());
-
-        // Configurar a tabela para aceitar a lista de usuários
+        addaluno1.setOnAction(event -> addAluno1());
         tabelaemails.setItems(users);
+
+        style1(); // Chame o método para aplicar o CSS globalmente, se necessário
     }
 
-    private void addAluno() {
-        String email = inseriremail.getText();
-        if (email != null && !email.isEmpty()) {
-            users.add(new User(email));  // Adiciona o novo aluno à lista
-            inseriremail.clear();           // Limpa o campo de entrada
+    private void addAluno1() {
+        String emailInput = inseriremail.getText();
+        if (emailInput != null && !emailInput.isEmpty()) {
+            users.add(new User(emailInput));
+            inseriremail.clear();
         }
     }
-
     public void cancelar(ActionEvent actionEvent) {
-        Stage stage = (Stage)fundo.getScene().getWindow();
+        Stage stage = (Stage) fundo.getScene().getWindow();
         stage.close();
     }
-
     public void salvar(ActionEvent actionEvent) {
-    }
 
+    }
     public void inseriremail2(ActionEvent actionEvent) {
 
     }
-
     public void add(ActionEvent actionEvent) {
+
+    }
+    @FXML
+    void removeSelectedStudent1(ActionEvent event) {
+        org.example.paceralphacode.User alunoSelecionado = tabelaemails.getSelectionModel().getSelectedItem();
+        if (alunoSelecionado != null) {
+            users.remove(alunoSelecionado);
+        }
+    }
+    public void style1() {
+        String css = Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm();
+        addaluno1.getStylesheets().add(css);
+        buttonRemoveStudent1.getStylesheets().add(css);
+        btsalvar.getStylesheets().add(css);
+        btcancelar.getStylesheets().add(css);
+
+
     }
 }

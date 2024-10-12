@@ -21,27 +21,29 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextField fx:id="inseriremail" onAction="#inseriremail2" promptText="Insira o E-mail do aluno" />
-            <Button fx:id="addaluno" mnemonicParsing="false" onAction="#add" prefHeight="26.0" prefWidth="90.0" text="Adicionar" GridPane.columnIndex="1" />
+            <TextField fx:id="inseriremail" onAction="#inseriremail2" promptText="Insira o Nome ou E-mail do aluno..." />
+            <Button fx:id="addaluno1" mnemonicParsing="false" onAction="#add" prefHeight="26.0" prefWidth="90.0" text="Adicionar" GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <TableView fx:id="tabelaemails" layoutX="30.0" layoutY="112.0" prefHeight="290.0" prefWidth="482.0">
         <columns>
-          <TableColumn fx:id="email" prefWidth="481.60000076293943" text="E-mail" />
+            <TableColumn fx:id="nometable" prefWidth="242.39995193481445" text="Nome" />
+          <TableColumn fx:id="email" prefWidth="242.4000244140625" text="E-mail" />
         </columns>
       </TableView>
-      <GridPane layoutX="60.0" layoutY="450.0" prefHeight="44.0" prefWidth="394.0">
+      <GridPane layoutX="60.0" layoutY="450.0" prefHeight="44.0" prefWidth="436.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="246.0" minWidth="10.0" prefWidth="216.6" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="258.3999969482421" minWidth="10.0" prefWidth="219.00000000000003" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="btcancelar" mnemonicParsing="false" onAction="#cancelar" prefHeight="51.0" prefWidth="196.0" text="Cancelar" />
-            <Button fx:id="btsalvar" mnemonicParsing="false" onAction="#salvar" prefHeight="46.0" prefWidth="198.0" text="Salvar" GridPane.columnIndex="1" />
+            <Button fx:id="btcancelar" mnemonicParsing="false" onAction="#cancelar" prefHeight="44.0" prefWidth="215.0" text="Cancelar" />
+            <Button fx:id="btsalvar" mnemonicParsing="false" onAction="#salvar" prefHeight="44.0" prefWidth="254.0" text="Salvar" GridPane.columnIndex="1" />
          </children>
       </GridPane>
+      <Button fx:id="buttonRemoveStudent1" layoutX="224.0" layoutY="409.0" mnemonicParsing="false" onAction="#removeSelectedStudent1" prefHeight="26.0" prefWidth="94.0" styleClass="buttonRemoveStudent" text="REMOVER" />
    </children>
 </AnchorPane>

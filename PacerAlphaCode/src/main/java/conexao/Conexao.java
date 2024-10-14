@@ -19,18 +19,4 @@ public class Conexao {
             ex.printStackTrace();
         }
     }
-
-    // esse métod não ficará aqui, e sim em uma classe fora, onde estarão todos os métodos.
-
-    public static void consultarDados(Statement stm){ // METHOD PARA FAZER UM SELECT.
-        String query = "select * from aluno"; // QUERY DESEJADA.
-        try {
-            ResultSet result = stm.executeQuery(query);
-            while(result.next()){ // result.next() roda enquanto existirem dados no banco.
-                System.out.println("Senha: " + result.getString("senha"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

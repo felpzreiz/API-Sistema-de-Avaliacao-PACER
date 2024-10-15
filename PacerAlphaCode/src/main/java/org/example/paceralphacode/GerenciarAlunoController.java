@@ -8,6 +8,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
 
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Objects;
 
 public class GerenciarAlunoController {
@@ -59,14 +61,21 @@ public class GerenciarAlunoController {
             aluno.setName(event.getNewValue());
         });
 
-        buttonAddStudent.setOnAction(event -> buttonAddStudent());
+        buttonAddStudent.setOnAction(event -> {
+            try {
+                buttonAddStudent();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         viewStudent.setItems(Alunos);
         style();
     }
 
+
     @FXML
-    private void buttonAddStudent() {
+    private void buttonAddStudent() throws SQLException {
         String Aluno = writeStudent.getText();
         if (writeStudent.getText().isEmpty()) {
             checkStudent.setText("Informe o e-mail do aluno.");
@@ -79,6 +88,12 @@ public class GerenciarAlunoController {
             writeStudent.clear();
             nStudents();
         }
+        OperacoesSQL teste = new OperacoesSQL();
+        Statement stm = teste.conectarBanco();
+        OperacoesSQL.inserir(stm, Aluno);
+
+
+
     }
 
     private void nStudents() {

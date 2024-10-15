@@ -26,8 +26,11 @@ public class OperacoesSQL {
         }
     }
     public static void inserir(Statement stm, String query){ // METHOD PARA FAZER UM SELECT.
+        String insereAluno = "INSERT INTO aluno (email) VALUES ('" + query + "')";
+
         try {
-            stm.executeQuery(query);
+            stm.executeQuery(insereAluno);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

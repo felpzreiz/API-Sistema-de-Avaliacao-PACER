@@ -1,6 +1,4 @@
-package org.example.paceralphacode;
-
-import conexao.Conexao;
+package conexao;
 
 import java.sql.*;
 

@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
+import conexao.OperacoesSQL;
+
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -88,12 +90,11 @@ public class GerenciarAlunoController {
             writeStudent.clear();
             nStudents();
         }
+        
         OperacoesSQL teste = new OperacoesSQL();
         Statement stm = teste.conectarBanco();
         OperacoesSQL.inserir(stm, Aluno);
-
-
-
+        
     }
 
     private void nStudents() {

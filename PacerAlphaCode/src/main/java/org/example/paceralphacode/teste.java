@@ -2,6 +2,8 @@ package org.example.paceralphacode;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import conexao.OperacoesSQL;
+
 
 public class teste {
     public static void main(String[] args) throws SQLException {

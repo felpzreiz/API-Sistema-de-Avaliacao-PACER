@@ -48,17 +48,50 @@
                   <Font name="Arial" size="12.0" />
                </font>
             </Label>
-            <Button fx:id="buttonRemoveStudent" layoutX="932.0" layoutY="509.0" mnemonicParsing="false" onAction="#removeSelectedStudent" prefHeight="30.0" prefWidth="145.0" styleClass="buttonRemoveStudent" text="REMOVER" />
             <Label fx:id="checkStudent1" alignment="CENTER_RIGHT" layoutX="843.0" layoutY="555.0" prefHeight="17.0" prefWidth="233.0" text="Label" textFill="RED" visible="false">
                <font>
                   <Font name="Arial" size="12.0" />
                </font>
             </Label>
+            <GridPane layoutX="30.0" layoutY="495.0" prefHeight="30.0" prefWidth="281.0">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="buttonRemoveStudent" mnemonicParsing="false" onAction="#removeSelectedStudent" prefHeight="66.0" prefWidth="94.0" styleClass="buttonRemoveStudent" text="REMOVER" />
+                  <Button fx:id="buttonEditStudent" mnemonicParsing="false" onAction="#EditedSelectedStudent" prefHeight="62.0" prefWidth="94.0" styleClass="buttonEditStudent" text="EDITAR" GridPane.columnIndex="1" />
+                  <Button fx:id="buttonImportStudent" mnemonicParsing="false" onAction="#ImportSelectedStudent" prefHeight="30.0" prefWidth="128.0" styleClass="buttonImportStudent" text="IMPORTAR" GridPane.columnIndex="2" />
+               </children>
+            </GridPane>
+            <GridPane hgap="1.0" layoutX="583.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="520.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.3333984375" minWidth="10.0" prefWidth="393.3333984375" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="193.59991455078125" minWidth="10.0" prefWidth="133.86660156250002" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Button fx:id="buttonBuscarStudent" mnemonicParsing="false" onAction="#buttonBuscarStudent" prefHeight="30.0" prefWidth="130.0" styleClass="buttonBuscarStudent" text="BUSCAR" GridPane.columnIndex="1" />
+                  <TextField fx:id="writeStudent1" prefHeight="30.0" prefWidth="390.0" promptText="buscar aluno...">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </GridPane>
          </children>
       </Pane>
       <TableView fx:id="viewStudent" editable="true" layoutX="108.0" layoutY="268.0" prefHeight="404.0" prefWidth="918.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="132.0">
          <columns>
-            <TableColumn fx:id="tableViewStudent" maxWidth="1047.2000198364258" minWidth="-Infinity" prefWidth="1047.2000198364258" text="Email" />
+            <TableColumn fx:id="tableViewNome" prefWidth="416.80003356933594" text="Nome" />
+            <TableColumn fx:id="tableViewStudent" maxWidth="1047.2000198364258" minWidth="-Infinity" prefWidth="503.99993896484375" text="Email" />
+            <TableColumn fx:id="tableViewGrupo" prefWidth="285.60009765625" text="Grupo" />
          </columns>
       </TableView>
       <Pane layoutX="89.0" layoutY="88.0" prefHeight="76.0" prefWidth="994.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="88.0">

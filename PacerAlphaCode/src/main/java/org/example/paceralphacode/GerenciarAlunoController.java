@@ -2,11 +2,16 @@ package org.example.paceralphacode;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.AnchorPane;
+import conexao.OperacoesSQL;
 
+
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Objects;
 
 public class GerenciarAlunoController {
@@ -20,6 +25,12 @@ public class GerenciarAlunoController {
 
     @FXML
     public Button buttonRemoveStudent;
+    @FXML
+    public Button buttonEditStudent;
+    @FXML
+    public Button buttonImportStudent;
+    @FXML
+    public Button buttonBuscarStudent;
 
     @FXML
     private Label checkStudent;
@@ -52,14 +63,21 @@ public class GerenciarAlunoController {
             aluno.setName(event.getNewValue());
         });
 
-        buttonAddStudent.setOnAction(event -> buttonAddStudent());
+        buttonAddStudent.setOnAction(event -> {
+            try {
+                buttonAddStudent();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         viewStudent.setItems(Alunos);
         style();
     }
 
+
     @FXML
-    private void buttonAddStudent() {
+    private void buttonAddStudent() throws SQLException {
         String Aluno = writeStudent.getText();
         if (writeStudent.getText().isEmpty()) {
             checkStudent.setText("Informe o e-mail do aluno.");
@@ -72,6 +90,11 @@ public class GerenciarAlunoController {
             writeStudent.clear();
             nStudents();
         }
+        
+        OperacoesSQL teste = new OperacoesSQL();
+        Statement stm = teste.conectarBanco();
+        OperacoesSQL.inserir(stm, Aluno);
+        
     }
 
     private void nStudents() {
@@ -84,7 +107,7 @@ public class GerenciarAlunoController {
         org.example.paceralphacode.Alunos selectedStudent = viewStudent.getSelectionModel().getSelectedItem();
         if (selectedStudent != null) {
             Alunos.remove(selectedStudent);
-            checkStudent.setVisible(false);
+            checkStudent1.setVisible(false);
             nStudents();
         } else {
             checkStudent1.setText("Selecione um aluno para remover.");
@@ -97,5 +120,20 @@ public class GerenciarAlunoController {
         String css = Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm();
         buttonAddStudent.getStylesheets().add(css);
         buttonRemoveStudent.getStylesheets().add(css);
+        buttonImportStudent.getStylesheets().add(css);
+        buttonEditStudent.getStylesheets().add(css);
+        buttonBuscarStudent.getStylesheets().add(css);
+
+
+    }
+
+    public void EditedSelectedStudent(ActionEvent actionEvent) {
+    }
+
+    public void ImportSelectedStudent(ActionEvent actionEvent) {
+    }
+
+    public void buttonBuscarStudent(ActionEvent actionEvent) {
     }
 }
+

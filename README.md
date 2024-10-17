@@ -88,6 +88,53 @@ para cada critério de avaliação em uma determinada Sprint;
 <br>
 
 ### Sprint 2. Desenvolvimento do Projeto
+
+<b>TÍTULO: Composição de Critérios de Avaliação
+| USER STORY  | Como professor, eu quero definir os critérios de avaliação que irão compor as notas dos grupos, para que sejam consideradas competências relevantes para fins acadêmicos. |
+| :--: | :--: |
+
+<b>INTEGRAÇÃO COM O BANCO DE DADOS
+- [ ] >> Conectar os Critérios ao Banco de Dados
+- [ ] >> Conectar as Telas de Críterios e Grupos
+
+<b>TELA DE CRITÉRIOS
+- [ ] >> Criação de Critérios de Avaliação
+- [ ] >> Manipulação de Critérios
+
+<b>LAYOUT/DESIGN
+- [ ] >> Desenvolvimento Interface da Tela de Critérios
+- [ ] >> Apresentação das informações de forma intuitiva
+- [ ] >> O design das telas deve estar de acordo  com  a usabilidade e identidade visual da aplicação.
+
+<b>USABILIDADE
+- [ ] >> Análise do Código e Realização de Testes
+
+<br>
+
+<b>TÍTULO: Desenvolvimento do Gerenciamento de Grupos
+| USER STORY  | Como professor, eu quero criar e verificar, grupos de avaliação, para que eu possa obter as informações de forma rápida e intuitiva. |
+| :--: | :--: |
+
+<b>INTEGRAÇÃO
+- [ ] >> Criação do Código de Conexão para Banco de Dados
+- [ ] >> Criação do Código de Operações SQL
+- [ ] >> Criação do Banco de Dados (Tabelas)
+- [ ] >> Conectar os Alunos ao Banco de Dados
+- [ ] >> Conectar as Telas de Alunos e Grupos
+
+<b>TELA DE GRUPOS
+- [ ] >> Criação de Grupos
+- [ ] >> Overview de Grupos
+- [ ] >> Manipular Informações e Integrantes
+
+<b>LAYOUT/DESIGN
+- [ ] >> Desenvolvimento da Tela de Alunos
+- [ ] >> Desenvolvimento da Tela de Grupos
+- [ ] >> Apresentação das informações de forma intuitiva
+- [ ] >> O design das telas deve estar de acordo  com  a usabilidade e identidade visual da aplicação.
+
+<b>USABILIDADE
+- [ ] >> Análise do Código e Realização de Testes
 <br>
 
 ### Sprint 3 . Desenvolvimento do Projeto

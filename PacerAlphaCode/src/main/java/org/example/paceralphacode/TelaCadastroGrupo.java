@@ -1,12 +1,15 @@
 package org.example.paceralphacode;
 
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+
+import java.io.IOException;
 
 public class TelaCadastroGrupo {
 
@@ -27,6 +30,14 @@ public class TelaCadastroGrupo {
 
     @FXML
     private TextField inseriremail;
+
+    @FXML
+    private TextField nomedogrupo;
+
+    @FXML
+    void adicionargrupo(ActionEvent event) throws IOException {
+
+    }
 
     @FXML
     private TableView<org.example.paceralphacode.User> table;

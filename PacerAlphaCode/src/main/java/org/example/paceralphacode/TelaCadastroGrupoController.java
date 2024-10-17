@@ -94,4 +94,7 @@ public class TelaCadastroGrupoController {
 
 
     }
+
+    public void nomedogrupo1(ActionEvent actionEvent) {
+    }
 }

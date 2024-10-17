@@ -2,11 +2,12 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.paceralphacode.GerenciarGrupoController">
+<ScrollPane xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.paceralphacode.GerenciarGrupoController">
     <AnchorPane fx:id="gGroups" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0">
         <children>
           <Label layoutX="42.0" layoutY="23.0" text="GRUPOS">
@@ -15,6 +16,7 @@
               </font>
           </Label>
           <Button fx:id="botaoaddgrupo" layoutX="42.0" layoutY="126.0" mnemonicParsing="false" onAction="#adicionargrupo" prefHeight="41.0" prefWidth="150.0" text="Adicionar Grupo" />
+         <ListView fx:id="telagrupos" layoutX="42.0" layoutY="219.0" prefHeight="507.0" prefWidth="778.0" />
         </children>
     </AnchorPane>
 </ScrollPane>

@@ -23,8 +23,8 @@ public class OperacoesSQL {
             e.printStackTrace();
         }
     }
-    public static void inserir(Statement stm, String query){ // METHOD PARA FAZER UM SELECT.
-        String insereAluno = "INSERT INTO aluno (email) VALUES ('" + query + "')";
+    public static void inserir(Statement stm, String query){ // METHOD PARA FAZER UM INSERT.
+        String insereAluno = "INSERT INTO aluno VALUES (" + query + ")";
 
         try {
             stm.executeQuery(insereAluno);

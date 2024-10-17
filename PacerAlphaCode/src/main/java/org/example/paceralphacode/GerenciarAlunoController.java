@@ -1,5 +1,6 @@
 package org.example.paceralphacode;
 
+import conexao.OperacoesSQL;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,12 +14,15 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 public class GerenciarAlunoController {
-
+    OperacoesSQL conexao = new OperacoesSQL();
+    Statement stm = OperacoesSQL.conectarBanco();
 
     @FXML
     private TextField writeStudent;
@@ -63,6 +67,9 @@ public class GerenciarAlunoController {
     private ObservableList<Alunos> listaDados;
     private Set<String> csvImport;
 
+    public GerenciarAlunoController() throws SQLException {
+    }
+
     public void initialize() {
 
         listaDados = FXCollections.observableArrayList();
@@ -74,7 +81,6 @@ public class GerenciarAlunoController {
 
         style();
     }
-
 
     @FXML
     private void buttonAddStudent() {
@@ -90,7 +96,9 @@ public class GerenciarAlunoController {
             listaDados.add(novoAluno);
             writeStudent.clear();
             nStudents();
+            OperacoesSQL.inserir(stm,"'" + novoAluno.email  + "','','',''");
         }
+
     }
 
     private void nStudents() {
@@ -152,9 +160,9 @@ public class GerenciarAlunoController {
                 if (!csvImport.contains(email)) {                                                                                // Por meio do HashSet eu verifico as duplicatas de acordo com os email que eu já adicionei
                     Alunos aluno = new Alunos(nome, email, grupo, repo);                                                                         // Instanciado um novo objeto aluno para receber os atributos
                     listaDados.add(aluno);                                                                                                    // adiciona os valores na lista observável
-                    csvImport.add(email);                                                                                                    // Guarda o email repetido para uma lista
+                    csvImport.add(email);
+                    OperacoesSQL.inserir(stm,"'" + aluno.nome  + "','" + aluno.email  + "','" + aluno.repo  + "','" + aluno.grupo  + "'");// Guarda o email repetido para uma lista
                 }
-
             }
             viewStudent.setItems(listaDados);                                                                                              // Envia os valores para a tabela
         } catch (Exception e) {

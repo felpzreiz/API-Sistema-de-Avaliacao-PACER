@@ -1,6 +1,7 @@
 package org.example.paceralphacode;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 
 public class Alunos {
 
@@ -17,6 +18,9 @@ public class Alunos {
         this.nome = nome;
         this.email = email;
         this.grupo = grupo;
+    }
+
+    public Alunos(String email) {
     }
 
     public String getNome() {
@@ -51,7 +55,9 @@ public class Alunos {
         this.repo = repo;
     }
 
+
 }
+
 
 
 

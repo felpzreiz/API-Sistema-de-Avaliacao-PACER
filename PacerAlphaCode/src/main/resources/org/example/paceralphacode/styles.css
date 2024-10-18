@@ -103,3 +103,10 @@
     -fx-background-color: red;
     -fx-border-color: red;
 }
+.button.btsalvar {
+    -fx-background-color: #008000;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+

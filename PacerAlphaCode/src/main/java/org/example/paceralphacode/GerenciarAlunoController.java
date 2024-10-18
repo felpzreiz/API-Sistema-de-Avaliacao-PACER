@@ -1,12 +1,18 @@
 package org.example.paceralphacode;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+
 import conexao.OperacoesSQL;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.AnchorPane;
@@ -80,31 +86,24 @@ public class GerenciarAlunoController {
         viewEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         viewGroup.setCellValueFactory(new PropertyValueFactory<>("grupo"));
         carregarDados();
+        nStudents();
         style();
     }
 
     @FXML
-    private void buttonAddStudent() {
-        String email = writeStudent.getText();
+    private void buttonAddStudent() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(ExecuteApplication.class.getResource("novoAluno.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.setTitle("Novo Aluno");
+        stage.setScene(scene);
+        stage.show();
 
-        if (writeStudent.getText().isEmpty()) {
-            checkStudent.setText("Informe o e-mail do aluno.");
-            checkStudent.setVisible(true);
-        } else {
-            checkStudent.setVisible(false);
-        }
-        if (email != null && !email.isEmpty()) {
-            Alunos novoAluno = new Alunos("", email, "", "");
-            listaDados.add(novoAluno);
-            writeStudent.clear();
-            nStudents();
-            OperacoesSQL.inserir(stm,"'" + novoAluno.email  + "','','',''");
-
-        }
-
+        carregarDados();
+        nStudents();
     }
 
-    private void nStudents() {
+    public void nStudents() {
         int qtd = listaDados.size();
         nStudents.setText(String.valueOf(qtd));
     }
@@ -130,7 +129,6 @@ public class GerenciarAlunoController {
         buttonImportStudent.getStylesheets().add(css);
         buttonEditStudent.getStylesheets().add(css);
         buttonBuscarStudent.getStylesheets().add(css);
-
     }
 
     public void EditedSelectedStudent(ActionEvent actionEvent) {
@@ -145,7 +143,6 @@ public class GerenciarAlunoController {
         if (arquivoCSV != null) {
             importCSV(arquivoCSV);
         }
-
     }
 
     public void importCSV(File arquivo) {
@@ -164,10 +161,13 @@ public class GerenciarAlunoController {
                     Alunos aluno = new Alunos(nome, email, grupo, repo);                                                                         // Instanciado um novo objeto aluno para receber os atributos
                     listaDados.add(aluno);                                                                                                    // adiciona os valores na lista observável
                     csvImport.add(email);
-                    OperacoesSQL.inserir(stm,"'" + aluno.nome  + "','" + aluno.email  + "','" + aluno.repo  + "','" + aluno.grupo  + "'");// Guarda o email repetido para uma lista
+                    OperacoesSQL.inserir(stm, "'" + aluno.nome + "','" + aluno.email + "','" + aluno.repo + "','" + aluno.grupo + "'");// Guarda o email repetido para uma lista
                 }
             }
             viewStudent.setItems(listaDados);                                                                                              // Envia os valores para a tabela
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setContentText("Dados importados com sucesso.");
+            info.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -176,7 +176,8 @@ public class GerenciarAlunoController {
 
     public void buttonBuscarStudent(ActionEvent actionEvent) {
     }
-    private void carregarDados() {
+
+    public void carregarDados() {
         String query = "SELECT senha,email,grupo,* FROM aluno";
         List<Alunos> alunosList = OperacoesSQL.consultarDados(stm, query);
 

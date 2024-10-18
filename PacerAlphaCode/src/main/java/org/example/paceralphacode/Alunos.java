@@ -13,6 +13,12 @@ public class Alunos {
         this.repo = repo;
     }
 
+    public Alunos(String nome, String email, String grupo) {
+        this.nome = nome;
+        this.email = email;
+        this.grupo = grupo;
+    }
+
     public String getNome() {
         return nome;
     }

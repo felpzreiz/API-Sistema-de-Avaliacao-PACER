@@ -1,6 +1,10 @@
 package conexao;
 
+import org.example.paceralphacode.Alunos;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OperacoesSQL {
 
@@ -13,16 +17,25 @@ public class OperacoesSQL {
         return(stm);
     }
 
-    public static void consultarDados(Statement stm, String query){ // METHOD PARA FAZER UM SELECT.
+    public static List<Alunos> consultarDados(Statement stm, String query){ // METHOD PARA FAZER UM SELECT.
+        List<Alunos> listaAlunos = new ArrayList<>();
         try {
             ResultSet result = stm.executeQuery(query);
             while(result.next()){ // result.next() roda enquanto existirem dados no banco.
-                System.out.println("Email: " + result.getString("email"));
+                String nome = result.getString("senha");
+                String email = result.getString("email");
+                String grupo = result.getString("grupo");
+
+                // Cria um novo objeto Alunos e adiciona à lista1
+                Alunos aluno = new Alunos(nome, email, grupo);
+                listaAlunos.add(aluno);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return listaAlunos; // Retorna a lista de alunos
     }
+
     public static void inserir(Statement stm, String query){ // METHOD PARA FAZER UM INSERT.
         String insereAluno = "INSERT INTO aluno VALUES (" + query + ")";
 

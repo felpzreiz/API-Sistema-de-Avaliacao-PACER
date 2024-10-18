@@ -1,12 +1,14 @@
 package org.example.paceralphacode;
-
-import conexao.OperacoesSQL;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+import conexao.OperacoesSQL;
+import javafx.event.ActionEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -14,8 +16,6 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -65,6 +65,7 @@ public class GerenciarAlunoController {
     private AnchorPane gAlunos;
 
     private ObservableList<Alunos> listaDados;
+
     private Set<String> csvImport;
 
     public GerenciarAlunoController() throws SQLException {
@@ -78,13 +79,14 @@ public class GerenciarAlunoController {
         viewName.setCellValueFactory(new PropertyValueFactory<>("nome"));
         viewEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         viewGroup.setCellValueFactory(new PropertyValueFactory<>("grupo"));
-
+        carregarDados();
         style();
     }
 
     @FXML
     private void buttonAddStudent() {
         String email = writeStudent.getText();
+
         if (writeStudent.getText().isEmpty()) {
             checkStudent.setText("Informe o e-mail do aluno.");
             checkStudent.setVisible(true);
@@ -97,6 +99,7 @@ public class GerenciarAlunoController {
             writeStudent.clear();
             nStudents();
             OperacoesSQL.inserir(stm,"'" + novoAluno.email  + "','','',''");
+
         }
 
     }
@@ -170,7 +173,18 @@ public class GerenciarAlunoController {
         }
     }
 
+
     public void buttonBuscarStudent(ActionEvent actionEvent) {
     }
+    private void carregarDados() {
+        String query = "SELECT senha,email,grupo,* FROM aluno";
+        List<Alunos> alunosList = OperacoesSQL.consultarDados(stm, query);
+
+        listaDados.clear(); // Limpa a lista atual antes de carregar novos dados
+        listaDados.addAll(alunosList); // Adiciona os dados retornados à lista
+
+        viewStudent.setItems(listaDados); // Define os itens da TableView
+    }
 }
+
 

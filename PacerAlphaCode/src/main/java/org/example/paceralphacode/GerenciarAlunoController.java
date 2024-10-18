@@ -132,7 +132,21 @@ public class GerenciarAlunoController {
         buttonBuscarStudent.getStylesheets().add(css);
     }
 
-    public void EditedSelectedStudent(ActionEvent actionEvent) {
+    public void EditedSelectedStudent(ActionEvent actionEvent) throws IOException {
+        Alunos selectedStudent = viewStudent.getSelectionModel().getSelectedItem();
+        if (selectedStudent != null) {
+            FXMLLoader fxmlLoader = new FXMLLoader(ExecuteApplication.class.getResource("editAluno.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.setTitle("Editar Aluno");
+            stage.setScene(scene);
+            stage.show();
+            checkStudent1.setVisible(false);
+            nStudents();
+        } else {
+            checkStudent1.setText("Selecione um aluno para remover.");
+            checkStudent1.setVisible(true);
+        }
     }
 
     public void ImportSelectedStudent() {

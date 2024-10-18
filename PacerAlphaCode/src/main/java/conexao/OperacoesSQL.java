@@ -47,4 +47,15 @@ public class OperacoesSQL {
         }
     }
 
+    public static void alterar(Statement stm, String query){}
+
+    public static void excluir(Statement stm, String email){
+        String excluiAluno = "DELETE FROM aluno WHERE email = '" + email + "'";
+        try {
+            stm.executeQuery(excluiAluno);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

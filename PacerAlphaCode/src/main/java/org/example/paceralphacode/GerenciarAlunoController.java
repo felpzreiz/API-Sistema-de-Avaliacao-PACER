@@ -112,8 +112,9 @@ public class GerenciarAlunoController {
     private void removeSelectedStudent() {
         Alunos selectedStudent = viewStudent.getSelectionModel().getSelectedItem();
         if (selectedStudent != null) {
-            listaDados.remove(selectedStudent);
-            checkStudent1.setVisible(false);
+            OperacoesSQL.excluir(stm,selectedStudent.getEmail());
+            System.out.println(selectedStudent.getEmail());
+            carregarDados();
             nStudents();
         } else {
             checkStudent1.setText("Selecione um aluno para remover.");

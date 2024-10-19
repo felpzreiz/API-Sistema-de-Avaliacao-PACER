@@ -1,80 +1,93 @@
 package org.example.paceralphacode;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.awt.event.ActionEvent;
+import java.util.Objects;
 
 public class TelaCadastroGrupoController {
-
     @FXML
-    private TableView<org.example.paceralphacode.User> tabelaemails;
-
-    @FXML
-    private TableColumn<org.example.paceralphacode.User, String> email;
+    private TextField nomedogrupo;
 
     @FXML
     private TextField inseriremail;
-    @FXML
-    private AnchorPane fundo;
 
     @FXML
-    private Button addaluno;
+    private TableView<Aluno> tabelaemails;
+
+    @FXML
+    private TableColumn<Aluno, String> emailColumn;
+
+    @FXML
+    private TableColumn<Aluno, String> NameColumn;// Declare a coluna para email
+
+    @FXML
+    private Button buttonRemoveStudent1;
+
     @FXML
     private Button btcancelar;
+
     @FXML
     private Button btsalvar;
 
-    private ObservableList<org.example.paceralphacode.User> users;
+    @FXML
+    private Button addaluno1;
 
-    public void initialize() {
-        users = FXCollections.observableArrayList();
+    private Stage dialogStage;
+    private String grupoSelecionado;
 
-        // Configurando a coluna para exibir os nomes dos alunos
-        email.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
-        email.setCellFactory(TextFieldTableCell.forTableColumn());
-
-        /*Permitindo edição dos nomes
-        tableUsers.setOnEditCommit(event -> {
-            User user = event.getRowValue();
-            user.setName(event.getNewValue());
-        });*/
-
-        // Adicionando alunos ao clicar no botão
-        addaluno.setOnAction(event -> addAluno());
-
-        // Configurar a tabela para aceitar a lista de usuários
-        tabelaemails.setItems(users);
+    public void setDialogStage(Stage dialogStage, String grupoSelecionado) {
+        this.dialogStage = dialogStage;
+        this.grupoSelecionado = grupoSelecionado;
+        nomedogrupo.setText(grupoSelecionado); // Preenche o campo com o nome do grupo
     }
 
-    private void addAluno() {
+    @FXML
+    public void initialize() {
+        // Configure a coluna da tabela
+        emailColumn.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
+        tabelaemails.setItems(FXCollections.observableArrayList()); // Inicializa a tabela com uma lista vazia
+    }
+
+    @FXML
+    private void add() {
         String email = inseriremail.getText();
-        if (email != null && !email.isEmpty()) {
-            users.add(new User(email));  // Adiciona o novo aluno à lista
-            inseriremail.clear();           // Limpa o campo de entrada
+        if (email != null && !email.trim().isEmpty()) {
+            Aluno aluno = new Aluno(email);
+            tabelaemails.getItems().add(aluno); // Adiciona o aluno à tabela
+            inseriremail.clear(); // Limpa o campo após adicionar
         }
     }
 
-    public void cancelar(ActionEvent actionEvent) {
-        Stage stage = (Stage)fundo.getScene().getWindow();
-        stage.close();
+    @FXML
+    private void salvar() {
+        String novoNomeGrupo = nomedogrupo.getText();
+        dialogStage.close();
     }
 
-    public void salvar(ActionEvent actionEvent) {
+    @FXML
+    private void cancelar() {
+        dialogStage.close();
     }
 
-    public void inseriremail2(ActionEvent actionEvent) {
-
+    public void nomedogrupo1(javafx.event.ActionEvent actionEvent) {
     }
 
-    public void add(ActionEvent actionEvent) {
+    public void inseriremail2(javafx.event.ActionEvent actionEvent) {
     }
+
+    public void removeSelectedStudent1(javafx.event.ActionEvent actionEvent) {
+        Aluno selectedStudent = tabelaemails.getSelectionModel().getSelectedItem();
+        if (selectedStudent != null) {
+            tabelaemails.getItems().remove(selectedStudent);
+        }
+    }
+
 }
+

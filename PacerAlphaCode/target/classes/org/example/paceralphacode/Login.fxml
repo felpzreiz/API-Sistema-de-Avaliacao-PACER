@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="login" blendMode="DARKEN" focusTraversable="true" maxHeight="800" maxWidth="800" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.paceralphacode.LoginController">
+    <cursor>
+        <Cursor fx:constant="DEFAULT" />
+    </cursor>
+    <effect>
+        <Blend />
+    </effect>
+    <Label fx:id="Pacer" alignment="CENTER" contentDisplay="CENTER" layoutX="475.0" layoutY="228.0" prefHeight="40.0" prefWidth="350.0" text="Sistema de Avaliação PACER" textOverrun="CENTER_ELLIPSIS" AnchorPane.bottomAnchor="532.0">
+        <font>
+            <Font name="Arial Bold" size="24.0" />
+        </font>
+    </Label>
+    <TextField fx:id="idEmail" layoutX="475.0" layoutY="320.0" prefHeight="40.0" prefWidth="350.0" promptText="E-mail">
+        <font>
+            <Font name="Arial" size="16.0" />
+        </font>
+    </TextField>
+    <Button fx:id="btn" alignment="CENTER" layoutX="567.0" layoutY="503.0" mnemonicParsing="false" onAction="#onButtonClick" prefHeight="30.0" prefWidth="170.0" text="Login" textAlignment="CENTER">
+        <font>
+            <Font name="Arial Bold" size="14.0" />
+        </font>
+    </Button>
+    <ImageView fx:id="fatec" fitHeight="110.0" fitWidth="200.0" layoutX="850.0" layoutY="593.0" nodeOrientation="INHERIT" preserveRatio="true">
+        <Image url="@images/Imagem1.png" />
+    </ImageView>
+    <PasswordField fx:id="idSenha" layoutX="478.0" layoutY="390.0" prefHeight="40.0" prefWidth="350.0" promptText="Senha">
+        <font>
+            <Font name="Arial" size="16.0" />
+        </font>
+    </PasswordField>
+    <Hyperlink fx:id="forgotPassword" layoutX="592.0" layoutY="455.0" text="Esqueceu sua senha?" />
+   <Label fx:id="checkEmailSenha" alignment="CENTER" contentDisplay="CENTER" layoutX="476.0" layoutY="561.0" prefHeight="16.0" prefWidth="346.0"  textAlignment="CENTER" textFill="#b71200">
+      <font>
+         <Font name="Arial" size="14.0" />
+      </font>
+   </Label>
+</AnchorPane>

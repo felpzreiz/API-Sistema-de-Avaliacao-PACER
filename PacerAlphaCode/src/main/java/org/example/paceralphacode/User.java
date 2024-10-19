@@ -1,7 +1,6 @@
 package org.example.paceralphacode;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 
 public class User {
     private final SimpleStringProperty name;
@@ -20,9 +19,5 @@ public class User {
 
     public SimpleStringProperty nameProperty() {
         return name;
-    }
-
-    public ObservableValue<String> emailProperty() {
-        return null;
     }
 }

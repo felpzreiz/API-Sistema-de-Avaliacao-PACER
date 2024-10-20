@@ -1,0 +1,207 @@
+.button {
+    -fx-background-color: #696969;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #555555;
+    -fx-underline: true;
+}
+
+.button:pressed {
+    -fx-background-color: #555555;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+#buttonAddStudent {
+    -fx-background-color: green;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#buttonAddStudent:hover {
+    -fx-background-color: darkgreen;
+}
+
+#buttonaddaluno:pressed {
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+#buttonAddStudent:pressed {
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+#buttonRemoveStudent1 {
+    -fx-background-color: #34701c;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#buttonRemoveStudent {
+    -fx-background-color: #dd2828;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#addaluno1 {
+    -fx-background-color: green;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#btcancelar {
+    -fx-background-color: #ec7212;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#btsalvar {
+    -fx-background-color: #2f89a5;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#buttonEditStudent {
+    -fx-background-color: #ec7212;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#buttonImportStudent {
+    -fx-background-color: #3e3c3c;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#buttonBuscarStudent {
+    -fx-background-color: #2fa5a5;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#buttonaddaluno {
+    -fx-background-color: #008000;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#buttonRemoveStudent:hover {
+    -fx-background-color: red;
+}
+
+#btsalvar {
+    -fx-background-color: #008000;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#saveBtnNew {
+    -fx-background-color: #008000;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#cancelBtnNew {
+    -fx-background-color: #dd2828;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#saveBtn {
+    -fx-background-color: #008000;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+
+}
+
+#cancelBtn {
+    -fx-background-color: #dd2828;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#viewStudent {
+    -fx-background-color: #e7e7e7;
+    -fx-border-color: #e5dfdf;
+    -fx-border-width: 1px;
+}
+
+#viewStudent .table-cell {
+    -fx-font-family: Arial;
+    -fx-font-size: 14px;
+    -fx-text-fill: black;
+}
+
+#viewStudent .table-column {
+    -fx-alignment: center;
+}
+
+#viewStudent .table-row-cell:hover {
+    -fx-background-color: #bbbbbb;
+}
+
+#viewStudent .table-row-cell:selected {
+    -fx-background-color: #bbbbbb;
+    -fx-text-fill: black;
+
+}
+
+#viewStudent .table-column-header {
+    -fx-background-color: #92949a;
+    -fx-text-fill: #000000;
+    -fx-font-size: 16px;
+    -fx-font-family: Arial;
+    -fx-font-weight: bold;
+    -fx-border-color: #aaaaaa;
+}
+
+#refresh{
+    -fx-background-image: url("images/database.png");
+    -fx-background-size: cover;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    width: 50px;
+    height: 50px;
+}
+#instruction{
+    -fx-background-image: url("images/manual.png");
+    -fx-background-size: cover;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    width: 50px;
+    height: 50px;
+}
+#exit{
+    -fx-background-image: url("images/sair.png");
+    -fx-background-size: cover;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    width: 50px;
+    height: 50px;
+
+}
+

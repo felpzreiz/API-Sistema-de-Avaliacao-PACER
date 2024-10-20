@@ -1,6 +1,6 @@
 package conexao;
 
-import org.example.paceralphacode.Alunos;
+import org.alphacode.pacer.alunos.Alunos;
 
 import java.sql.*;
 import java.util.ArrayList;

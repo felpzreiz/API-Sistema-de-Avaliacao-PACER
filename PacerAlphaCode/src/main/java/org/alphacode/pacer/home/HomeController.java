@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class HomeController {
@@ -53,7 +54,7 @@ public class HomeController {
     private SplitPane pacer;    // A SplitPane é a interface que permite a separação do menu na vertical esquerda (VBOX menuFix) e a manipulação dos dados do lado direito (AnchorPane Homepage).
 
     @FXML
-    void pageAlunos(ActionEvent event) throws IOException {                                                                       //  Método pageAlunos() Abre a interface a direita da pagina correspondente
+    void pageAlunos(ActionEvent event) throws IOException, SQLException {                                                                       //  Método pageAlunos() Abre a interface a direita da pagina correspondente
         Homepage.getChildren().clear();                                                                                                           //  getChildren é como obter os filhos "imagine uma lista de sequencia de paginas", o filho seria o que esta abaixo, o clear limpa o que está na (AnchorPane Homepage)
         Parent gAlunos = FXMLLoader.load(getClass().getResource("/org/alphacode/pacer/alunos/GerenciarAluno.fxml"));    // Parent é uma Classe para organizar as estruturas graficas. Aqui ele obtem a AnchorPane gAlunos que se encontra no arquivo fxml
         Homepage.getChildren().add(gAlunos);                                                                                           //  Aqui a Homepagen muda para a outra AnchorPane

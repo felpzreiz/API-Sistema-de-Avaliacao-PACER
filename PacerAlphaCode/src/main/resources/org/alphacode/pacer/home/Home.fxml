@@ -11,55 +11,73 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane fx:id="pacer" dividerPositions="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1500.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.alphacode.pacer.home.HomeController">
-    <VBox fx:id="menuFix" fillWidth="false" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="200.0" style="-fx-background-color: #696969;">
-        <Button fx:id="botaohome" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageHome" prefHeight="55.0" prefWidth="200.0" text="Home" VBox.vgrow="NEVER">
+<SplitPane fx:id="pacer" dividerPositions="0.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+           minWidth="-Infinity" prefHeight="800.0" prefWidth="1500.0" stylesheets="@../styles.css"
+           xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.alphacode.pacer.home.HomeController">
+    <VBox fx:id="menuFix" fillWidth="false" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity"
+          minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="200.0"
+          style="-fx-background-color: #696969;">
+        <Button fx:id="botaohome" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity"
+                minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageHome"
+                prefHeight="55.0" prefWidth="200.0" text="Home" VBox.vgrow="NEVER">
             <font>
-                <Font name="Arial Bold" size="20.0" />
+                <Font name="Arial Bold" size="20.0"/>
             </font>
         </Button>
-        <Button fx:id="botaogerenciaraluno" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageAlunos" prefHeight="55.0" prefWidth="200.0" text="Alunos" VBox.vgrow="NEVER">
+        <Button fx:id="botaogerenciaraluno" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity"
+                minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageAlunos"
+                prefHeight="55.0" prefWidth="200.0" text="Alunos" VBox.vgrow="NEVER">
             <font>
-                <Font name="Arial Bold" size="20.0" />
+                <Font name="Arial Bold" size="20.0"/>
             </font>
         </Button>
-        <Button fx:id="botaogerenciargrupos" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageGroup" prefHeight="55.0" prefWidth="200.0" text="Grupos" VBox.vgrow="NEVER">
+        <Button fx:id="botaogerenciargrupos" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity"
+                minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageGroup"
+                prefHeight="55.0" prefWidth="200.0" text="Grupos" VBox.vgrow="NEVER">
             <font>
-                <Font name="Arial Bold" size="20.0" />
+                <Font name="Arial Bold" size="20.0"/>
             </font>
         </Button>
-        <Button fx:id="botaocriterio" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageCriterios" prefHeight="55.0" prefWidth="200.0" text="Critérios" VBox.vgrow="NEVER">
+        <Button fx:id="botaocriterio" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity"
+                minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageCriterios"
+                prefHeight="55.0" prefWidth="200.0" text="Critérios" VBox.vgrow="NEVER">
             <font>
-                <Font name="Arial Bold" size="20.0" />
+                <Font name="Arial Bold" size="20.0"/>
             </font>
         </Button>
-        <Button fx:id="botaogerenciarsprints" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageSprint" prefHeight="55.0" prefWidth="200.0" text="Sprints" VBox.vgrow="NEVER">
+        <Button fx:id="botaogerenciarsprints" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity"
+                minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageSprint"
+                prefHeight="55.0" prefWidth="200.0" text="Sprints" VBox.vgrow="NEVER">
             <font>
-                <Font name="Arial Bold" size="20.0" />
+                <Font name="Arial Bold" size="20.0"/>
             </font>
         </Button>
-        <Button fx:id="exit" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#exitPacer" prefHeight="30.0" prefWidth="30.0" textFill="#ff4c4c">
+        <Button fx:id="exit" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                mnemonicParsing="false" onAction="#exitPacer" prefHeight="30.0" prefWidth="30.0" textFill="#ff4c4c">
             <VBox.margin>
-                <Insets left="150.0" top="473.0" />
+                <Insets left="150.0" top="473.0"/>
             </VBox.margin>
         </Button>
     </VBox>
-    <AnchorPane fx:id="Homepage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0" SplitPane.resizableWithParent="true">
-        <ImageView fx:id="fatec" fitHeight="120.0" fitWidth="268.0" layoutX="526.0" layoutY="14.0" nodeOrientation="INHERIT" preserveRatio="true">
-            <Image url="@../images/Imagem1.png" />
+    <AnchorPane fx:id="Homepage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                prefHeight="800.0" prefWidth="1300.0" SplitPane.resizableWithParent="true">
+        <ImageView fx:id="fatec" fitHeight="120.0" fitWidth="268.0" layoutX="526.0" layoutY="14.0"
+                   nodeOrientation="INHERIT" preserveRatio="true">
+            <Image url="@../images/Imagem1.png"/>
         </ImageView>
         <Label layoutX="394.0" layoutY="139.0" prefHeight="42.0" prefWidth="510.0" text="Sistema de Avaliação PACER">
             <font>
-                <Font name="Arial Bold" size="35.0" />
+                <Font name="Arial Bold" size="35.0"/>
             </font>
         </Label>
         <Label layoutX="410.0" layoutY="391.0" text="Neste campo será desenvolvido a área de resultados">
             <font>
-                <Font name="Arial" size="20.0" />
+                <Font name="Arial" size="20.0"/>
             </font>
         </Label>
         <cursor>
-            <Cursor fx:constant="DEFAULT" />
+            <Cursor fx:constant="DEFAULT"/>
         </cursor>
     </AnchorPane>
 </SplitPane>

@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -28,8 +29,6 @@ import java.util.Objects;
 import java.util.Set;
 
 public class AlunoController {
-
-
     OperacoesSQL conexao = new OperacoesSQL();
     Statement stm = OperacoesSQL.conectarBanco();
 
@@ -37,11 +36,20 @@ public class AlunoController {
     private TextField writeStudent;
 
     @FXML
+    private Label ngroups;
+
+    @FXML
+    private Label nStudentsnull;
+
+    @FXML
+    public TextField writeStudent1;
+
+    @FXML
     private Button buttonAddStudent;
 
     @FXML
     public Button refresh;
-    
+
     @FXML
     public Button instruction;
 
@@ -83,17 +91,22 @@ public class AlunoController {
     public AlunoController() throws SQLException {
     }
 
-    public void initialize() {
+    public void initialize() throws SQLException {
+        try {
+            listaDados = FXCollections.observableArrayList();
+            csvImport = new HashSet<>();
 
-        listaDados = FXCollections.observableArrayList();
-        csvImport = new HashSet<>();
-
-        viewName.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        viewEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        viewGroup.setCellValueFactory(new PropertyValueFactory<>("grupo"));
-        carregarDados();
-        nStudents();
-        style();
+            viewName.setCellValueFactory(new PropertyValueFactory<>("nome"));
+            viewEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+            viewGroup.setCellValueFactory(new PropertyValueFactory<>("grupo"));
+            carregarDados();
+            nStudents();
+            nStudentsnull();
+            nGroup();
+            style();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Para ver a exceção específica
+        }
     }
 
     @FXML
@@ -111,9 +124,46 @@ public class AlunoController {
     }
 
     public void nStudents() {
+        try{
+            ResultSet nSudent = stm.executeQuery("SELECT COUNT(*) FROM aluno");
+            nStudents.setText(String.valueOf(nSudent));
+
+
+
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+
         int qtd = listaDados.size();
         nStudents.setText(String.valueOf(qtd));
+
     }
+
+    public void nStudentsnull() throws SQLException {
+        try {
+            ResultSet emptyResultSet = stm.executeQuery("SELECT COUNT(*) AS nogroup FROM aluno WHERE grupo IS NULL OR grupo = ''");
+            if (emptyResultSet.next()) {
+                int nSNull = emptyResultSet.getInt("nogroup");
+                nStudentsnull.setText(String.valueOf(nSNull));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void nGroup() throws SQLException {
+        try {
+            ResultSet ngroup = stm.executeQuery("SELECT COUNT(DISTINCT grupo) AS qtdgrupo FROM aluno");
+            if (ngroup.next()) {
+                int ngroupInt = ngroup.getInt("qtdgrupo");
+                ngroups.setText(String.valueOf(ngroupInt));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @FXML
     private void removeSelectedStudent() {
@@ -215,10 +265,11 @@ public class AlunoController {
         viewStudent.setItems(listaDados); // Define os itens da TableView
     }
 
-    public void refreshBD(ActionEvent actionEvent) {
+    public void refreshBD(ActionEvent actionEvent) throws SQLException {
         carregarDados();
         nStudents();
-
+        nStudentsnull();
+        nGroup();
     }
 
     public void openIntruction(ActionEvent actionEvent) {

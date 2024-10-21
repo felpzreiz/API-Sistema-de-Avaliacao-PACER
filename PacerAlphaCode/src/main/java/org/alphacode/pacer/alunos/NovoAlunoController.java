@@ -71,7 +71,7 @@ public class NovoAlunoController {
             git.getText();
 
             Alunos aluno = new Alunos(fullname.getText(), email.getText(), group.getText(), git.getText());
-            OperacoesSQL.inserir(stm, "'" + aluno.nome + "','" + aluno.email + "','" + aluno.repo + "','" + aluno.grupo + "'");
+            OperacoesSQL.inserir(stm, "'" + aluno.email + "', 'Senha123' ,'" + aluno.repo + "','" + aluno.grupo + "','" + aluno.nome + "'");
 
             Stage stage = (Stage) novoAluno.getScene().getWindow();
             stage.close();

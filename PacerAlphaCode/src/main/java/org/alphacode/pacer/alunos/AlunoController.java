@@ -242,7 +242,7 @@ public class AlunoController {
                     Alunos aluno = new Alunos(nome, email, grupo, repo);                                                                         // Instanciado um novo objeto aluno para receber os atributos
                     listaDados.add(aluno);                                                                                                    // adiciona os valores na lista observável
                     csvImport.add(email);
-                    OperacoesSQL.inserir(stm, "'" + aluno.nome + "','" + aluno.email + "','" + aluno.repo + "','" + aluno.grupo + "'");// Guarda o email repetido para uma lista
+                    OperacoesSQL.inserir(stm, "'" + aluno.email + "', 'Senha123' ,'" + aluno.repo + "','" + aluno.grupo + "','" + aluno.nome + "'");// Guarda o email repetido para uma lista
                 }
             }
             viewStudent.setItems(listaDados);                                                                                              // Envia os valores para a tabela

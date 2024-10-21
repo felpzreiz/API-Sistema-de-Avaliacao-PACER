@@ -22,7 +22,7 @@ public class OperacoesSQL {
         try {
             ResultSet result = stm.executeQuery(query);
             while(result.next()){ // result.next() roda enquanto existirem dados no banco.
-                String nome = result.getString("senha");
+                String nome = result.getString("nome");
                 String email = result.getString("email");
                 String grupo = result.getString("grupo");
 

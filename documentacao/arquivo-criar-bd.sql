@@ -7,6 +7,9 @@ CREATE TABLE professor(
 CREATE TABLE aluno(
     email VARCHAR(100),
     senha VARCHAR(150),
+    git VARCHAR(100),
+    grupo VARCHAR(100),
+    nome VARCHAR(100),
     PRIMARY KEY (email)
 );
 
@@ -51,11 +54,10 @@ CREATE TABLE avaliacao(
     aluno_avaliado VARCHAR(100),
     aluno_avaliador VARCHAR(100),
     id_sprint INTEGER NOT NULL,
+    nota DECIMAL(3,2),
     PRIMARY KEY (id_avaliacao),
     FOREIGN KEY (id_sprint) REFERENCES sprint(id_sprint),
     FOREIGN KEY (aluno_avaliado) REFERENCES aluno(email),
     FOREIGN KEY (aluno_avaliador) REFERENCES aluno(email)
 )
-
-ALTER TABLE avaliacao ADD nota DECIMAL(3,2);
 

@@ -71,7 +71,7 @@ public class TelaCadastroGrupoController {
 
     @FXML
     private void salvar() {
-        String novoNomeGrupo = nomedogrupo.getText();
+        String String = nomedogrupo.getText();
         dialogStage.close();
     }
 

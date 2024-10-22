@@ -8,47 +8,28 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.alphacode.pacer.ExecuteApplication;
 
 import java.io.IOException;
 
 public class TelaDefinirNomeGrupo {
-
-    public TextField grupoNomeField;
-
-    @FXML
-    private Button botaocancelar;
-
-    @FXML
-    private Button botaoconfirmar;
-
     @FXML
     private Label campoobrigatorio2;
 
     @FXML
-    private AnchorPane fundodefinirgrupo;
+    private VBox fundodefinirgrupo;
 
     @FXML
-    private Label insiraonomedogrupo;
+    private Button botaoSalvar;
 
     @FXML
-    private TextField nomedogrupo;
-    @FXML
-    public Button botaoSalvar;
+    private TextField grupoNomeField;
 
     @FXML
-    void btcancelar(ActionEvent event) {
-        Stage stage = (Stage) fundodefinirgrupo.getScene().getWindow();
-        stage.close();
-
-
-    }
-
-    @FXML
-    void btconfirmar(ActionEvent event) throws IOException {
-        if (nomedogrupo.getText().isEmpty()) {
+    void handleSalva(ActionEvent event) throws IOException {
+        if (grupoNomeField.getText().isEmpty()) {
             campoobrigatorio2.setText("Campo Obrigatório");
             campoobrigatorio2.setVisible(true);
         } else {
@@ -68,17 +49,6 @@ public class TelaDefinirNomeGrupo {
 
     }
 
-    @FXML
-    void labalnomedogupo(ActionEvent event) {
-
-
-    }
-
-
     public void setDialogStage(Stage dialog, ListView<String> telagrupos) {
-
-    }
-
-    public void handleSalva(ActionEvent actionEvent) {
     }
 }

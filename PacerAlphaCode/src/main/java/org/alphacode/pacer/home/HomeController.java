@@ -30,6 +30,9 @@ public class HomeController {
     private Button botaogerenciarsprints;
 
     @FXML
+    private ImageView logo;
+
+    @FXML
     private Button botaohome;
 
     @FXML

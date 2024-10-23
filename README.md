@@ -52,13 +52,13 @@ para cada critério de avaliação em uma determinada Sprint;
           
 | RANK  | PRIORIDADE | USER STORIES | ESTIMATIVA | SPRINT | REQUISITO DO PARCEIRO |
 | :-----------: | :-----------------: | :--------: | :---------------: | :------------------: | :----: |
-|1|ALTA|Como professor, eu quero criar e verificar, grupos de avaliação, para que eu possa obter as informações de forma rápida e intuitiva.|15 Dias|1|1|
-|2|MÉDIA|Como professor, eu quero que os alunos possam se autoavaliar e avaliar o grupo, para que eu não precise digitar as notas, afim de evitar possíveis erros.|15 Dias|2|2|
-|3|MÉDIA|Como professor, eu quero criar e verificar grupos de avaliação, para que eu possa obter as informações de forma rápida e intuitiva.|15 Dias|2|3|
-|4|ALTA|Como professor, eu quero definir o início e o fim das Sprints, para que os alunos tenham prazos para participarem das avaliações|21 Dias|3|4|
-|5|ALTA|Como professor, eu quero que os alunos possam se autoavaliar e avaliar o grupo, para que eu não precise digitar as notas, a fim de evitar possíveis erros|21 Dias|3|5|
-|6|ALTA|Como professor, eu desejo ver as notas e médias dos alunos e grupos avaliados, para que eu possa acompanhar os resultados de forma simples e rápida|15 Dias|4|6|
-|7|BAIXA|Como professor, eu quero informar os alunos e os grupos que vão se avaliar de forma fácil e rápida, a fim de otimizar o meu tempo e evitar possíveis erros|15 Dias|4|7|
+|1|MÉDIA|Como professor, eu quero definir quais alunos irão participar dos processos de avaliação de forma simples e intuitiva, para que posteriormente eu possa formar grupos de avaliação.|15 Dias|1|1|
+|2|MÉDIA|Como professor, eu quero informar os alunos e grupos que vão se avaliar de forma fácil e rápida, a fim de otimizar o meu tempo e evitar possíveis erros.|15 Dias|2|2|
+|3|ALTA|Como professor, eu quero criar e verificar grupos de avaliação, para que eu possa obter as informações de forma rápida e intuitiva.|15 Dias|2|3|
+|4|MÉDIA|Como professor, eu quero definir os critérios de avaliação que irão compor as notas dos grupos, para que sejam consideradas competências relevantes para fins acadêmicos.|21 Dias|3|4|
+|5|ALTA|Como professor, eu quero definir o início e o fim das Sprints, para que os alunos tenham prazos para participarem das avaliações.|21 Dias|3|5|
+|6|ALTA|Como professor, eu quero que os alunos possam se autoavaliar e avaliar o grupo, para que eu não precise digitar as notas, afim de evitar possíveis erros.|15 Dias|4|6|
+|7|ALTA|Como professor, eu desejo ver as notas e médias dos alunos e grupos avaliados, para que eu possa acompanhar os resultados de forma simples e rápida.|15 Dias|4|7|
 
 </div>
 
@@ -70,21 +70,21 @@ para cada critério de avaliação em uma determinada Sprint;
 | :--: | :--: |
 
 <b>TELA DE LOGIN
-- [ ] >> Desenvolmento Tela de Login
-- [ ] >> Solicita ao usuário o e-mail e senha de acesso
-- [ ] >> Verificação se as credenciais estão corretas (Em caso de erro retornar mensagem)
-- [ ] >> Após Login direcionar para a tela Home do usuário
+- [X] >> Desenvolmento Tela de Login
+- [X] >> Solicita ao usuário o e-mail e senha de acesso
+- [X] >> Verificação se as credenciais estão corretas (Em caso de erro retornar mensagem)
+- [X] >> Após Login direcionar para a tela Home do usuário
       
 <b>TELA HOME
-- [ ] >> Desenvolmento Tela Home
-- [ ] >>  A tela deve possuir os principais atalhos para navegação.
-- [ ] >> Criação de Grupos
-- [ ] >> Cadastro de Alunos
-- [ ] >> O sistema deve permitir a edição e atualização de grupos de avaliação.
+- [X] >> Desenvolmento Tela Home
+- [X] >>  A tela deve possuir os principais atalhos para navegação.
+- [X] >> Criação de Grupos
+- [X] >> Cadastro de Alunos
+- [X] >> O sistema deve permitir a edição e atualização de grupos de avaliação.
 
 <b>LAYOUT/DESIGN
-- [ ] >> Apresentação das informações de forma intuitiva
-- [ ] >> O design das telas deve estar de acordo  com  a usabilidade e identidade visual da aplicação.
+- [X] >> Apresentação das informações de forma intuitiva
+- [X] >> O design das telas deve estar de acordo  com  a usabilidade e identidade visual da aplicação.
 <br>
 
 ### Sprint 2. Desenvolvimento do Projeto
@@ -94,20 +94,20 @@ para cada critério de avaliação em uma determinada Sprint;
 | :--: | :--: |
 
 <b>INTEGRAÇÃO COM O BANCO DE DADOS
-- [ ] >> Conectar os Critérios ao Banco de Dados
-- [ ] >> Conectar as Telas de Críterios e Grupos
+- [X] >> Conectar os Critérios ao Banco de Dados
+- [X] >> Conectar as Telas de Críterios e Grupos
 
 <b>TELA DE CRITÉRIOS
-- [ ] >> Criação de Critérios de Avaliação
-- [ ] >> Manipulação de Critérios
+- [X] >> Criação de Critérios de Avaliação
+- [X] >> Manipulação de Critérios
 
 <b>LAYOUT/DESIGN
-- [ ] >> Desenvolvimento Interface da Tela de Critérios
-- [ ] >> Apresentação das informações de forma intuitiva
-- [ ] >> O design das telas deve estar de acordo  com  a usabilidade e identidade visual da aplicação.
+- [X] >> Desenvolvimento Interface da Tela de Critérios
+- [X] >> Apresentação das informações de forma intuitiva
+- [X] >> O design das telas deve estar de acordo  com  a usabilidade e identidade visual da aplicação.
 
 <b>USABILIDADE
-- [ ] >> Análise do Código e Realização de Testes
+- [X] >> Análise do Código e Realização de Testes
 
 <br>
 
@@ -116,29 +116,91 @@ para cada critério de avaliação em uma determinada Sprint;
 | :--: | :--: |
 
 <b>INTEGRAÇÃO
-- [ ] >> Criação do Código de Conexão para Banco de Dados
-- [ ] >> Criação do Código de Operações SQL
-- [ ] >> Criação do Banco de Dados (Tabelas)
-- [ ] >> Conectar os Alunos ao Banco de Dados
-- [ ] >> Conectar as Telas de Alunos e Grupos
+- [X] >> Criação do Código de Conexão para Banco de Dados
+- [X] >> Criação do Código de Operações SQL
+- [X] >> Criação do Banco de Dados (Tabelas)
+- [X] >> Conectar os Alunos ao Banco de Dados
+- [X] >> Conectar as Telas de Alunos e Grupos
 
 <b>TELA DE GRUPOS
-- [ ] >> Criação de Grupos
-- [ ] >> Overview de Grupos
-- [ ] >> Manipular Informações e Integrantes
+- [X] >> Criação de Grupos
+- [X] >> Overview de Grupos
+- [X] >> Manipular Informações e Integrantes
 
 <b>LAYOUT/DESIGN
-- [ ] >> Desenvolvimento da Tela de Alunos
-- [ ] >> Desenvolvimento da Tela de Grupos
+- [X] >> Desenvolvimento da Tela de Alunos
+- [X] >> Desenvolvimento da Tela de Grupos
+- [X] >> Apresentação das informações de forma intuitiva
+- [X] >> O design das telas deve estar de acordo  com  a usabilidade e identidade visual da aplicação.
+
+<b>USABILIDADE
+- [X] >> Análise do Código e Realização de Testes
+<br>
+
+### Sprint 3 . Desenvolvimento do Projeto
+<br>
+
+<b>TÍTULO: Composição de Critérios de Avaliação
+| USER STORY  | Como professor, eu quero definir os critérios de avaliação que irão compor as notas dos grupos, para que sejam consideradas competências relevantes para fins acadêmicos. |
+| :--: | :--: |
+
+<b>INTEGRAÇÃO DO BANCO DE DADOS
+- [ ] >> Criação do Código de Operações SQL
+
+<b>TELA DE CRITÉRIOS
+- [ ] >> Criação de Critérios de Avaliação
+- [ ] >> Manipulação de Critérios
+      
+<b>LAYOUT/DESIGN
+- [ ] >> Desenvolvimento Interface da Tela de Critérios
 - [ ] >> Apresentação das informações de forma intuitiva
 - [ ] >> O design das telas deve estar de acordo  com  a usabilidade e identidade visual da aplicação.
 
 <b>USABILIDADE
 - [ ] >> Análise do Código e Realização de Testes
+      
 <br>
 
-### Sprint 3 . Desenvolvimento do Projeto
+<b>TÍTULO: Desenvolvimento do Gerenciamento de Grupos
+| USER STORY  | Como professor, eu quero criar e verificar, grupos de avaliação, para que eu possa obter as informações de forma rápida e intuitiva.|
+| :--: | :--: |
+
+<b>INTEGRAÇÃO DO BANCO DE DADOS
+- [ ] >> Criação do Código de Operações SQL
+
+<b>TELA DE GRUPOS
+- [ ] >> Criação de Grupos
+- [ ] >> Overview de Grupos
+- [ ] >> Manipular Informações e Integrantes
+      
+<b>LAYOUT/DESIGN
+- [ ] >> Desenvolvimento Interface da Tela de Grupos
+- [ ] >> Apresentação das informações de forma intuitiva
+- [ ] >> O design das telas deve estar de acordo  com  a usabilidade e identidade visual da aplicação.
+
+<b>USABILIDADE
+- [ ] >> Análise do Código e Realização de Testes
+
 <br>
+
+<b>TÍTULO: Definição de Sprints
+| USER STORY  | Como professor, eu quero definir o início e o fim das Sprints, para que os alunos tenham prazos para participarem das avaliações.|
+| :--: | :--: |
+
+<b>INTEGRAÇÃO DO BANCO DE DADOS
+- [ ] >> Criação do Código de Operações SQL
+
+<b>TELA DE SPRINTS
+- [ ] >> Criação de Sprints
+- [ ] >> Controle de Inicio e Fim de Sprints
+      
+<b>LAYOUT/DESIGN
+- [ ] >> Desenvolvimento Interface da Tela de Grupos
+- [ ] >> Apresentação das informações de forma intuitiva
+- [ ] >> O design das telas deve estar de acordo  com  a usabilidade e identidade visual da aplicação.
+
+<b>USABILIDADE
+- [ ] >> Análise do Código e Realização de Testes
 
 ### Sprint 4. Finalização do Projeto
 <br>

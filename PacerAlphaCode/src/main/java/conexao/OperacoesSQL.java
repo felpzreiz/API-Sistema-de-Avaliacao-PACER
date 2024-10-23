@@ -40,7 +40,7 @@ public class OperacoesSQL {
         String insereAluno = "INSERT INTO aluno VALUES (" + query + ")";
 
         try {
-            stm.executeQuery(insereAluno);
+            stm.executeUpdate(insereAluno);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,7 +52,7 @@ public class OperacoesSQL {
     public static void excluir(Statement stm, String email){
         String excluiAluno = "DELETE FROM aluno WHERE email = '" + email + "'";
         try {
-            stm.executeQuery(excluiAluno);
+            stm.executeUpdate(excluiAluno);
 
         } catch (SQLException e) {
             e.printStackTrace();

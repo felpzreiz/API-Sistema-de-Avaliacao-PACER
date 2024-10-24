@@ -1,11 +1,12 @@
 package org.alphacode.pacer.sprints;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
 public class SprintController {
@@ -20,57 +21,52 @@ public class SprintController {
     private Button btnAdicionarC;
 
     @FXML
-    private Button btnAdicionarS;
-
-    @FXML
-    private Button btnEditar;
-
-    @FXML
     private Button btnRemoverC;
 
     @FXML
-    private Button btnRemoverS;
+    private ListView<String> listViewCriterios;
+
+    private ObservableList<String> criterios = FXCollections.observableArrayList();
 
     @FXML
-    private TableColumn<?, ?> clnData;
-
-    @FXML
-    private TableColumn<?, ?> clnSprint;
-
-    @FXML
-    private TableColumn<?, ?> tblCriterio;
-
-    @FXML
-    private TableView<?> tblSprint;
+    public void initialize() {
+        listViewCriterios.setItems(criterios);
+    }
 
     @FXML
     void Adicionarcriterio(ActionEvent event) {
 
+        String criterioText = addCriterio.getText();
+
+
+        if (criterioText != null && !criterioText.isEmpty()) {
+            // Adiciona o critério à lista
+            criterios.add(criterioText);
+            // Limpa o TextField
+            addCriterio.clear();
+        } else {}
     }
 
     @FXML
     void Removercriterio(ActionEvent event) {
 
+        String selecionado = listViewCriterios.getSelectionModel().getSelectedItem();
+        if (selecionado != null) {
+
+            criterios.remove(selecionado);
+        } else {}
     }
 
-    @FXML
-    void Removersprint(ActionEvent event) {
 
+    public void editarsprint(ActionEvent event) {
     }
 
-    @FXML
-    void acaocriterio(ActionEvent event) {
-
+    public void Removersprint(ActionEvent event) {
     }
 
-    @FXML
-    void acaodata(ActionEvent event) {
-
+    public void acaocriterio(ActionEvent event) {
     }
 
-    @FXML
-    void editarsprint(ActionEvent event) {
-
+    public void acaodata(ActionEvent event) {
     }
-
 }

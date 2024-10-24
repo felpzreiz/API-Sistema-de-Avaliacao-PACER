@@ -6,8 +6,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.awt.*;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -124,14 +128,14 @@ public class AlunoController {
     }
 
     public void nStudents() {
-        try{
-            ResultSet nSudent = stm.executeQuery("SELECT COUNT(*) FROM aluno");
-            nStudents.setText(String.valueOf(nSudent));
+        try {
+            ResultSet nStudent = stm.executeQuery("SELECT COUNT(DISTINCT email) AS nAlunos FROM aluno WHERE email IS NOT NULL OR email = ''");
+            if (nStudent.next()){
+                int  qtdalunos = nStudent.getInt("nAlunos");
+                nStudents.setText(String.valueOf(qtdalunos));
+            }
 
-
-
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -154,7 +158,7 @@ public class AlunoController {
 
     public void nGroup() throws SQLException {
         try {
-            ResultSet ngroup = stm.executeQuery("SELECT COUNT(DISTINCT grupo) AS qtdgrupo FROM aluno");
+            ResultSet ngroup = stm.executeQuery("SELECT COUNT(DISTINCT grupo) AS qtdgrupo FROM aluno WHERE grupo IS NULL OR grupo <> ''");
             if (ngroup.next()) {
                 int ngroupInt = ngroup.getInt("qtdgrupo");
                 ngroups.setText(String.valueOf(ngroupInt));
@@ -235,8 +239,8 @@ public class AlunoController {
 
                 String nome = (texto.length > 1) ? texto[0].trim() : "";
                 String email = texto[1].trim();
-                String grupo = (texto.length > 1) ? texto[2].trim() : "";                                                                                          //Considerando que a posição 0 seja o nome .trim() ignora espaços vazios
-                String repo = (texto.length > 1) ? texto[3].trim() : "";                                                                                               //  grupo recebe o a posição 1, porém para ignorar o vazio foi feito um operador ternario (condição) ? valor_se_verdadeiro : valor_se_falso
+                String grupo = (texto.length > 2) ? texto[2].trim() : "";                                                                                          //Considerando que a posição 0 seja o nome .trim() ignora espaços vazios
+                String repo = (texto.length > 3) ? texto[3].trim() : "";                                                                                               //  grupo recebe o a posição 1, porém para ignorar o vazio foi feito um operador ternario (condição) ? valor_se_verdadeiro : valor_se_falso
                 // O arquivo dá erro caso encontre uma coluna vazia devido o array, deste modo considerei vazio
                 if (!csvImport.contains(email)) {                                                                                // Por meio do HashSet eu verifico as duplicatas de acordo com os email que eu já adicionei
                     Alunos aluno = new Alunos(nome, email, grupo, repo);                                                                         // Instanciado um novo objeto aluno para receber os atributos
@@ -273,6 +277,16 @@ public class AlunoController {
     }
 
     public void openIntruction(ActionEvent actionEvent) {
+        try {
+            File pdf = new File("PacerAlphaCode/src/main/resources/org/alphacode/pacer/arquivos/instAluno.pdf");
+            if (pdf.exists()) {
+                Desktop.getDesktop().open(pdf);
+            } else {
+                System.out.println("Arquivo não encontrado");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

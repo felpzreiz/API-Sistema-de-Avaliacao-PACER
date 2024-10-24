@@ -28,12 +28,7 @@
                 <Font name="Arial Bold" size="20.0" />
             </font>
         </Button>
-        <Button fx:id="botaocriterio" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageCriterios" prefHeight="55.0" prefWidth="200.0" text="Critérios" VBox.vgrow="NEVER">
-            <font>
-                <Font name="Arial Bold" size="20.0" />
-            </font>
-        </Button>
-        <Button fx:id="botaogerenciarsprints" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageSprint" prefHeight="55.0" prefWidth="200.0" text="Sprints" VBox.vgrow="NEVER">
+        <Button fx:id="botaogerenciarsprints" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#pageSprint" prefHeight="55.0" prefWidth="200.0" text="Critérios e Sprints" VBox.vgrow="NEVER">
             <font>
                 <Font name="Arial Bold" size="20.0" />
             </font>

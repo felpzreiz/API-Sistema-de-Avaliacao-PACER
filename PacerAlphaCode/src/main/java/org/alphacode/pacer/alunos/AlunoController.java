@@ -59,10 +59,13 @@ public class AlunoController {
 
     @FXML
     public Button buttonRemoveStudent;
+
     @FXML
     public Button buttonEditStudent;
+
     @FXML
     public Button buttonImportStudent;
+
     @FXML
     public Button buttonBuscarStudent;
 
@@ -84,14 +87,12 @@ public class AlunoController {
     @FXML
     private TableView<Alunos> viewStudent;
 
-
     @FXML
     private AnchorPane gAlunos;
 
     private ObservableList<Alunos> listaDados;
 
     private Set<String> csvImport;
-    private Set<String> csvDuplicados;
 
     public AlunoController() throws SQLException {
     }
@@ -100,15 +101,11 @@ public class AlunoController {
         try {
             listaDados = FXCollections.observableArrayList();
             csvImport = new HashSet<>();
-            csvDuplicados = new HashSet<>();
 
             viewName.setCellValueFactory(new PropertyValueFactory<>("nome"));
             viewEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
             viewGroup.setCellValueFactory(new PropertyValueFactory<>("grupo"));
-            carregarDados();
-            nStudents();
-            nStudentsnull();
-            nGroup();
+            refreshBD();
             style();
         } catch (SQLException e) {
             e.printStackTrace(); // Para ver a exceção específica
@@ -170,7 +167,6 @@ public class AlunoController {
         }
     }
 
-
     @FXML
     private void removeSelectedStudent() {
         Alunos selectedStudent = viewStudent.getSelectionModel().getSelectedItem();
@@ -201,6 +197,13 @@ public class AlunoController {
 
     }
 
+    @FXML
+    void studentSelected() {
+        String selectedStudent = viewStudent.getSelectionModel().getSelectedItem().getEmail();
+        System.out.println(selectedStudent);
+    }
+
+    @FXML
     public void EditedSelectedStudent(ActionEvent actionEvent) throws IOException {
         Alunos selectedStudent = viewStudent.getSelectionModel().getSelectedItem();
         if (selectedStudent != null) {
@@ -243,28 +246,20 @@ public class AlunoController {
                 String email = texto[1].trim();
                 String grupo = (texto.length > 2) ? texto[2].trim() : "";                                                                                          //Considerando que a posição 0 seja o nome .trim() ignora espaços vazios
                 String repo = (texto.length > 3) ? texto[3].trim() : "";                                                                                               //  grupo recebe o a posição 1, porém para ignorar o vazio foi feito um operador ternario (condição) ? valor_se_verdadeiro : valor_se_falso
-                                                                                 // O arquivo dá erro caso encontre uma coluna vazia devido o array, deste modo considerei vazio
-                if (!csvImport.contains(email)) {
-                    csvDuplicados.add(email);
-                } else {                                                                                // Por meio do HashSet eu verifico as duplicatas de acordo com os email que eu já adicionei
+                                                                                                                                                 // O arquivo dá erro caso encontre uma coluna vazia devido o array, deste modo considerei vazio
+                if (!csvImport.contains(email)) {                                                                        // Por meio do HashSet eu verifico as duplicatas de acordo com os email que eu já adicionei
                     Alunos aluno = new Alunos(nome, email, grupo, repo);                                                                         // Instanciado um novo objeto aluno para receber os atributos
                     listaDados.add(aluno);                                                                                                    // adiciona os valores na lista observável
                     csvImport.add(email);
                     OperacoesSQL.inserir(stm, "'" + aluno.email + "', 'Senha123' ,'" + aluno.repo + "','" + aluno.grupo + "','" + aluno.nome + "'");// Guarda o email repetido para uma lista
                 }
             }
-
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            if (!csvDuplicados.isEmpty()) {
-                info.setContentText("Foram identificados " + csvDuplicados.size() + " emails duplicados que já estão na tabela.");
-            } else {
-                info.setContentText("Dados importados com sucesso.");
-            }
-            info.show();
             csvImport.clear();
-            nGroup();
-            nStudents();
-            nStudentsnull();
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Importar CSV");
+            info.setContentText("Dados importados com sucesso.");
+            info.show();
+            refreshBD();
             viewStudent.setItems(listaDados);                                                                                              // Envia os valores para a tabela
         } catch (Exception e) {
             e.printStackTrace();
@@ -282,7 +277,7 @@ public class AlunoController {
         viewStudent.setItems(listaDados); // Define os itens da TableView
     }
 
-    public void refreshBD(ActionEvent actionEvent) throws SQLException {
+    public void refreshBD() throws SQLException {
         carregarDados();
         nStudents();
         nStudentsnull();

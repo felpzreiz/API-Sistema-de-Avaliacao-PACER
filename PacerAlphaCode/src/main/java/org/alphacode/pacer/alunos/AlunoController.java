@@ -2,6 +2,7 @@ package org.alphacode.pacer.alunos;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -24,6 +25,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.alphacode.pacer.ExecuteApplication;
+import org.alphacode.pacer.grupos.Aluno;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,6 +35,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class AlunoController {
+
     OperacoesSQL conexao = new OperacoesSQL();
     Statement stm = OperacoesSQL.conectarBanco();
 
@@ -70,6 +73,9 @@ public class AlunoController {
     public Button buttonBuscarStudent;
 
     @FXML
+    public Button buttonCleanFilter;
+
+    @FXML
     private Label checkStudent;
 
     @FXML
@@ -91,6 +97,7 @@ public class AlunoController {
     private AnchorPane gAlunos;
 
     private ObservableList<Alunos> listaDados;
+    private FilteredList<Alunos> filteredDados;
 
     private Set<String> csvImport;
 
@@ -192,15 +199,10 @@ public class AlunoController {
         buttonImportStudent.getStylesheets().add(css);
         buttonEditStudent.getStylesheets().add(css);
         buttonBuscarStudent.getStylesheets().add(css);
+        buttonCleanFilter.getStylesheets().add(css);
         viewStudent.getStylesheets().add(css);
         refresh.getStyleClass().add(css);
 
-    }
-
-    @FXML
-    void studentSelected() {
-        String selectedStudent = viewStudent.getSelectionModel().getSelectedItem().getEmail();
-        System.out.println(selectedStudent);
     }
 
     @FXML
@@ -246,7 +248,7 @@ public class AlunoController {
                 String email = texto[1].trim();
                 String grupo = (texto.length > 2) ? texto[2].trim() : "";                                                                                          //Considerando que a posição 0 seja o nome .trim() ignora espaços vazios
                 String repo = (texto.length > 3) ? texto[3].trim() : "";                                                                                               //  grupo recebe o a posição 1, porém para ignorar o vazio foi feito um operador ternario (condição) ? valor_se_verdadeiro : valor_se_falso
-                                                                                                                                                 // O arquivo dá erro caso encontre uma coluna vazia devido o array, deste modo considerei vazio
+                // O arquivo dá erro caso encontre uma coluna vazia devido o array, deste modo considerei vazio
                 if (!csvImport.contains(email)) {                                                                        // Por meio do HashSet eu verifico as duplicatas de acordo com os email que eu já adicionei
                     Alunos aluno = new Alunos(nome, email, grupo, repo);                                                                         // Instanciado um novo objeto aluno para receber os atributos
                     listaDados.add(aluno);                                                                                                    // adiciona os valores na lista observável
@@ -267,6 +269,25 @@ public class AlunoController {
     }
 
     public void buttonBuscarStudent(ActionEvent actionEvent) {
+        try {
+            writeStudent1.setVisible(true);
+            buttonCleanFilter.setVisible(true);
+            filteredDados = new FilteredList<>(listaDados, p -> true);                                  // FiltredList é instanciada parar manipular a listaDados - (P->TRUE) é um parametro para iniciar o filtro com todos os valores
+            writeStudent1.textProperty().addListener((observable, oldValue, newValue) -> {      // o addListener observa o TextField de busca e é feito um lambda para verificar as alterações
+                filteredDados.setPredicate(alunos -> {                                                    // Atualiza a logica do filtro e considera o item buscado como aluno
+                    if (newValue == null || newValue.isEmpty()) {                                     // Observa o campo do TextField
+                        return true;
+                    }
+                    String min = newValue.toLowerCase();                                                  // Realiza a busca com base em letras minusculas.
+                    return alunos.getNome().toLowerCase().contains(min) ||
+                            alunos.getEmail().toLowerCase().contains(min) ||
+                            alunos.getGrupo().toLowerCase().contains(min);
+                });
+            });
+            viewStudent.setItems(filteredDados);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     public void carregarDados() {
@@ -295,6 +316,12 @@ public class AlunoController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void cleanFilter(ActionEvent actionEvent) {
+        writeStudent1.clear();
+        writeStudent1.setVisible(false);
+        buttonCleanFilter.setVisible(false);
     }
 }
 

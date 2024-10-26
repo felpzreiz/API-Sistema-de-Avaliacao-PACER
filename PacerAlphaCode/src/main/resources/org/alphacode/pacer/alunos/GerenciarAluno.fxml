@@ -26,7 +26,7 @@
                     <Font name="Arial" size="12.0" />
                 </font>
             </Label>
-            <GridPane hgap="5.0" layoutX="30.0" layoutY="531.0" prefHeight="30.0" prefWidth="500.0">
+            <GridPane hgap="5.0" layoutX="30.0" layoutY="531.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="500.0">
                 <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -47,21 +47,23 @@
                     </Button>
                 </children>
             </GridPane>
-            <GridPane hgap="5.0" layoutX="34.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="512.0">
+            <GridPane hgap="5.0" layoutX="30.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="550.0">
                 <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.3333984375" minWidth="10.0" prefWidth="384.3333984375" />
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="193.59991455078125" minWidth="10.0" prefWidth="133.86660156250002" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.3333984375" minWidth="10.0" prefWidth="119.59998779296876" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="418.79998779296875" minWidth="10.0" prefWidth="418.79998779296875" />
+               <ColumnConstraints hgrow="SOMETIMES" maxWidth="396.4" minWidth="10.0" prefWidth="73.20001220703125" />
                 </columnConstraints>
                 <rowConstraints>
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <Button fx:id="buttonBuscarStudent" mnemonicParsing="false" onAction="#buttonBuscarStudent" prefHeight="30.0" prefWidth="120.0" styleClass="buttonBuscarStudent" text="BUSCAR" GridPane.columnIndex="1" />
-                    <TextField fx:id="writeStudent1" layoutX="4.0" prefHeight="30.0" prefWidth="30.0" promptText="Buscar aluno...">
+                    <Button fx:id="buttonBuscarStudent" mnemonicParsing="false" onAction="#buttonBuscarStudent" prefHeight="30.0" prefWidth="120.0" styleClass="buttonBuscarStudent" text="BUSCAR" />
+                    <TextField fx:id="writeStudent1" prefHeight="30.0" prefWidth="391.0" promptText="Buscar aluno..." visible="false" GridPane.columnIndex="1">
                         <font>
                             <Font name="Arial" size="12.0" />
                         </font>
                     </TextField>
+               <Button fx:id="buttonCleanFilter" mnemonicParsing="false" onAction="#cleanFilter" prefHeight="30.0" prefWidth="35.0" text="X" visible="false" GridPane.columnIndex="2" />
                 </children>
             </GridPane>
             <Button fx:id="refresh" alignment="CENTER" layoutX="1040.0" layoutY="30.0" mnemonicParsing="false" onAction="#refreshBD" prefHeight="40.0" prefWidth="40.0" />

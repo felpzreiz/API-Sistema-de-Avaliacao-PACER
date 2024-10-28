@@ -35,7 +35,6 @@ import java.util.Objects;
 import java.util.Set;
 
 public class AlunoController {
-
     OperacoesSQL conexao = new OperacoesSQL();
     Statement stm = OperacoesSQL.conectarBanco();
 
@@ -98,6 +97,11 @@ public class AlunoController {
 
     private ObservableList<Alunos> listaDados;
     private FilteredList<Alunos> filteredDados;
+
+    private String selecaoNome;
+    private String selecaoEmail;
+    private String selecaoRepo;
+    private String selecaoGrupo;
 
     private Set<String> csvImport;
 
@@ -206,12 +210,38 @@ public class AlunoController {
     }
 
     @FXML
-    public void EditedSelectedStudent(ActionEvent actionEvent) throws IOException {
+    public void EditedSelectedStudent(ActionEvent actionEvent) throws IOException, SQLException {
         Alunos selectedStudent = viewStudent.getSelectionModel().getSelectedItem();
-        if (selectedStudent != null) {
+
+        this.selecaoNome = selectedStudent.getNome();
+        this.selecaoEmail = selectedStudent.getEmail();
+        this.selecaoGrupo = selectedStudent.getGrupo();
+
+        //AQUI PEGA O REPOSITÓRIO, POIS ELE NÃO ESTÁ NA TABELA DE ALUNOCONTROLLER.JAVA
+        try {
+            ResultSet nStudent = stm.executeQuery("SELECT git AS git FROM aluno WHERE email = '"+selectedStudent.getEmail()+"'");
+            if (nStudent.next()) {
+                String git = nStudent.getString("git");
+                this.selecaoRepo = String.valueOf(git);
+                System.out.println(selecaoRepo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        abrirEdit();
+    }
+
+    public void abrirEdit() throws IOException, SQLException {
+        if (selecaoNome != null) {
             FXMLLoader fxmlLoader = new FXMLLoader(ExecuteApplication.class.getResource("/org/alphacode/pacer/alunos/editAluno.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/org/alphacode/pacer/styles.css")).toExternalForm());
+
+            EditAlunoController editController = fxmlLoader.getController();//ATENÇÃO PARA ESSA LINHA NA HORA DE ABRIR O CONTROLLER
+            editController.setAluno(selecaoNome, selecaoEmail, selecaoGrupo, selecaoRepo);
+            editController.carregarDados();
+
             Stage stage = new Stage();
             stage.setTitle("Editar Aluno");
             stage.setScene(scene);
@@ -225,6 +255,8 @@ public class AlunoController {
             alert.showAndWait();
         }
     }
+
+
 
     public void ImportSelectedStudent() {
         FileChooser search = new FileChooser();

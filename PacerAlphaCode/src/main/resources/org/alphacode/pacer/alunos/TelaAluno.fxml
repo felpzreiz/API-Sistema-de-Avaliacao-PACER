@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<SplitPane fx:id="split" dividerPositions="0.2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+  <items>
+    <AnchorPane fx:id="dadosAluno" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="1278.0">
+         <children>
+            <Label fx:id="nomealuno" alignment="CENTER" layoutX="3.0" layoutY="3.0" text="NomedoAluno">
+               <font>
+                  <Font name="Arial Bold" size="35.0" />
+               </font>
+            </Label>
+            <Label fx:id="textpacer" alignment="CENTER" layoutX="397.0" layoutY="-2.0" prefHeight="42.0" prefWidth="510.0" text="Sistema de Avaliação ">
+               <font>
+                  <Font name="Arial Bold" size="35.0" />
+               </font>
+            </Label>
+            <Button fx:id="btsair" layoutX="1249.0" layoutY="-9.0" mnemonicParsing="false" text="sair">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font></Button>
+            <Button fx:id="btconfigurar" layoutX="1234.0" layoutY="125.0" mnemonicParsing="false" text="Configuração">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font></Button>
+         </children></AnchorPane>
+    <AnchorPane fx:id="tabelaAlunos" minHeight="0.0" minWidth="0.0" prefHeight="72.0" prefWidth="1278.0">
+         <children>
+            <ImageView fx:id="logofatec" fitHeight="120.0" fitWidth="268.0" layoutX="1080.0" layoutY="521.0" nodeOrientation="INHERIT" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../../../../../Downloads/API-Sistema-de-Avaliacao-PACER-sprint2/API-Sistema-de-Avaliacao-PACER-sprint2/PacerAlphaCode/src/main/resources/org/example/paceralphacode/images/Imagem1.png" />
+               </image>
+            </ImageView>
+            <TableView fx:id="tbavaliacao" layoutX="215.0" layoutY="111.0" prefHeight="400.0" prefWidth="834.0">
+               <columns>
+                  <TableColumn fx:id="ataluno" prefWidth="160.0" text="Alunos" />
+                  <TableColumn fx:id="atproatividade" prefWidth="160.0" text="Proatividade" />
+                  <TableColumn fx:id="atautonomia" prefWidth="160.0" text="Autonomia" />
+                  <TableColumn fx:id="atcolaboracao" prefWidth="160.0" text="Colaboração" />
+                  <TableColumn fx:id="atentrega" minWidth="4.800018310546875" prefWidth="160.0" text="Entrega" />
+               </columns>
+            </TableView>
+            <Label fx:id="nomegrupo" alignment="CENTER" layoutX="528.0" layoutY="13.0" text="NomedoGrupo">
+               <font>
+                  <Font name="Arial Bold" size="35.0" />
+               </font>
+            </Label>
+            <Button fx:id="btsalvar" layoutX="1004.0" layoutY="531.0" mnemonicParsing="false" text="Salvar">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font></Button>
+            <GridPane fx:id="gridavaliacao" alignment="CENTER" layoutX="574.0" layoutY="46.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label fx:id="textSprint" text="Sprint">
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="textDuracao" text="Duracão" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="qtPontos" text="Pontos" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="tpRestante" text="Tempo Restante" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
+         </children></AnchorPane>
+  </items>
+</SplitPane>

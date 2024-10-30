@@ -42,6 +42,12 @@ public class HomeController {
     private ImageView fatec;
 
     @FXML
+    private ImageView SprintImage;
+
+    @FXML
+    private ImageView grupimage;
+
+    @FXML
     private Button botaocriterio;
 
     @FXML

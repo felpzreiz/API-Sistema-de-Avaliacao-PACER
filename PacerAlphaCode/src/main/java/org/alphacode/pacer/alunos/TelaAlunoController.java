@@ -1,3 +1,4 @@
+package org.alphacode.pacer.alunos;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,7 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
-public class PleaseProvideControllerClassName {
+public class TelaAlunoController {
 
     @FXML
     private TableColumn<?, ?> ataluno;

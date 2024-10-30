@@ -176,7 +176,7 @@
     -fx-border-color: #aaaaaa;
 }
 
-#refresh{
+#refresh {
     -fx-background-image: url("images/database.png");
     -fx-background-size: cover;
     -fx-border-color: transparent;
@@ -185,7 +185,8 @@
     width: 50px;
     height: 50px;
 }
-#instruction{
+
+#instruction {
     -fx-background-image: url("images/manual.png");
     -fx-background-size: cover;
     -fx-border-color: transparent;
@@ -194,7 +195,8 @@
     width: 50px;
     height: 50px;
 }
-#exit{
+
+#exit {
     -fx-background-image: url("images/sair.png");
     -fx-background-size: cover;
     -fx-border-color: transparent;
@@ -202,6 +204,12 @@
     -fx-background-repeat: no-repeat;
     width: 50px;
     height: 50px;
+}
 
+#buttonCleanFilter {
+    -fx-background-color: #dd2828;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
 }
 

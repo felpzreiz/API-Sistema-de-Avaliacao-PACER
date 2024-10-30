@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.alphacode.pacer.sprints.SprintController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.alphacode.pacer.sprints.SprintController">
     <GridPane layoutY="8.0" prefHeight="63.0" prefWidth="1300.0">
         <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -66,6 +66,12 @@
             </Button>
         </GridPane>
         <ListView fx:id="listViewCriterios" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <columns>
+          <TableColumn fx:id="clnCriterio" prefWidth="432.79999083280563" text="CRITÉRIO" />
+          <TableColumn fx:id="clncheck" prefWidth="85.60003662109375" text="1" />
+        </columns>
+      </TableView>
     </GridPane>
     <GridPane layoutX="650.0" layoutY="246.0" prefHeight="396.0" prefWidth="653.0">
         <columnConstraints>
@@ -97,7 +103,7 @@
                     <Font name="Arial Bold" size="15.0" />
                 </font>
             </Button>
-            <Button fx:id="btnAdicionarS" mnemonicParsing="false" onAction="#Adicionarcriterio" prefHeight="30.0" style="-fx-background-color: #00C25B;" text="ADICIONAR" textAlignment="CENTER">
+            <Button fx:id="btnAdicionarS" mnemonicParsing="false" onAction="#Adicionardatas" prefHeight="30.0" style="-fx-background-color: #00C25B;" text="ADICIONAR" textAlignment="CENTER">
                 <font>
                     <Font name="Arial Bold" size="15.0" />
                 </font>
@@ -105,8 +111,9 @@
         </GridPane>
         <TableView fx:id="tblSprint" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <columns>
-                <TableColumn fx:id="clnSprint" prefWidth="404.0" text="SPRINT" />
-                <TableColumn fx:id="clnData" prefWidth="115.0" text="DATA" />
+                <TableColumn fx:id="clnSprint" maxWidth="100.0" prefWidth="85.59991759061813" text="SPRINT" />
+                <TableColumn fx:id="clnDataI" maxWidth="350.0" prefWidth="202.4000701904297" text="DATA INICIAL" />
+            <TableColumn fx:id="clnDataF" maxWidth="350.0" prefWidth="230.40008544921875" text="DATA FINAL" />
             </columns>
         </TableView>
     </GridPane>
@@ -115,5 +122,28 @@
             <Font name="Arial" size="15.0" />
         </font>
     </TextField>
-    <DatePicker fx:id="addData" layoutX="772.0" layoutY="216.0" onAction="#acaodata" prefHeight="30.0" prefWidth="410.0" promptText="Adicionar Data..." />
+   <GridPane layoutX="651.0" layoutY="146.0" prefHeight="100.0" prefWidth="650.0">
+     <columnConstraints>
+       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+     </columnConstraints>
+     <rowConstraints>
+         <RowConstraints maxHeight="53.6000244140625" minHeight="3.400015258789061" prefHeight="31.200000000000003" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="59.399984741210936" minHeight="10.0" prefHeight="32.8" vgrow="SOMETIMES" />
+     </rowConstraints>
+      <children>
+          <DatePicker fx:id="addDataI" onAction="#acaodataI" prefHeight="30.0" prefWidth="210.0" promptText="Adicionar Data..." GridPane.rowIndex="1" />
+         <DatePicker fx:id="addDataF" onAction="#acaodataF" prefHeight="30.0" prefWidth="210.0" promptText="Adicionar Data..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         <Label prefHeight="30.0" prefWidth="210.0" text="Selecione a Data Final" textAlignment="CENTER" GridPane.columnIndex="1">
+            <font>
+               <Font name="Arial" size="20.0" />
+            </font>
+         </Label>
+         <Label prefHeight="30.0" prefWidth="210.0" text="Selecione a Data Inicial" textAlignment="CENTER">
+            <font>
+               <Font name="Arial" size="20.0" />
+            </font>
+         </Label>
+      </children>
+   </GridPane>
 </AnchorPane>

@@ -22,16 +22,16 @@
                   <Font name="Arial Bold" size="35.0" />
                </font>
             </Label>
-            <Label fx:id="textpacer" alignment="CENTER" layoutX="397.0" layoutY="-2.0" prefHeight="42.0" prefWidth="510.0" text="Sistema de Avaliação ">
+            <Label fx:id="textpacer" alignment="CENTER" layoutX="376.0" layoutY="1.0" prefHeight="42.0" prefWidth="510.0" text="Sistema de Avaliação ">
                <font>
                   <Font name="Arial Bold" size="35.0" />
                </font>
             </Label>
-            <Button fx:id="btsair" layoutX="1249.0" layoutY="-9.0" mnemonicParsing="false" text="sair">
+            <Button fx:id="btsair" layoutX="1245.0" layoutY="-5.0" mnemonicParsing="false" text="sair">
                <font>
                   <Font name="Arial Bold" size="12.0" />
                </font></Button>
-            <Button fx:id="btconfigurar" layoutX="1234.0" layoutY="125.0" mnemonicParsing="false" text="Configuração">
+            <Button fx:id="btconfigurar" layoutX="1186.0" layoutY="130.0" mnemonicParsing="false" text="Configuração">
                <font>
                   <Font name="Arial Bold" size="12.0" />
                </font></Button>
@@ -52,7 +52,7 @@
                   <TableColumn fx:id="atentrega" minWidth="4.800018310546875" prefWidth="160.0" text="Entrega" />
                </columns>
             </TableView>
-            <Label fx:id="nomegrupo" alignment="CENTER" layoutX="528.0" layoutY="13.0" text="NomedoGrupo">
+            <Label fx:id="nomegrupo" alignment="CENTER" layoutX="515.0" layoutY="2.0" text="NomedoGrupo" textAlignment="CENTER">
                <font>
                   <Font name="Arial Bold" size="35.0" />
                </font>
@@ -61,7 +61,7 @@
                <font>
                   <Font name="Arial Bold" size="12.0" />
                </font></Button>
-            <GridPane fx:id="gridavaliacao" alignment="CENTER" layoutX="574.0" layoutY="46.0">
+            <GridPane fx:id="gridavaliacao" alignment="CENTER" layoutX="538.0" layoutY="44.0">
               <columnConstraints>
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

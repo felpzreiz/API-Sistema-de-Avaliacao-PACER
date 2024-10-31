@@ -23,10 +23,11 @@ module org.example.paceralphacode {
     opens org.alphacode.pacer.alunos to javafx.fxml;
     exports org.alphacode.pacer.grupos;
     opens org.alphacode.pacer.grupos to javafx.fxml;
-    exports org.alphacode.pacer.sprints;
-    opens org.alphacode.pacer.sprints to javafx.fxml;
-    exports org.alphacode.pacer.criterios;
-    opens org.alphacode.pacer.criterios to javafx.fxml;
+    exports org.alphacode.pacer.sprintsCriterios;
+    opens org.alphacode.pacer.sprintsCriterios to javafx.fxml;
     exports org.alphacode.pacer.test;
     opens org.alphacode.pacer.test to javafx.fxml;
+    opens org.alphacode.pacer.alunoacess to javafx.fxml;
+    exports org.alphacode.pacer.alunoacess;
+
 }

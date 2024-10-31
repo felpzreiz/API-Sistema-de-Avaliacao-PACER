@@ -3,6 +3,7 @@ package org.alphacode.pacer.alunos;
 import conexao.OperacoesSQL;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -63,7 +64,7 @@ public class EditAlunoController {
     @FXML
     private Button saveBtn;
 
-    public EditAlunoController() throws SQLException{
+    public EditAlunoController() throws SQLException {
     }
 
     @FXML
@@ -94,11 +95,19 @@ public class EditAlunoController {
 
     @FXML
     void save(ActionEvent event) {
-        OperacoesSQL.updateAluno(stm, "UPDATE aluno SET email = '"+ email.getText()
-                +"', git = '"+ git.getText()
-                +"', grupo = '"+ group.getText()
-                +"', nome = '"+ fullname.getText()
-                +"' WHERE nome = '"+ nome
-                +"'");
+        OperacoesSQL.updateAluno(stm, "UPDATE aluno SET email = '" + email.getText()
+                + "', git = '" + git.getText()
+                + "', grupo = '" + group.getText()
+                + "', nome = '" + fullname.getText()
+                + "' WHERE nome = '" + nome
+                + "'");
+
+        Stage stage = (Stage) editAluno.getScene().getWindow();
+        stage.close();
+
+        Alert info = new Alert(Alert.AlertType.INFORMATION);
+        info.setContentText("Aluno editado com sucesso!");
+        info.show();
+
     }
 }

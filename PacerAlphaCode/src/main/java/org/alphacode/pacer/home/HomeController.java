@@ -86,7 +86,7 @@ public class HomeController {
     @FXML
     void pageSprint(ActionEvent event) throws IOException {
         Homepage.getChildren().clear();
-        Parent gSprints = FXMLLoader.load(getClass().getResource("/org/alphacode/pacer/sprint/Sprint.fxml"));
+        Parent gSprints = FXMLLoader.load(getClass().getResource("/org/alphacode/pacer/sprintsCriterios/SprintCriterios.fxml"));
         Homepage.getChildren().add(gSprints);
     }
 

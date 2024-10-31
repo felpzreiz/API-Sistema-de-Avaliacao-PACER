@@ -29,7 +29,7 @@ public class EditAlunoController {
     private String emailAluno;
     private String grupo;
     private String repo;
-
+    private Integer idAluno;
 
     @FXML
     private Label Pacer;
@@ -81,6 +81,8 @@ public class EditAlunoController {
     public void carregarDados() throws SQLException {
         nomeAluno.setText("Aluno selecionado: " + nome);
 
+        this.idAluno = OperacoesSQL.SelectIDEdit(stm, emailAluno);
+
         fullname.setText(nome);
         email.setText(emailAluno);
         group.setText(grupo);
@@ -95,12 +97,7 @@ public class EditAlunoController {
 
     @FXML
     void save(ActionEvent event) {
-        OperacoesSQL.updateAluno(stm, "UPDATE aluno SET email = '" + email.getText()
-                + "', git = '" + git.getText()
-                + "', grupo = '" + group.getText()
-                + "', nome = '" + fullname.getText()
-                + "' WHERE nome = '" + nome
-                + "'");
+        OperacoesSQL.updateAluno(stm, email.getText(), git.getText(), group.getText(), fullname.getText(), idAluno);
 
         Stage stage = (Stage) editAluno.getScene().getWindow();
         stage.close();
@@ -108,6 +105,5 @@ public class EditAlunoController {
         Alert info = new Alert(Alert.AlertType.INFORMATION);
         info.setContentText("Aluno editado com sucesso!");
         info.show();
-
     }
 }

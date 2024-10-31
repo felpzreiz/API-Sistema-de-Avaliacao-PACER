@@ -323,8 +323,7 @@ public class AlunoController {
     }
 
     public void carregarDados() {
-        String query = "SELECT senha,email,grupo,* FROM aluno";
-        List<Alunos> alunosList = OperacoesSQL.consultarDados(stm, query);
+        List<Alunos> alunosList = OperacoesSQL.consultarDados(stm);
         listaDados.clear(); // Limpa a lista atual antes de carregar novos dados
         listaDados.addAll(alunosList); // Adiciona os dados retornados à lista
         viewStudent.setItems(listaDados); // Define os itens da TableView

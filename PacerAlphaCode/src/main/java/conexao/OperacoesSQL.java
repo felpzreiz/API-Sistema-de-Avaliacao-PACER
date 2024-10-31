@@ -17,10 +17,10 @@ public class OperacoesSQL {
         return(stm);
     }
 
-    public static List<Alunos> consultarDados(Statement stm, String query){ // METHOD PARA FAZER UM SELECT.
+    public static List<Alunos> consultarDados(Statement stm){ // METHOD PARA FAZER UM SELECT.
         List<Alunos> listaAlunos = new ArrayList<>();
         try {
-            ResultSet result = stm.executeQuery(query);
+            ResultSet result = stm.executeQuery("SELECT senha,email,grupo,* FROM aluno ORDER BY id ASC");
             while(result.next()){ // result.next() roda enquanto existirem dados no banco.
                 String nome = result.getString("nome");
                 String email = result.getString("email");
@@ -37,7 +37,7 @@ public class OperacoesSQL {
     }
 
     public static void inserir(Statement stm, String query){ // METHOD PARA FAZER UM INSERT.
-        String insereAluno = "INSERT INTO aluno VALUES (" + query + ")";
+        String insereAluno = "INSERT INTO aluno(email,senha,git,grupo,nome) VALUES (" + query + ")";
 
         try {
             stm.executeUpdate(insereAluno);
@@ -47,8 +47,13 @@ public class OperacoesSQL {
         }
     }
 
-    public static void updateAluno(Statement stm, String query){
-        String updateAluno = query;
+    public static void updateAluno(Statement stm, String email, String git, String grupo, String nome, Integer id){
+        String updateAluno = "UPDATE aluno SET email = '"+ email
+                +"', git = '"+ git
+                +"', grupo = '"+ grupo
+                +"', nome = '"+ nome
+                +"' WHERE id = '"+ id
+                +"'";
         try {
             stm.executeUpdate(updateAluno);
 
@@ -65,5 +70,20 @@ public class OperacoesSQL {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Integer SelectIDEdit(Statement stm, String email){
+        Integer idAluno = 0;
+        try {
+            ResultSet result = stm.executeQuery("SELECT id FROM aluno WHERE email = '" + email + "'");
+            while(result.next()){ // result.next() roda enquanto existirem dados no banco.
+                Integer Id = Integer.parseInt(result.getString("id"));
+
+                idAluno = Id;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return idAluno; //
     }
 }

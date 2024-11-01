@@ -36,8 +36,8 @@ public class OperacoesSQL {
         return listaAlunos; // Retorna a lista de alunos
     }
 
-    public static void inserir(Statement stm, String query){ // METHOD PARA FAZER UM INSERT.
-        String insereAluno = "INSERT INTO aluno(email,senha,git,grupo,nome) VALUES (" + query + ")";
+    public static void inserirAluno(Statement stm, String email, String git, String grupo, String nome){ // METHOD PARA FAZER UM INSERT.
+        String insereAluno = "INSERT INTO aluno(email,git,grupo,nome) VALUES ('"+email+"','"+git+"','"+ grupo +"','" + nome + "')";
 
         try {
             stm.executeUpdate(insereAluno);
@@ -85,5 +85,33 @@ public class OperacoesSQL {
             e.printStackTrace();
         }
         return idAluno; //
+    }
+
+    public static void inserirUsuario(Statement stm, String email){ // METHOD PARA FAZER UM INSERT.
+        String insereUsuario = "INSERT INTO usuario(email) VALUES ('"+email+"')";
+
+        try {
+            stm.executeUpdate(insereUsuario);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void inserirGrupo(Statement stm, String grupo){ // METHOD PARA FAZER UM INSERT.
+        String insereUsuario = "INSERT INTO grupo(nome_grupo)" +
+                "SELECT '"+grupo+"'" +
+                "WHERE NOT EXISTS (" +
+                "    SELECT nome_grupo" +
+                "    FROM grupo" +
+                "    WHERE nome_grupo = '"+grupo+"'" +
+                ");";
+
+        try {
+            stm.executeUpdate(insereUsuario);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

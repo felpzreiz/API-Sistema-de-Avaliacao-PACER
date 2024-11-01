@@ -37,10 +37,15 @@ public class GrupoController {
         Stage dialog = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(ExecuteApplication.class.getResource("/org/alphacode/pacer/grupos/CadastroGrupo.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
+
+        TelaCadastroGrupoController controller = fxmlLoader.getController();
+        controller.setDialogStage(dialog, telagrupos); // Passa a ListView para o controller
+
         dialog.setTitle("Defina o nome do Grupo");
         dialog.setScene(scene);
         dialog.show(); // Exibe a nova janela
     }
+
     @FXML
     void removeSelectedGroup(ActionEvent event) {
         String selectedGroup = telagrupos.getSelectionModel().getSelectedItem();

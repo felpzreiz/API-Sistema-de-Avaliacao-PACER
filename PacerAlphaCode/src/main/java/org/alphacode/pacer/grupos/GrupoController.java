@@ -5,11 +5,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import org.alphacode.pacer.ExecuteApplication;
 
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -31,6 +34,14 @@ public class GrupoController {
 
     @FXML
     private AnchorPane gGroups;
+
+    private ObservableList<String> grupos; // Declare a ObservableList
+
+    @FXML
+    void initialize() {
+        grupos = FXCollections.observableArrayList(); // Inicializa a ObservableList
+        telagrupos.setItems(grupos); // Associa a ObservableList à ListView
+    }
 
     @FXML
     void adicionargrupo(ActionEvent event) throws IOException {
@@ -65,10 +76,10 @@ public class GrupoController {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == yesButton) {
                 // Se o usuário confirmar, remove o grupo
-                telagrupos.getItems().remove(selectedGroup);
+                grupos.remove(selectedGroup); // Remove da ObservableList
             }
         } else {
-            // Aqui você pode adicionar um alerta se nenhum grupo estiver selecionado
+            // Alerta se nenhum grupo estiver selecionado
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Nenhum grupo selecionado");
             alert.setHeaderText(null);
@@ -77,15 +88,13 @@ public class GrupoController {
         }
     }
 
-
     @FXML
     void ImportSelectedGroup(ActionEvent event) {
-
+        // Implementação do método de importação
     }
 
-
     public void buttonEditGroup(MouseEvent mouseEvent) {
-
+        // Implementação para editar grupo
     }
 
     public void EditedSelectedGroup(ActionEvent actionEvent) throws IOException {
@@ -103,5 +112,7 @@ public class GrupoController {
             dialog.show();
         }
     }
-    }
 
+    public void buttonEditGroup(javafx.scene.input.MouseEvent mouseEvent) {
+    }
+}

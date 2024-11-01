@@ -87,8 +87,8 @@ public class OperacoesSQL {
         return idAluno; //
     }
 
-    public static void inserirUsuario(Statement stm, String email){ // METHOD PARA FAZER UM INSERT.
-        String insereUsuario = "INSERT INTO usuario(email) VALUES ('"+email+"')";
+    public static void inserirUsuario(Statement stm, String email, String senha){ // METHOD PARA FAZER UM INSERT.
+        String insereUsuario = "INSERT INTO usuario(email,senha) VALUES ('"+email+"','"+senha+"')";
 
         try {
             stm.executeUpdate(insereUsuario);

@@ -284,7 +284,7 @@ public class AlunoController {
                     listaDados.add(aluno); // adiciona os valores na lista observável
                     csvImport.add(email);
                     OperacoesSQL.inserirAluno(stm, aluno.email, aluno.repo, aluno.grupo, aluno.nome);// Guarda o email repetido para uma lista
-                    OperacoesSQL.inserirUsuario(stm, aluno.email);
+                    OperacoesSQL.inserirUsuario(stm, aluno.email, createPassword(aluno.email));
                     OperacoesSQL.inserirGrupo(stm, aluno.grupo);
                 }
             }
@@ -353,6 +353,13 @@ public class AlunoController {
         writeStudent1.clear();
         writeStudent1.setVisible(false);
         buttonCleanFilter.setVisible(false);
+    }
+
+    public static String createPassword(String email){
+        String regex = "@";
+        String[] array = email.split(regex);
+
+        return array[0];
     }
 }
 

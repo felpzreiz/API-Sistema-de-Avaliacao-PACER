@@ -48,9 +48,6 @@ public class HomeController {
     private ImageView grupimage;
 
     @FXML
-    private Button botaocriterio;
-
-    @FXML
     private VBox menuFix;
 
     @FXML

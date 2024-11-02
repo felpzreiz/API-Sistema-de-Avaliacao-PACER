@@ -1,7 +1,9 @@
 package conexao;
 
+import org.alphacode.pacer.alunoacess.AlunosInterface;
 import org.alphacode.pacer.alunos.Alunos;
 import org.alphacode.pacer.grupos.Grupo;
+import org.alphacode.pacer.sprintsCriterios.Criterios;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,17 +15,18 @@ public class OperacoesSQL {
     public static Statement conectarBanco() throws SQLException {
         Conexao conexao = new Conexao();
         Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pacer",
-                "adminpacer", "AdminPacer1234");;
+                "adminpacer", "AdminPacer1234");
+        ;
         conexao.conexaoBD();
         Statement stm = con.createStatement();
-        return(stm);
+        return (stm);
     }
 
-    public static List<Alunos> consultarDados(Statement stm){ // METHOD PARA FAZER UM SELECT.
+    public static List<Alunos> consultarDados(Statement stm) { // METHOD PARA FAZER UM SELECT.
         List<Alunos> listaAlunos = new ArrayList<>();
         try {
             ResultSet result = stm.executeQuery("SELECT senha,email,grupo,* FROM aluno ORDER BY id ASC");
-            while(result.next()){ // result.next() roda enquanto existirem dados no banco.
+            while (result.next()) { // result.next() roda enquanto existirem dados no banco.
                 String nome = result.getString("nome");
                 String email = result.getString("email");
                 String grupo = result.getString("grupo");
@@ -38,8 +41,8 @@ public class OperacoesSQL {
         return listaAlunos; // Retorna a lista de alunos
     }
 
-    public static void inserirAluno(Statement stm, String email, String git, String grupo, String nome){ // METHOD PARA FAZER UM INSERT.
-        String insereAluno = "INSERT INTO aluno(email,git,grupo,nome) VALUES ('"+email+"','"+git+"','"+ grupo +"','" + nome + "')";
+    public static void inserirAluno(Statement stm, String email, String git, String grupo, String nome) { // METHOD PARA FAZER UM INSERT.
+        String insereAluno = "INSERT INTO aluno(email,git,grupo,nome) VALUES ('" + email + "','" + git + "','" + grupo + "','" + nome + "')";
 
         try {
             stm.executeUpdate(insereAluno);
@@ -49,13 +52,13 @@ public class OperacoesSQL {
         }
     }
 
-    public static void updateAluno(Statement stm, String email, String git, String grupo, String nome, Integer id){
-        String updateAluno = "UPDATE aluno SET email = '"+ email
-                +"', git = '"+ git
-                +"', grupo = '"+ grupo
-                +"', nome = '"+ nome
-                +"' WHERE id = '"+ id
-                +"'";
+    public static void updateAluno(Statement stm, String email, String git, String grupo, String nome, Integer id) {
+        String updateAluno = "UPDATE aluno SET email = '" + email
+                + "', git = '" + git
+                + "', grupo = '" + grupo
+                + "', nome = '" + nome
+                + "' WHERE id = '" + id
+                + "'";
         try {
             stm.executeUpdate(updateAluno);
 
@@ -64,7 +67,7 @@ public class OperacoesSQL {
         }
     }
 
-    public static void excluir(Statement stm, String email){
+    public static void excluir(Statement stm, String email) {
         String excluiAluno = "DELETE FROM aluno WHERE email = '" + email + "'";
         try {
             stm.executeUpdate(excluiAluno);
@@ -74,11 +77,11 @@ public class OperacoesSQL {
         }
     }
 
-    public static Integer SelectIDEdit(Statement stm, String email){
+    public static Integer SelectIDEdit(Statement stm, String email) {
         Integer idAluno = 0;
         try {
             ResultSet result = stm.executeQuery("SELECT id FROM aluno WHERE email = '" + email + "'");
-            while(result.next()){ // result.next() roda enquanto existirem dados no banco.
+            while (result.next()) { // result.next() roda enquanto existirem dados no banco.
                 Integer Id = Integer.parseInt(result.getString("id"));
 
                 idAluno = Id;
@@ -89,8 +92,8 @@ public class OperacoesSQL {
         return idAluno; //
     }
 
-    public static void inserirUsuario(Statement stm, String email, String senha){ // METHOD PARA FAZER UM INSERT.
-        String insereUsuario = "INSERT INTO usuario(email,senha) VALUES ('"+email+"','"+senha+"')";
+    public static void inserirUsuario(Statement stm, String email, String senha) { // METHOD PARA FAZER UM INSERT.
+        String insereUsuario = "INSERT INTO usuario(email,senha) VALUES ('" + email + "','" + senha + "')";
 
         try {
             stm.executeUpdate(insereUsuario);
@@ -100,13 +103,13 @@ public class OperacoesSQL {
         }
     }
 
-    public static void inserirGrupo(Statement stm, String grupo){ // METHOD PARA FAZER UM INSERT.
+    public static void inserirGrupo(Statement stm, String grupo) { // METHOD PARA FAZER UM INSERT.
         String insereUsuario = "INSERT INTO grupo(nome_grupo)" +
-                "SELECT '"+grupo+"'" +
+                "SELECT '" + grupo + "'" +
                 "WHERE NOT EXISTS (" +
                 "    SELECT nome_grupo" +
                 "    FROM grupo" +
-                "    WHERE nome_grupo = '"+grupo+"'" +
+                "    WHERE nome_grupo = '" + grupo + "'" +
                 ");";
 
         try {
@@ -118,12 +121,12 @@ public class OperacoesSQL {
     }
 
     //MÉTODOS PARA A TELA GRUPOCONTROLLER
-    public static List<Grupo> consultarDadosGrupos(Statement stm){ // METHOD PARA FAZER UM SELECT.
+    public static List<Grupo> consultarDadosGrupos(Statement stm) { // METHOD PARA FAZER UM SELECT.
         List<Grupo> listaGrupos = new ArrayList<>();
 
         try {
             ResultSet result = stm.executeQuery("SELECT nome_grupo FROM grupo ORDER BY id ASC");
-            while(result.next()){ // result.next() roda enquanto existirem dados no banco.
+            while (result.next()) { // result.next() roda enquanto existirem dados no banco.
                 String grupo = result.getString("nome_grupo");
 
                 // Cria um novo objeto Alunos e adiciona à lista1
@@ -136,12 +139,79 @@ public class OperacoesSQL {
         return listaGrupos; // Retorna a lista de alunos
     }
 
-    /*public static void inserirGrupo(Statement stm, String grupo){
-        String insereGrupo = "INSERT INTO grupo(nome_grupo) VALUES ('"+grupo+"')";
 
+    //MÉTODOS PARA A TELA SRINTCONTROLLER
+    public static List<Criterios> carregarCriterios(Statement stm) {
+        List<Criterios> listaCriterios = new ArrayList<>();
+        try {
+            ResultSet rs = stm.executeQuery("SELECT * FROM criterios ORDER BY criterio ASC ");
+            while (rs.next()) {
+                String criterio = rs.getString("criterio");
+                listaCriterios.add(new Criterios(criterio));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaCriterios;
+
+    }
+
+    //MÉTODOS PARA A TELA SRINTCONTROLLER
+    public static void inserirCriterio(Statement stm, String query) {
+        String novoCriterio = "INSERT INTO criterios (criterio) VALUES  ('" + query + "')";
+        try {
+            stm.execute(novoCriterio);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //MÉTODOS PARA A TELA SRINTCONTROLLER
+    public static void deleteCriterio(Statement stm, String query) {
+        String deleteCriterio = "DELETE FROM criterios WHERE criterio = ('" + query + "')";
+        try {
+            stm.execute(deleteCriterio);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //MÉTODOS PARA ATUALUZAR A TABELA DINAMICA EM TELAALUNO
+    public static List<String> carregarColunas(Statement stm) {
+        List<String> listaColunas = new ArrayList<>();
+        try {
+            ResultSet rs = stm.executeQuery("SELECT * FROM criterios ORDER BY criterio ASC");
+            while (rs.next()) {
+                String coluna = rs.getString("criterio");
+                listaColunas.add(new String(coluna));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaColunas;
+
+    }
+
+    public static List<AlunosInterface> carregarNomes(Statement stm) {
+        List<AlunosInterface> listaNomes = new ArrayList<>();
+        try {
+            ResultSet rs = stm.executeQuery("SELECT nome FROM aluno");
+            while (rs.next()) {
+               String aluno = rs.getString("nome");
+                listaNomes.add(new AlunosInterface(aluno));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaNomes;
+    }
+
+
+
+        /*public static void inserirGrupo(Statement stm, String grupo){
+        String insereGrupo = "INSERT INTO grupo(nome_grupo) VALUES ('"+grupo+"')";
         try {
             stm.executeUpdate(insereGrupo);
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -1,5 +1,6 @@
 package org.alphacode.pacer.alunoacess;
 
+import conexao.OperacoesSQL;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,10 +13,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.util.converter.FloatStringConverter;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TelaAlunoController {
+    OperacoesSQL conexao = new OperacoesSQL();
+    Statement stm = OperacoesSQL.conectarBanco();
 
     @FXML
     private Button btconfigurar;
@@ -70,59 +76,76 @@ public class TelaAlunoController {
 
 
     private ObservableList<AlunosInterface> listaAlunos;
+    private List<AlunosInterface> alunos = OperacoesSQL.carregarNomes(stm);              // Declaro a lista de alunos diretamente com a query
+    private Map<String, Integer> notaColunas;
 
-    public void initializeTable(ObservableList<String> column) {
-        listaAlunos = FXCollections.observableArrayList();
-        columnStudent.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        tableStudents.setItems(listaAlunos);
-        tableStudents.setEditable(true);
-        teste();
+    @FXML
+    public void carregarAlunos() {       // Carrego o nome dos alunos com base nos Objetos AlunosInterface e Query
+        listaAlunos.addAll(alunos);
+    }
+
+    @FXML
+    public void initialize() {
+        listaAlunos = FXCollections.observableArrayList();                  // Inicio primeiro os alunos na coluna de estudantes
+        List<String> colunas = OperacoesSQL.carregarColunas(stm);         //  Carrego as colunas para iniciar em seguida a tabela
+        carregarAlunos();                                                                 // Trago o metodo de alunos
+        notaColunas = new HashMap<>();
+        initializeTable(colunas);                                     // Inicio as colunas dinamicas
+    }
+
+    public TelaAlunoController() throws SQLException {
+    }
+
+    public void initializeTable(List<String> column) {                // O nome das colunas é considerada uma String
+        tableStudents.setEditable(true);                                 // Tabela Editavél
+        tableStudents.getColumns().clear();                               // Limpa os antigos registros de colunas
+        columnStudent.setCellValueFactory(new PropertyValueFactory<>("nome"));      // Considera que a coluna de Alunos vai receber o getNome da classe AlunosInterface
+        tableStudents.getColumns().add(columnStudent);            // Insere a coluna Alunos na Tabela
+        columnStudent.setEditable(false);                           // Bloqueia a coluna de alunos na tabela
 
         for (String col : column) {
-            TableColumn<AlunosInterface, Float> tableColumn = new TableColumn<>(col);
-            tableColumn.setCellValueFactory(cellData -> {
-                int notaAluno = column.indexOf(col);
-                if (notaAluno < cellData.getValue().getNotas().size()) {
-                    return new SimpleFloatProperty(cellData.getValue().getNotas().get(notaAluno).getNota()).asObject();
 
+            notaColunas.put(col, listaAlunos.getFirst().getNotas().size());    // Mapeia o nome da coluna ao índice da nota
+            TableColumn<AlunosInterface, Float> tableColumn = new TableColumn<>(col);
+
+
+            tableColumn.setCellValueFactory(cellData -> {
+                int nota = notaColunas.get(col);
+                if (nota < cellData.getValue().getNotas().size()) {
+                    return new SimpleFloatProperty(cellData.getValue().getNotas().get(nota).getNota()).asObject();
                 } else {
-                    return null;
+                    return new SimpleFloatProperty(0.0f).asObject();
                 }
             });
+
             tableColumn.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
             tableColumn.setOnEditCommit(event -> {
                 AlunosInterface aluno = event.getRowValue();
-                int valor = column.indexOf(col);
-                float nota = event.getNewValue();
+                String colunaNome = event.getTableColumn().getText();
+                int notaIndex = notaColunas.get(colunaNome);
 
-                if (nota >= 0 && nota <= 3) {
-                    if (valor >= aluno.getNotas().size()) {
-                        aluno.addNota(new Notas(event.getNewValue()));
+                float notaAluno = event.getNewValue();             // Nota digitada
+
+                System.out.println("Aluno: " + aluno.getNome() + " Nota digitada: " + notaAluno + " para " + colunaNome);
+
+                if (notaAluno >= 0 && notaAluno <= 3) {
+                    if (notaIndex >= aluno.getNotas().size()) {
+                        aluno.addNotas(new Notas(notaAluno));
                     } else {
-                        aluno.getNotas().get(valor).setNota(event.getNewValue());
+                        aluno.getNotas().get(notaIndex).setNota(notaAluno);
                     }
                 } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Erro");
-                    alert.setHeaderText(null);
-                    alert.show();
+                    alert.setHeaderText("Nota inválida!");
+                    alert.setContentText("A nota deve estar entre 0 e 3.");
+                    alert.showAndWait();
                 }
             });
             tableStudents.getColumns().add(tableColumn);
         }
+        tableStudents.setItems(listaAlunos);
     }
 
-    @FXML
-    public void teste() {
-        List<AlunosInterface> novosAlunos = new ArrayList<>();
-        novosAlunos.add(new AlunosInterface("José Wesley"));
-        novosAlunos.add(new AlunosInterface("Miguel"));
-        novosAlunos.add(new AlunosInterface("Felipe"));
-        adicionarAlunos(novosAlunos);
-    }
-
-    public void adicionarAlunos(List<AlunosInterface> alunos) {
-        listaAlunos.addAll(alunos);
-    }
 
 }

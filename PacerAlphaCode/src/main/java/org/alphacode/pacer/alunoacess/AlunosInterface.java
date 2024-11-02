@@ -13,7 +13,7 @@ public class AlunosInterface {
 
     public AlunosInterface(String nome) {
         this.nome = new SimpleStringProperty(nome);
-        this.notas = new ArrayList<Notas>();
+        this.notas = new ArrayList<>();
     }
 
     public String getNome() {
@@ -22,6 +22,9 @@ public class AlunosInterface {
 
     public void setNome(StringProperty nome) {
         this.nome = nome;
+    }
+    public void setNome(String nome) {
+        this.nome.set(nome);
     }
 
     public List<Notas> getNotas() {
@@ -32,7 +35,7 @@ public class AlunosInterface {
         this.notas = notas;
     }
 
-    public void addNota(Notas nota) {
+    public void addNotas(Notas nota) {
         this.notas.add(nota);
     }
 }

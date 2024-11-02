@@ -91,7 +91,7 @@ public class TelaCadastroGrupoController extends GrupoController implements Init
         if (grupoNome != null && !grupoNome.trim().isEmpty()) {
             OperacoesSQL.inserirGrupo(stm, nomedogrupo.getText());
             dialogStage.close();
-            carregarDados();
+           // carregarDados();
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Nome do Grupo Inválido");

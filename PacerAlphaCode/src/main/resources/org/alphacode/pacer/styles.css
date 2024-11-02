@@ -213,3 +213,40 @@
     -fx-font-family: "Arial";
 }
 
+
+#criterios {
+    -fx-background-color: #e7e7e7;
+    -fx-border-color: #e5dfdf;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-text-alignment: center;
+}
+
+#criterios:hover {
+    -fx-background-color: #d1d1d1;
+}
+
+#criterios:selected {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+#criterios .list-view {
+    -fx-text-alignment: center;
+}
+
+#btnAddC{
+    -fx-background-color: #008000;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#btnDeleteC{
+    -fx-background-color: #dd2828;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+

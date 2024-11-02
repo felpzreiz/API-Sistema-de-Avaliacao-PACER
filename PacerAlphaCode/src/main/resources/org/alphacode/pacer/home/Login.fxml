@@ -6,46 +6,80 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="login" blendMode="DARKEN" focusTraversable="true" maxHeight="800.0" maxWidth="950.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="623.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.alphacode.pacer.home.LoginController">
+<AnchorPane fx:id="login" blendMode="DARKEN" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="545.0"
+            xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.alphacode.pacer.home.LoginController">
     <cursor>
-        <Cursor fx:constant="DEFAULT" />
+        <Cursor fx:constant="DEFAULT"/>
     </cursor>
-    <effect>
-        <Blend />
-    </effect>
-    <Label fx:id="Pacer" alignment="CENTER" contentDisplay="CENTER" layoutX="255.0" layoutY="131.8" prefHeight="40.0" prefWidth="350.0" text="Sistema de Avaliação" textOverrun="CENTER_ELLIPSIS" AnchorPane.bottomAnchor="451.2">
-        <font>
-            <Font name="Arial Bold" size="24.0" />
-        </font>
-    </Label>
-    <TextField fx:id="idEmail" layoutX="252.0" layoutY="236.0" prefHeight="40.0" prefWidth="350.0" promptText="E-mail">
-        <font>
-            <Font name="Arial" size="16.0" />
-        </font>
-    </TextField>
-    <Button fx:id="btn" alignment="CENTER" layoutX="344.0" layoutY="419.0" mnemonicParsing="false" onAction="#onButtonClick" prefHeight="30.0" prefWidth="170.0" text="Login" textAlignment="CENTER">
-        <font>
-            <Font name="Arial Bold" size="14.0" />
-        </font>
-    </Button>
-    <ImageView fx:id="fatec" fitHeight="110.0" fitWidth="200.0" layoutX="668.0" layoutY="517.0" nodeOrientation="INHERIT" preserveRatio="true">
-        <Image url="@../images/Imagem1.png" />
+    <ImageView fitHeight="695.0" fitWidth="550.0" layoutX="-2.0" layoutY="-8.0" pickOnBounds="true"
+               preserveRatio="true">
+        <image>
+            <Image url="@../images/logingif.gif"/>
+        </image>
     </ImageView>
-    <PasswordField fx:id="idSenha" layoutX="255.0" layoutY="306.0" prefHeight="40.0" prefWidth="350.0" promptText="Senha">
-        <font>
-            <Font name="Arial" size="16.0" />
-        </font>
-    </PasswordField>
-    <Hyperlink fx:id="forgotPassword" layoutX="369.0" layoutY="371.0" text="Esqueceu sua senha?" />
-    <Label fx:id="checkEmailSenha" alignment="CENTER" contentDisplay="CENTER" layoutX="253.0" layoutY="477.0" prefHeight="16.0" prefWidth="346.0" textAlignment="CENTER" textFill="#b71200">
-        <font>
-            <Font name="Arial" size="14.0" />
-        </font>
-    </Label>
+    <GridPane layoutX="68.0" layoutY="159.0" prefHeight="334.0" prefWidth="410.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="500.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="45.0" valignment="BASELINE"
+                            vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="60.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="60.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="30.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" valignment="CENTER" vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <children>
+            <Label fx:id="Pacer" alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="411.0"
+                   text="SISTEMA DE AVALIAÇÃO" textFill="WHITE" textOverrun="CENTER_ELLIPSIS"
+                   GridPane.valignment="CENTER">
+                <font>
+                    <Font name="Arial Bold" size="18.0"/>
+                </font>
+            </Label>
+            <TextField fx:id="idEmail" alignment="CENTER" prefHeight="40.0" prefWidth="350.0" promptText="E-mail"
+                       GridPane.rowIndex="1">
+                <font>
+                    <Font name="Arial" size="16.0"/>
+                </font>
+            </TextField>
+            <PasswordField fx:id="idSenha" alignment="CENTER" prefHeight="40.0" prefWidth="350.0" promptText="Senha"
+                           GridPane.rowIndex="2">
+                <font>
+                    <Font name="Arial" size="16.0"/>
+                </font>
+            </PasswordField>
+            <Label fx:id="checkEmailSenha" alignment="CENTER" contentDisplay="CENTER" prefHeight="16.0"
+                   prefWidth="429.0" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="4">
+                <font>
+                    <Font name="Arial Bold" size="14.0"/>
+                </font>
+            </Label>
+            <Hyperlink fx:id="forgotPassword" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
+                       minHeight="-Infinity" minWidth="-Infinity" prefHeight="24.0" prefWidth="422.0"
+                       text="Esqueceu sua senha?" textFill="WHITE" underline="true" GridPane.rowIndex="3">
+                <font>
+                    <Font size="14.0"/>
+                </font>
+            </Hyperlink>
+            <Button fx:id="btn" alignment="CENTER" mnemonicParsing="false" onAction="#onButtonClick" prefHeight="30.0"
+                    prefWidth="170.0" text="LOGIN" textAlignment="CENTER" GridPane.halignment="CENTER"
+                    GridPane.hgrow="NEVER" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                <font>
+                    <Font name="Arial Bold" size="14.0"/>
+                </font>
+            </Button>
+        </children>
+    </GridPane>
 </AnchorPane>

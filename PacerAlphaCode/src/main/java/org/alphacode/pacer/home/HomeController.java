@@ -4,12 +4,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.alphacode.pacer.ExecuteApplication;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -51,7 +53,7 @@ public class HomeController {
     private VBox menuFix;
 
     @FXML
-    void exitPacer(ActionEvent event) {
+    void exitPacer(ActionEvent event) throws IOException {
         Stage stage = (Stage) pacer.getScene().getWindow();
         stage.close();
     }

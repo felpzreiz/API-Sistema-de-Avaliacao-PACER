@@ -1,6 +1,7 @@
 package conexao;
 
 import org.alphacode.pacer.alunos.Alunos;
+import org.alphacode.pacer.grupos.Grupo;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 
 public class OperacoesSQL {
 
+    //MÉTODOS PARA A TELA ALUNOCONTROLLER
     public static Statement conectarBanco() throws SQLException {
         Conexao conexao = new Conexao();
         Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pacer",
@@ -114,4 +116,34 @@ public class OperacoesSQL {
             e.printStackTrace();
         }
     }
+
+    //MÉTODOS PARA A TELA GRUPOCONTROLLER
+    public static List<Grupo> consultarDadosGrupos(Statement stm){ // METHOD PARA FAZER UM SELECT.
+        List<Grupo> listaGrupos = new ArrayList<>();
+
+        try {
+            ResultSet result = stm.executeQuery("SELECT nome_grupo FROM grupo ORDER BY id ASC");
+            while(result.next()){ // result.next() roda enquanto existirem dados no banco.
+                String grupo = result.getString("nome_grupo");
+
+                // Cria um novo objeto Alunos e adiciona à lista1
+                Grupo novoGrupo = new Grupo(grupo);
+                listaGrupos.add(novoGrupo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaGrupos; // Retorna a lista de alunos
+    }
+
+    /*public static void inserirGrupo(Statement stm, String grupo){
+        String insereGrupo = "INSERT INTO grupo(nome_grupo) VALUES ('"+grupo+"')";
+
+        try {
+            stm.executeUpdate(insereGrupo);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }*/
 }

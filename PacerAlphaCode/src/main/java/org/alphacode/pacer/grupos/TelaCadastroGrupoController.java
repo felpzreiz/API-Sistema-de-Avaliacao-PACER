@@ -1,13 +1,22 @@
 package org.alphacode.pacer.grupos;
 
+import conexao.OperacoesSQL;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class TelaCadastroGrupoController {
+import java.net.URL;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ResourceBundle;
+
+public class TelaCadastroGrupoController extends GrupoController implements Initializable {
+    OperacoesSQL conexao = new OperacoesSQL();
+    Statement stm = OperacoesSQL.conectarBanco();
 
     @FXML
     private TextField nomedogrupo;
@@ -45,6 +54,9 @@ public class TelaCadastroGrupoController {
 
     private ListView<String> telagrupos;
 
+    public TelaCadastroGrupoController() throws SQLException {
+    }
+
     public void setDialogStage(Stage dialogStage, ListView<String> telagrupos) {
         this.dialogStage = dialogStage;
         this.telagrupos = telagrupos;
@@ -77,9 +89,9 @@ public class TelaCadastroGrupoController {
     private void salvar() {
         String grupoNome = nomedogrupo.getText();
         if (grupoNome != null && !grupoNome.trim().isEmpty()) {
-            ObservableList<String> items = telagrupos.getItems();
-            items.add(grupoNome);
+            OperacoesSQL.inserirGrupo(stm, nomedogrupo.getText());
             dialogStage.close();
+            carregarDados();
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Nome do Grupo Inválido");
@@ -105,5 +117,10 @@ public class TelaCadastroGrupoController {
         if (selectedStudent != null) {
             tabelaemails.getItems().remove(selectedStudent);
         }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
     }
 }

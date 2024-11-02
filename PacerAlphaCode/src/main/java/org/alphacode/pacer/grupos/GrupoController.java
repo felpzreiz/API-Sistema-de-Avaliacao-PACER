@@ -1,5 +1,6 @@
 package org.alphacode.pacer.grupos;
 
+import conexao.OperacoesSQL;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,9 +15,15 @@ import org.alphacode.pacer.ExecuteApplication;
 
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 import java.util.Optional;
 
 public class GrupoController {
+    Statement stm = OperacoesSQL.conectarBanco();
+
+
     @FXML
     public Button buttonEditGroup;
 
@@ -27,7 +34,7 @@ public class GrupoController {
     public Button buttonRemoveGroup;
 
     @FXML
-    private ListView<String> telagrupos;
+    private ListView<Grupo> telagrupos;
 
     @FXML
     public Button botaoaddgrupo;
@@ -35,12 +42,28 @@ public class GrupoController {
     @FXML
     private AnchorPane gGroups;
 
-    private ObservableList<String> grupos; // Declare a ObservableList
+    private ObservableList<Grupo> grupos; // Declare a ObservableList
+
+    public GrupoController() throws SQLException {
+    }
 
     @FXML
     void initialize() {
         grupos = FXCollections.observableArrayList(); // Inicializa a ObservableList
         telagrupos.setItems(grupos); // Associa a ObservableList à ListView
+        carregarDados();
+
+        telagrupos.setCellFactory(lv -> new ListCell<Grupo>() {
+            @Override
+            protected void updateItem(Grupo grupo, boolean empty) {
+                super.updateItem(grupo, empty);
+                if (empty || grupo == null) {
+                    setText(null);
+                } else {
+                    setText(grupo.getNomeGrupo()); // Exibe o nome do grupo
+                }
+            }
+        });
     }
 
     @FXML
@@ -50,7 +73,7 @@ public class GrupoController {
         Scene scene = new Scene(fxmlLoader.load());
 
         TelaCadastroGrupoController controller = fxmlLoader.getController();
-        controller.setDialogStage(dialog, telagrupos); // Passa a ListView para o controller
+        controller.setDialogStage(dialog, ""); // Passa a ListView para o controller
 
         dialog.setTitle("Defina o nome do Grupo");
         dialog.setScene(scene);
@@ -59,7 +82,7 @@ public class GrupoController {
 
     @FXML
     void removeSelectedGroup(ActionEvent event) {
-        String selectedGroup = telagrupos.getSelectionModel().getSelectedItem();
+        Grupo selectedGroup = telagrupos.getSelectionModel().getSelectedItem();
         if (selectedGroup != null) {
             // Criação do alerta
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -98,7 +121,7 @@ public class GrupoController {
     }
 
     public void EditedSelectedGroup(ActionEvent actionEvent) throws IOException {
-        String grupoSelecionado = telagrupos.getSelectionModel().getSelectedItem();
+        Grupo grupoSelecionado = telagrupos.getSelectionModel().getSelectedItem();
         if (grupoSelecionado != null) {
             Stage dialog = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(ExecuteApplication.class.getResource("/org/alphacode/pacer/grupos/CadastroGrupo.fxml"));
@@ -106,7 +129,7 @@ public class GrupoController {
             dialog.setTitle("Editar Grupo");
 
             TelaCadastroGrupoController controller = fxmlLoader.getController();
-            controller.setDialogStage(dialog, grupoSelecionado); // Passa o grupo selecionado
+            controller.setDialogStage(dialog, String.valueOf(grupoSelecionado)); // Passa o grupo selecionado
 
             dialog.setScene(scene);
             dialog.show();
@@ -114,5 +137,12 @@ public class GrupoController {
     }
 
     public void buttonEditGroup(javafx.scene.input.MouseEvent mouseEvent) {
+    }
+
+    public void carregarDados() {
+        List<Grupo> gruposList = OperacoesSQL.consultarDadosGrupos(stm);
+        grupos.clear(); // Limpa a lista atual antes de carregar novos dados
+        grupos.addAll(gruposList); // Adiciona os dados retornados à lista
+        telagrupos.setItems(grupos); // Define os itens da TableView
     }
 }

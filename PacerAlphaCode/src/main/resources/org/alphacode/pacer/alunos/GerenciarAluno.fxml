@@ -13,110 +13,141 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="gAlunos" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1300.0" styleClass="" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.alphacode.pacer.alunos.AlunoController">
+<AnchorPane fx:id="gAlunos" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="800.0" prefWidth="1300.0" styleClass="" stylesheets="@../styles.css"
+            xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.alphacode.pacer.alunos.AlunoController">
     <Label layoutX="42.0" layoutY="23.0" text="Alunos">
         <font>
-            <Font name="Arial Bold" size="37.0" />
+            <Font name="Arial Bold" size="37.0"/>
         </font>
     </Label>
-    <Pane layoutX="88.0" layoutY="180.0" prefHeight="599.0" prefWidth="994.0" style="-fx-background-color: #ffff;" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="88.0">
+    <Pane layoutX="88.0" layoutY="180.0" prefHeight="599.0" prefWidth="994.0" style="-fx-background-color: #ffff;"
+          AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="88.0">
         <children>
-            <Label fx:id="checkStudent" layoutX="37.0" layoutY="63.0" prefHeight="17.0" prefWidth="413.0" text="Label" textFill="RED" visible="false">
+            <Label fx:id="checkStudent" layoutX="37.0" layoutY="63.0" prefHeight="17.0" prefWidth="413.0" text="Label"
+                   textFill="RED" visible="false">
                 <font>
-                    <Font name="Arial" size="12.0" />
+                    <Font name="Arial" size="12.0"/>
                 </font>
             </Label>
-            <GridPane hgap="5.0" layoutX="30.0" layoutY="531.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="500.0">
+            <GridPane hgap="5.0" layoutX="30.0" layoutY="531.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                      minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="500.0">
                 <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                 </columnConstraints>
                 <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                 </rowConstraints>
                 <children>
-                    <Button fx:id="buttonRemoveStudent" mnemonicParsing="false" onAction="#removeSelectedStudent" prefHeight="1.0" prefWidth="120.0" styleClass="buttonRemoveStudent" text="REMOVER" GridPane.columnIndex="1" />
-                    <Button fx:id="buttonEditStudent" mnemonicParsing="false" onAction="#EditedSelectedStudent" prefHeight="1.0" prefWidth="120.0" styleClass="buttonEditStudent" text="EDITAR" GridPane.columnIndex="2" />
-                    <Button fx:id="buttonImportStudent" mnemonicParsing="false" onAction="#ImportSelectedStudent" prefHeight="1.0" prefWidth="120.0" styleClass="buttonImportStudent" text="IMPORTAR" GridPane.columnIndex="3" />
-                    <Button fx:id="buttonAddStudent" mnemonicParsing="false" onAction="#buttonAddStudent" prefHeight="1.0" prefWidth="120.0" styleClass="buttonAddStudent" text="ADICIONAR">
+                    <Button fx:id="buttonRemoveStudent" mnemonicParsing="false" onAction="#removeSelectedStudent"
+                            prefHeight="1.0" prefWidth="120.0" styleClass="buttonRemoveStudent" text="REMOVER"
+                            GridPane.columnIndex="1"/>
+                    <Button fx:id="buttonEditStudent" mnemonicParsing="false" onAction="#EditedSelectedStudent"
+                            prefHeight="1.0" prefWidth="120.0" styleClass="buttonEditStudent" text="EDITAR"
+                            GridPane.columnIndex="2"/>
+                    <Button fx:id="buttonImportStudent" mnemonicParsing="false" onAction="#ImportSelectedStudent"
+                            prefHeight="1.0" prefWidth="120.0" styleClass="buttonImportStudent" text="IMPORTAR"
+                            GridPane.columnIndex="3"/>
+                    <Button fx:id="buttonAddStudent" mnemonicParsing="false" onAction="#buttonAddStudent"
+                            prefHeight="1.0" prefWidth="120.0" styleClass="buttonAddStudent" text="ADICIONAR">
                         <GridPane.margin>
-                            <Insets />
+                            <Insets/>
                         </GridPane.margin>
                     </Button>
                 </children>
             </GridPane>
-            <GridPane hgap="5.0" layoutX="30.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="550.0">
+            <GridPane hgap="5.0" layoutX="30.0" layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                      minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="550.0">
                 <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.3333984375" minWidth="10.0" prefWidth="119.59998779296876" />
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="418.79998779296875" minWidth="10.0" prefWidth="418.79998779296875" />
-               <ColumnConstraints hgrow="SOMETIMES" maxWidth="396.4" minWidth="10.0" prefWidth="73.20001220703125" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="393.3333984375" minWidth="10.0"
+                                       prefWidth="119.59998779296876"/>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="418.79998779296875" minWidth="10.0"
+                                       prefWidth="418.79998779296875"/>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="396.4" minWidth="10.0"
+                                       prefWidth="73.20001220703125"/>
                 </columnConstraints>
                 <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                 </rowConstraints>
                 <children>
-                    <Button fx:id="buttonBuscarStudent" mnemonicParsing="false" onAction="#buttonBuscarStudent" prefHeight="30.0" prefWidth="120.0" styleClass="buttonBuscarStudent" text="BUSCAR" />
-                    <TextField fx:id="writeStudent1" prefHeight="30.0" prefWidth="391.0" promptText="Buscar aluno..." visible="false" GridPane.columnIndex="1">
+                    <Button fx:id="buttonBuscarStudent" mnemonicParsing="false" onAction="#buttonBuscarStudent"
+                            prefHeight="30.0" prefWidth="120.0" styleClass="buttonBuscarStudent" text="BUSCAR"/>
+                    <TextField fx:id="writeStudent1" prefHeight="30.0" prefWidth="391.0" promptText="Buscar aluno..."
+                               visible="false" GridPane.columnIndex="1">
                         <font>
-                            <Font name="Arial" size="12.0" />
+                            <Font name="Arial" size="12.0"/>
                         </font>
                     </TextField>
-               <Button fx:id="buttonCleanFilter" mnemonicParsing="false" onAction="#cleanFilter" prefHeight="30.0" prefWidth="35.0" text="X" visible="false" GridPane.columnIndex="2" />
+                    <Button fx:id="buttonCleanFilter" mnemonicParsing="false" onAction="#cleanFilter" prefHeight="30.0"
+                            prefWidth="35.0" text="X" visible="false" GridPane.columnIndex="2"/>
                 </children>
             </GridPane>
-            <Button fx:id="refresh" alignment="CENTER" layoutX="1040.0" layoutY="30.0" mnemonicParsing="false" onAction="#refreshBD" prefHeight="40.0" prefWidth="40.0" />
-            <Button fx:id="instruction" alignment="CENTER" layoutX="1040.0" layoutY="540.0" mnemonicParsing="false" onAction="#openIntruction" prefHeight="40.0" prefWidth="40.0" />
+            <Button fx:id="refresh" alignment="CENTER" layoutX="1040.0" layoutY="30.0" mnemonicParsing="false"
+                    onAction="#refreshBD" prefHeight="40.0" prefWidth="40.0"/>
+            <Button fx:id="instruction" alignment="CENTER" layoutX="1040.0" layoutY="540.0" mnemonicParsing="false"
+                    onAction="#openIntruction" prefHeight="40.0" prefWidth="40.0"/>
         </children>
     </Pane>
-    <TableView fx:id="viewStudent" editable="true" layoutX="108.0" layoutY="262.0" prefHeight="437.0" prefWidth="1048.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="132.0">
+    <TableView fx:id="viewStudent" editable="true" layoutX="108.0" layoutY="262.0" prefHeight="437.0" prefWidth="1048.0"
+               AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="132.0">
         <columns>
-            <TableColumn fx:id="viewName" maxWidth="500.0" minWidth="300.0" prefWidth="420.0" text="NOME" />
-            <TableColumn fx:id="viewEmail" maxWidth="500.0" minWidth="300.0" prefWidth="420.0" text="EMAIL" />
-            <TableColumn fx:id="viewGroup" maxWidth="205.60003662109375" minWidth="200.0" prefWidth="205.60003662109375" text="GRUPO" />
+            <TableColumn fx:id="viewName" maxWidth="500.0" minWidth="300.0" prefWidth="420.0" text="NOME"/>
+            <TableColumn fx:id="viewEmail" maxWidth="500.0" minWidth="300.0" prefWidth="420.0" text="EMAIL"/>
+            <TableColumn fx:id="viewGroup" maxWidth="205.60003662109375" minWidth="200.0" prefWidth="205.60003662109375"
+                         text="GRUPO"/>
         </columns>
     </TableView>
-    <Pane layoutX="89.0" layoutY="88.0" prefHeight="76.0" prefWidth="994.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="88.0">
+    <Pane layoutX="89.0" layoutY="88.0" prefHeight="76.0" prefWidth="994.0" style="-fx-background-color: white;"
+          AnchorPane.leftAnchor="88.0" AnchorPane.rightAnchor="88.0">
         <children>
             <GridPane alignment="CENTER" layoutX="1.0" layoutY="2.0" prefHeight="70.0" prefWidth="1121.0">
                 <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="130.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="130.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="130.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="130.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="130.0"/>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="130.0"/>
                 </columnConstraints>
                 <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
                 </rowConstraints>
-                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="62.0" prefWidth="300.0" text="Alunos Cadastrados" textFill="#535353" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="62.0" prefWidth="300.0"
+                       text="Alunos Cadastrados" textFill="#535353" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <font>
-                        <Font name="Arial Bold" size="18.0" />
+                        <Font name="Arial Bold" size="18.0"/>
                     </font>
                 </Label>
-                <Label fx:id="nStudents" alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="300.0" text="0" textFill="#535353" GridPane.columnIndex="1">
+                <Label fx:id="nStudents" alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefHeight="52.0"
+                       prefWidth="300.0" text="0" textFill="#535353" GridPane.columnIndex="1">
                     <font>
-                        <Font name="Arial Bold" size="18.0" />
+                        <Font name="Arial Bold" size="18.0"/>
                     </font>
                 </Label>
-                <Label fx:id="nStudentsnull" alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="300.0" text="0" textFill="#535353" GridPane.columnIndex="2">
+                <Label fx:id="nStudentsnull" alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefHeight="52.0"
+                       prefWidth="300.0" text="0" textFill="#535353" GridPane.columnIndex="2">
                     <font>
-                        <Font name="Arial Bold" size="18.0" />
+                        <Font name="Arial Bold" size="18.0"/>
                     </font>
                 </Label>
-                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="62.0" prefWidth="300.0" text="Alunos Sem Grupo" textFill="#535353" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="62.0" prefWidth="300.0"
+                       text="Alunos Sem Grupo" textFill="#535353" GridPane.columnIndex="2" GridPane.rowIndex="1">
                     <font>
-                        <Font name="Arial Bold" size="18.0" />
+                        <Font name="Arial Bold" size="18.0"/>
                     </font>
                 </Label>
-                <Label fx:id="ngroups" alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="300.0" text="0" textFill="#535353">
+                <Label fx:id="ngroups" alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefHeight="52.0"
+                       prefWidth="300.0" text="0" textFill="#535353">
                     <font>
-                        <Font name="Arial Bold" size="18.0" />
+                        <Font name="Arial Bold" size="18.0"/>
                     </font>
                 </Label>
-                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="62.0" prefWidth="300.0" text="Grupos Cadastrados" textFill="#535353" GridPane.rowIndex="1">
+                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="62.0" prefWidth="300.0"
+                       text="Grupos Cadastrados" textFill="#535353" GridPane.rowIndex="1">
                     <font>
-                        <Font name="Arial Bold" size="18.0" />
+                        <Font name="Arial Bold" size="18.0"/>
                     </font>
                 </Label>
             </GridPane>

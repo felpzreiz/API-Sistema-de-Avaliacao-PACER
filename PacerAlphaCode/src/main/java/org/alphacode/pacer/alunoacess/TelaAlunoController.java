@@ -4,6 +4,7 @@ import conexao.OperacoesSQL;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -11,6 +12,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import javafx.util.converter.FloatStringConverter;
 
 import java.sql.SQLException;
@@ -18,16 +20,37 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class TelaAlunoController {
+
+
     OperacoesSQL conexao = new OperacoesSQL();
     Statement stm = OperacoesSQL.conectarBanco();
 
     @FXML
-    private Button btconfigurar;
+    private Label idAluno;
 
     @FXML
-    private Button btsair;
+    public Label labelNome;
+
+    @FXML
+    public Label idEmail;
+
+    @FXML
+    public Label infoSprint;
+
+    @FXML
+    public Label infoPontos;
+
+    @FXML
+    public Label infoAvaliacao;
+
+    @FXML
+    private Button btnconfig;
+
+    @FXML
+    private Button btnsair;
 
     @FXML
     private Button btsalvar;
@@ -48,13 +71,22 @@ public class TelaAlunoController {
     private ImageView logofatec;
 
     @FXML
-    private Label nomealuno;
+    public Label nomeAluno;
 
     @FXML
     private Label nomegrupo;
 
     @FXML
     private Label qtPontos;
+
+    @FXML
+    private Label timeSprint;
+
+    @FXML
+    private Label pontosSprint;
+
+    @FXML
+    private Label qtdpontosDisp;
 
     @FXML
     private AnchorPane tabelaAlunos;
@@ -74,7 +106,6 @@ public class TelaAlunoController {
     @FXML
     private Label tpRestante;
 
-
     private ObservableList<AlunosInterface> listaAlunos;
     private List<AlunosInterface> alunos = OperacoesSQL.carregarNomes(stm);              // Declaro a lista de alunos diretamente com a query
     private Map<String, Integer> notaColunas;
@@ -91,6 +122,8 @@ public class TelaAlunoController {
         carregarAlunos();                                                                 // Trago o metodo de alunos
         notaColunas = new HashMap<>();
         initializeTable(colunas);                                     // Inicio as colunas dinamicas
+        pontosSprint();
+        style();
     }
 
     public TelaAlunoController() throws SQLException {
@@ -128,23 +161,76 @@ public class TelaAlunoController {
 
                 System.out.println("Aluno: " + aluno.getNome() + " Nota digitada: " + notaAluno + " para " + colunaNome);
 
+                float somaAtual = somaNotas();
+
+
                 if (notaAluno >= 0 && notaAluno <= 3) {
-                    if (notaIndex >= aluno.getNotas().size()) {
-                        aluno.addNotas(new Notas(notaAluno));
+                    if (pontosSprint() > somaNotas()) {
+                        if (notaIndex >= aluno.getNotas().size()) {
+                            aluno.addNotas(new Notas(notaAluno));
+                        } else {
+                            aluno.getNotas().get(notaIndex).setNota(notaAluno);
+                        }
+                        somaNotas();
                     } else {
-                        aluno.getNotas().get(notaIndex).setNota(notaAluno);
+                        Alert info = new Alert(Alert.AlertType.ERROR);
+                        info.setTitle("Erro");
+                        info.setHeaderText("ATENÇÃO! ");
+                        info.setContentText("Quantidade de pontos excedida.");
+                        info.show();
                     }
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Erro");
-                    alert.setHeaderText("Nota inválida!");
-                    alert.setContentText("A nota deve estar entre 0 e 3.");
-                    alert.showAndWait();
+                    Alert info = new Alert(Alert.AlertType.INFORMATION);
+                    info.setTitle("Erro");
+                    info.setHeaderText("Nota inválida!");
+                    info.setContentText("A nota deve estar entre 0 e 3.");
+                    info.showAndWait();
                 }
             });
             tableStudents.getColumns().add(tableColumn);
         }
         tableStudents.setItems(listaAlunos);
+        tableStudents.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    }
+
+    @FXML
+    public void exit(ActionEvent actionEvent) {
+        Stage stage = (Stage) homeAlunos.getScene().getWindow();
+        stage.close();
+    }
+
+    @FXML
+    public void acessConfig(ActionEvent actionEvent) {
+    }
+
+
+    public float somaNotas() {
+        qtdpontosDisp.setVisible(true);
+        float somaNotas = 0.0f;
+        for (AlunosInterface aluno : listaAlunos) {
+            for (Notas nota : aluno.getNotas()) {
+                somaNotas += nota.getNota();
+            }
+        }
+        qtdpontosDisp.setText(String.valueOf(somaNotas));
+        return somaNotas;
+    }
+
+    public float pontosSprint() {
+        infoPontos.setVisible(true);
+        infoPontos.setText("10");
+        float pontosSprint = 9f;
+        return pontosSprint;
+    }
+
+
+
+
+
+    @FXML
+    public void style(){
+        String css = Objects.requireNonNull(getClass().getResource("/org/alphacode/pacer/styles.css")).toString();
+        tableStudents.getStylesheets().add(css);
     }
 
 

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
+import java.util.*;
 
 import conexao.OperacoesSQL;
 import javafx.event.ActionEvent;
@@ -30,9 +30,7 @@ import org.alphacode.pacer.grupos.Aluno;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.List;
 
 public class AlunoController {
     OperacoesSQL conexao = new OperacoesSQL();
@@ -116,6 +114,7 @@ public class AlunoController {
             viewName.setCellValueFactory(new PropertyValueFactory<>("nome"));
             viewEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
             viewGroup.setCellValueFactory(new PropertyValueFactory<>("grupo"));
+            viewStudent.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
             refreshBD();
             style();
         } catch (SQLException e) {
@@ -181,11 +180,24 @@ public class AlunoController {
     @FXML
     private void removeSelectedStudent() {
         Alunos selectedStudent = viewStudent.getSelectionModel().getSelectedItem();
+
         if (selectedStudent != null) {
-            OperacoesSQL.excluir(stm, selectedStudent.getEmail());
-            System.out.println(selectedStudent.getEmail());
-            carregarDados();
-            nStudents();
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setTitle("Confirmar Remoção");
+            confirm.setHeaderText("Deseja realmente excluir o aluno?");
+            confirm.setContentText("Aluno: " + selectedStudent.getNome());
+
+            ButtonType btnSim = new ButtonType("Sim");
+            ButtonType btnNao = new ButtonType("Não");
+            confirm.getButtonTypes().setAll(btnSim, btnNao);
+
+            confirm.showAndWait().ifPresent(response -> {
+                if (response == btnSim) {
+                    OperacoesSQL.excluir(stm, selectedStudent.getEmail());
+                    carregarDados();
+                    nStudents();
+                }
+            });
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
@@ -219,7 +231,7 @@ public class AlunoController {
 
         //AQUI PEGA O REPOSITÓRIO, POIS ELE NÃO ESTÁ NA TABELA DE ALUNOCONTROLLER.JAVA
         try {
-            ResultSet nStudent = stm.executeQuery("SELECT git AS git FROM aluno WHERE email = '"+selectedStudent.getEmail()+"'");
+            ResultSet nStudent = stm.executeQuery("SELECT git AS git FROM aluno WHERE email = '" + selectedStudent.getEmail() + "'");
             if (nStudent.next()) {
                 String git = nStudent.getString("git");
                 this.selecaoRepo = String.valueOf(git);
@@ -355,7 +367,7 @@ public class AlunoController {
         buttonCleanFilter.setVisible(false);
     }
 
-    public static String createPassword(String email){
+    public static String createPassword(String email) {
         String regex = "@";
         String[] array = email.split(regex);
 

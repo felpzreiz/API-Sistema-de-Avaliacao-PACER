@@ -64,28 +64,28 @@ public class HomeController {
     @FXML
     void pageAlunos(ActionEvent event) throws IOException, SQLException {                                                                       //  Método pageAlunos() Abre a interface a direita da pagina correspondente
         Homepage.getChildren().clear();                                                                                                           //  getChildren é como obter os filhos "imagine uma lista de sequencia de paginas", o filho seria o que esta abaixo, o clear limpa o que está na (AnchorPane Homepage)
-        Parent gAlunos = FXMLLoader.load(getClass().getResource("/org/alphacode/pacer/alunos/GerenciarAluno.fxml"));    // Parent é uma Classe para organizar as estruturas graficas. Aqui ele obtem a AnchorPane gAlunos que se encontra no arquivo fxml
+        Parent gAlunos = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/alphacode/pacer/alunos/GerenciarAluno.fxml")));    // Parent é uma Classe para organizar as estruturas graficas. Aqui ele obtem a AnchorPane gAlunos que se encontra no arquivo fxml
         Homepage.getChildren().add(gAlunos);                                                                                           //  Aqui a Homepagen muda para a outra AnchorPane
     }
 
     @FXML
     void pageGroup(ActionEvent event) throws IOException {
         Homepage.getChildren().clear();
-        Parent gGroup = FXMLLoader.load(getClass().getResource("/org/alphacode/pacer/grupos/Grupo.fxml"));
+        Parent gGroup = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/alphacode/pacer/grupos/Grupo.fxml")));
         Homepage.getChildren().add(gGroup);
     }
 
     @FXML
     void pageHome(ActionEvent event) throws IOException {                                                                //  Para voltar a pagina Home devido ser uma SplitPane é preciso obter os dados da pagina inteira
         pacer.getItems().clear();                                                                                                                 //  O SplitPane está com id:pacer, desse modo o pacer obtem todos os itens grafico e limpa pois está atuando com outras AnchorPane
-        Parent Pacer = FXMLLoader.load(getClass().getResource("/org/alphacode/pacer/home/Home.fxml"));                 //  Instancia a ordem gráfica e obtem a home.fxml que é a pagina inicial
+        Parent Pacer = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/alphacode/pacer/home/Home.fxml")));                 //  Instancia a ordem gráfica e obtem a home.fxml que é a pagina inicial
         pacer.getItems().add(Pacer);                                                                                                     //  O getItems obtem todas as informações da tela, desse modo retorna todos os objetos contendo na pacer(SplitPane)
     }
 
     @FXML
     void pageSprint(ActionEvent event) throws IOException {
         Homepage.getChildren().clear();
-        Parent gSprints = FXMLLoader.load(getClass().getResource("/org/alphacode/pacer/sprintsCriterios/SprintCriterios.fxml"));
+        Parent gSprints = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/alphacode/pacer/sprintsCriterios/SprintCriterios.fxml")));
         Homepage.getChildren().add(gSprints);
     }
 
@@ -98,7 +98,7 @@ public class HomeController {
     @FXML
     void pageCriterios(ActionEvent event) throws IOException {
         Homepage.getChildren().clear();
-        Parent gCriterios = FXMLLoader.load(getClass().getResource("/org/alphacode/pacer/criterios/Criterios.fxml"));
+        Parent gCriterios = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/org/alphacode/pacer/criterios/Criterios.fxml")));
         Homepage.getChildren().add(gCriterios);
 
     }

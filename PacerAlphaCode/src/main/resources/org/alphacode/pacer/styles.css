@@ -17,7 +17,7 @@
     -fx-scale-y: 0.95;
 }
 
-#btn{
+#btn {
     -fx-background-color: #6282ff;
     -fx-text-fill: white;
     -fx-font-size: 16px;
@@ -25,10 +25,11 @@
     -fx-cursor: hand;
 }
 
-#btn:hover{
+#btn:hover {
     -fx-background-color: #4167ff;
     -fx-underline: false;
 }
+
 #btn:pressed {
     -fx-background-color: #7aa2ff;
     -fx-scale-x: 0.95;
@@ -162,13 +163,12 @@
 #viewStudent {
     -fx-background-color: #e7e7e7;
     -fx-border-color: #e5dfdf;
-    -fx-border-width: 1px;
+    -fx-border-width: 1px
 }
 
 #viewStudent .table-cell {
     -fx-font-family: Arial;
     -fx-font-size: 14px;
-    -fx-text-fill: black;
 }
 
 #viewStudent .table-column {
@@ -180,18 +180,17 @@
 }
 
 #viewStudent .table-row-cell:selected {
-    -fx-background-color: #bbbbbb;
-    -fx-text-fill: black;
-
+    -fx-background-color: #829ebd;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
 }
 
-#viewStudent .table-column-header {
-    -fx-background-color: #92949a;
-    -fx-text-fill: #000000;
-    -fx-font-size: 16px;
-    -fx-font-family: Arial;
+#viewStudent .column-header {
+    -fx-background-color: #bebfc5;
     -fx-font-weight: bold;
     -fx-border-color: #aaaaaa;
+    -fx-font-size: 14px;
+    -fx-font-family: Arial;
 }
 
 #refresh {
@@ -224,6 +223,27 @@
     height: 50px;
 }
 
+#btnsair {
+    -fx-background-image: url("images/sair.png");
+    -fx-background-size: cover;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    width: 50px;
+    height: 50px;
+}
+
+#btnconfig {
+    -fx-background-image: url("images/User.png");
+    -fx-background-size: cover;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat;
+    width: 50px;
+    height: 50px;
+
+}
+
 #buttonCleanFilter {
     -fx-background-color: #dd2828;
     -fx-text-fill: white;
@@ -231,40 +251,72 @@
     -fx-font-family: "Arial";
 }
 
-
 #criterios {
     -fx-background-color: #e7e7e7;
     -fx-border-color: #e5dfdf;
     -fx-font-family: "Arial";
     -fx-font-size: 14px;
+}
+
+#criterios .list-cell {
+    -fx-alignment: center;
     -fx-text-alignment: center;
 }
 
-#criterios:hover {
-    -fx-background-color: #d1d1d1;
+#criterios .list-cell:hover {
+    -fx-background-color: #bbbbbb;
 }
 
-#criterios:selected {
-    -fx-background-color: #007bff;
+#criterios .list-cell:selected {
+    -fx-background-color: #829ebd;
     -fx-text-fill: white;
     -fx-font-weight: bold;
 }
 
-#criterios .list-view {
-    -fx-text-alignment: center;
-}
-
-#btnAddC{
+#btnAddC {
     -fx-background-color: #008000;
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-font-family: "Arial";
 }
 
-#btnDeleteC{
+#btnDeleteC {
     -fx-background-color: #dd2828;
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-font-family: "Arial";
+}
+
+#tableStudents {
+    -fx-background-color: #e7e7e7;
+    -fx-border-color: #e5dfdf;
+    -fx-border-width: 1px;
+}
+
+#tableStudents .table-cell {
+    -fx-font-family: Arial;
+    -fx-font-size: 14px;
+}
+
+#tableStudents .table-column {
+    -fx-alignment: center;
+}
+
+#tableStudents .table-row-cell:hover {
+    -fx-background-color: #bbbbbb;
+}
+
+#tableStudents .table-row-cell:selected {
+    -fx-background-color: #829ebd;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+#tableStudents .column-header {
+    -fx-background-color: #bebfc5;
+    -fx-font-weight: bold;
+    -fx-border-color: #aaaaaa;
+    -fx-font-size: 14px;
+    -fx-font-family: Arial;
 }
 

@@ -6,23 +6,25 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import org.alphacode.pacer.ExecuteApplication;
+import org.alphacode.pacer.alunos.Alunos;
 
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class GrupoController {
     Statement stm = OperacoesSQL.conectarBanco();
-
 
     @FXML
     public Button buttonEditGroup;
@@ -44,11 +46,34 @@ public class GrupoController {
 
     private ObservableList<Grupo> grupos; // Declare a ObservableList
 
+    @FXML
+    private Label nameSelectedGroup;
+
+    @FXML
+    private TableView<Alunos> tableGrupoSelecionado;
+
+    @FXML
+    private TableColumn<Alunos, String> viewEmail;
+
+    @FXML
+    private TableColumn<Alunos, String> viewName;
+
+    private ObservableList<Alunos> listaDados;
+
+    @FXML
+    private ChoiceBox<String> SprintChoice;
+    ArrayList<String> sprints = new ArrayList<String>();
+
+    @FXML
+    private TextField pontosGrupo;
+
     public GrupoController() throws SQLException {
     }
 
     @FXML
     void initialize() {
+        getSprint();
+
         grupos = FXCollections.observableArrayList(); // Inicializa a ObservableList
         telagrupos.setItems(grupos); // Associa a ObservableList à ListView
         carregarDados();
@@ -64,6 +89,14 @@ public class GrupoController {
                 }
             }
         });
+
+        listaDados = FXCollections.observableArrayList();
+
+        viewName.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        viewEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+
+        SprintChoice.getItems().addAll(sprints);
+        SprintChoice.setOnAction(this::getSprintChoice);
     }
 
     @FXML
@@ -133,16 +166,9 @@ public class GrupoController {
     public void EditedSelectedGroup(ActionEvent actionEvent) throws IOException {
         Grupo grupoSelecionado = telagrupos.getSelectionModel().getSelectedItem();
         if (grupoSelecionado != null) {
-            Stage dialog = new Stage();
-            FXMLLoader fxmlLoader = new FXMLLoader(ExecuteApplication.class.getResource("/org/alphacode/pacer/grupos/CadastroGrupo.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            dialog.setTitle("Editar Grupo");
-
-            TelaCadastroGrupoController controller = fxmlLoader.getController();
-            controller.setDialogStage(dialog, String.valueOf(grupoSelecionado)); // Passa o grupo selecionado
-
-            dialog.setScene(scene);
-            dialog.show();
+            nameSelectedGroup.setText("Grupo selecionado: " + grupoSelecionado.nomeGrupo);
+            tableGrupoSelecionado.setItems(listaDados);
+            carregarAlunos(grupoSelecionado.nomeGrupo);
         }
     }
 
@@ -154,5 +180,21 @@ public class GrupoController {
         grupos.clear(); // Limpa a lista atual antes de carregar novos dados
         grupos.addAll(gruposList); // Adiciona os dados retornados à lista
         telagrupos.setItems(grupos); // Define os itens da TableView
+    }
+
+    public void carregarAlunos(String grupo) {
+        List<Alunos> alunosList = OperacoesSQL.consultarDadosAlunos(stm, grupo);
+        listaDados.clear(); // Limpa a lista atual antes de carregar novos dados
+        listaDados.addAll(alunosList); // Adiciona os dados retornados à lista
+        tableGrupoSelecionado.setItems(listaDados); // Define os itens da TableView
+    }
+
+    public void getSprint(){
+        ArrayList<String> sprints = OperacoesSQL.consultarSprints(stm);
+        this.sprints = sprints;
+    }
+
+    public void getSprintChoice(ActionEvent event) {
+        String cla = SprintChoice.getValue();
     }
 }

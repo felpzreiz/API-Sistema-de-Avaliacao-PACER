@@ -287,5 +287,38 @@ public class OperacoesSQL {
         }
     }
 
+    public static List<Alunos> consultarDadosAlunos(Statement stm, String grupo) { // METHOD PARA FAZER UM SELECT.
+        List<Alunos> listaAlunos = new ArrayList<>();
+        try {
+            ResultSet result = stm.executeQuery("SELECT senha,email,grupo,* FROM aluno WHERE grupo='"+grupo+"'ORDER BY id ASC");
+            while (result.next()) { // result.next() roda enquanto existirem dados no banco.
+                String nome = result.getString("nome");
+                String email = result.getString("email");
+
+                // Cria um novo objeto Alunos e adiciona à lista1
+                Alunos aluno = new Alunos(nome, email, grupo);
+                listaAlunos.add(aluno);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaAlunos; // Retorna a lista de alunos
+    }
+
+    public static ArrayList<String> consultarSprints(Statement stm){
+        ArrayList<String> sprints = new ArrayList<String>();
+
+        try {
+            ResultSet result = stm.executeQuery("SELECT sprint FROM sprint ORDER BY sprint ASC");
+            while (result.next()) { // result.next() roda enquanto existirem dados no banco.
+                Integer sprint = result.getInt("sprint");
+                sprints.add(sprint.toString());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sprints;
+    }
+
     //FIM DOS MÉTODOS PARA A TELA DE GRUPOS --------------------------
 }

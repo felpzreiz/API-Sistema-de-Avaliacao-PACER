@@ -98,8 +98,18 @@ public class GrupoController {
             // Mostra o alerta e espera pela resposta do usuário
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == yesButton) {
-                // Se o usuário confirmar, remove o grupo
-                grupos.remove(selectedGroup); // Remove da ObservableList
+                Boolean prova = OperacoesSQL.lookGroup(stm, selectedGroup.nomeGrupo);
+                if (prova == false) {
+                    // Se o usuário confirmar, remove o grupo
+                    grupos.remove(selectedGroup); // Remove da ObservableList
+                    OperacoesSQL.excluirGrupo(stm, selectedGroup.nomeGrupo);
+                }else{
+                    Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+                    alerta.setTitle("Restrição: Grupo em atividade");
+                    alerta.setHeaderText(null);
+                    alerta.setContentText("Não é possível excluir esse grupo. Remova todos os membros e tente novamente.");
+                    alerta.showAndWait();
+                }
             }
         } else {
             // Alerta se nenhum grupo estiver selecionado

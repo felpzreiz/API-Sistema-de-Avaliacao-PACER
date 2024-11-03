@@ -70,7 +70,8 @@ public class OperacoesSQL {
     }
 
     public static void excluir(Statement stm, String email) {
-        String excluiAluno = "DELETE FROM aluno WHERE email = '" + email + "'";
+        String excluiAluno = "DELETE FROM usuario WHERE email = '" + email + "';" +
+                "DELETE FROM aluno WHERE email = '" + email + "'";
         try {
             stm.executeUpdate(excluiAluno);
 
@@ -96,23 +97,6 @@ public class OperacoesSQL {
 
     public static void inserirUsuario(Statement stm, String email, String senha) { // METHOD PARA FAZER UM INSERT.
         String insereUsuario = "INSERT INTO usuario(email,senha) VALUES ('" + email + "','" + senha + "')";
-
-        try {
-            stm.executeUpdate(insereUsuario);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void inserirGrupo(Statement stm, String grupo) { // METHOD PARA FAZER UM INSERT.
-        String insereUsuario = "INSERT INTO grupo(nome_grupo)" +
-                "SELECT '" + grupo + "'" +
-                "WHERE NOT EXISTS (" +
-                "    SELECT nome_grupo" +
-                "    FROM grupo" +
-                "    WHERE nome_grupo = '" + grupo + "'" +
-                ");";
 
         try {
             stm.executeUpdate(insereUsuario);
@@ -219,7 +203,7 @@ public class OperacoesSQL {
 
     }
 
-    //MÉTODOS PARA CARREGAR AS DATAS DAS SPRINTS
+    //MÉTODOS PARA CARREGAR AS DATAS DAS SPRINTS ---------------------
     public static List<Datas> carregarDatas(Statement stm) {
         List<Datas> listaDatas = new ArrayList<>();
         try {
@@ -251,13 +235,57 @@ public class OperacoesSQL {
 
     }
 
+    //FIM DOS MÉTODOS PARA CARREGAR AS DATAS DAS SPRINTS -------------
 
-        /*public static void inserirGrupo(Statement stm, String grupo){
-        String insereGrupo = "INSERT INTO grupo(nome_grupo) VALUES ('"+grupo+"')";
+
+    //MÉTODOS PARA A TELA DE GRUPOS ----------------------------------
+
+    public static Boolean lookGroup(Statement stm, String grupo) {
+        Boolean resultado = false;
         try {
-            stm.executeUpdate(insereGrupo);
+            ResultSet result = stm.executeQuery("SELECT count(id) FROM aluno WHERE grupo = '" + grupo + "'");
+            while (result.next()) { // result.next() roda enquanto existirem dados no banco.
+                Integer Contagem = Integer.parseInt(result.getString("count"));
+
+                if (Contagem == 0) {
+                    resultado = false;
+                } else {
+                    resultado = true;
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }*/
+
+        return resultado; //
+    }
+
+    public static void excluirGrupo(Statement stm, String grupo) {
+        String excluiGrupo = "DELETE FROM grupo WHERE nome_grupo = '" + grupo + "'";
+        try {
+            stm.executeUpdate(excluiGrupo);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void inserirGrupo(Statement stm, String grupo) { // METHOD PARA FAZER UM INSERT.
+        String insereUsuario = "INSERT INTO grupo(nome_grupo)" +
+                "SELECT '" + grupo + "'" +
+                "WHERE NOT EXISTS (" +
+                "    SELECT nome_grupo" +
+                "    FROM grupo" +
+                "    WHERE nome_grupo = '" + grupo + "'" +
+                ");";
+
+        try {
+            stm.executeUpdate(insereUsuario);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //FIM DOS MÉTODOS PARA A TELA DE GRUPOS --------------------------
 }

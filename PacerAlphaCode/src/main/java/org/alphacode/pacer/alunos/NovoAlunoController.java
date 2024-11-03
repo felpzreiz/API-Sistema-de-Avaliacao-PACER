@@ -73,6 +73,7 @@ public class NovoAlunoController {
             Alunos aluno = new Alunos(fullname.getText(), email.getText(), group.getText(), git.getText());
             OperacoesSQL.inserirAluno(stm, aluno.email, aluno.repo, aluno.grupo, aluno.nome);
             OperacoesSQL.inserirUsuario(stm, aluno.email, AlunoController.createPassword(aluno.email));
+            OperacoesSQL.inserirGrupo(stm, aluno.grupo);
 
             Stage stage = (Stage) novoAluno.getScene().getWindow();
             stage.close();

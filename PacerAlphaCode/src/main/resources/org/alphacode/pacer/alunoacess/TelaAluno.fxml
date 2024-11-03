@@ -14,183 +14,160 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane fx:id="homeAlunos" dividerPositions="0.18311623246492983" maxHeight="-Infinity" maxWidth="-Infinity"
-           minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="800.0" prefWidth="1550.0"
-           stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="org.alphacode.pacer.alunoacess.TelaAlunoController">
+<SplitPane fx:id="homeAlunos" dividerPositions="0.18311623246492983" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="800.0" prefWidth="1550.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.alphacode.pacer.alunoacess.TelaAlunoController">
     <items>
         <AnchorPane fx:id="dadosAluno" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="1278.0">
             <children>
                 <GridPane alignment="CENTER" layoutY="10.0" prefHeight="135.0" prefWidth="100.0">
                     <columnConstraints>
-                        <ColumnConstraints halignment="CENTER" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints halignment="CENTER" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints maxHeight="94.8000244140625" minHeight="10.0" prefHeight="66.40001220703125"
-                                        valignment="TOP" vgrow="SOMETIMES"/>
-                        <RowConstraints maxHeight="68.79998779296874" minHeight="10.0" prefHeight="68.79998779296874"
-                                        vgrow="SOMETIMES"/>
+                        <RowConstraints maxHeight="94.8000244140625" minHeight="10.0" prefHeight="66.40001220703125" valignment="TOP" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="68.79998779296874" minHeight="10.0" prefHeight="68.79998779296874" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button fx:id="btnconfig" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity"
-                                maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
-                                onAction="#acessConfig" prefHeight="60.0" prefWidth="60.0">
+                        <Button fx:id="btnconfig" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#acessConfig" prefHeight="60.0" prefWidth="60.0">
                             <font>
-                                <Font name="Arial Bold" size="12.0"/>
+                                <Font name="Arial Bold" size="12.0" />
                             </font>
                         </Button>
-                        <Button fx:id="btnsair" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity"
-                                minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#exit"
-                                prefHeight="35.0" prefWidth="35.0" GridPane.rowIndex="1">
+                        <Button fx:id="btnsair" alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#exit" prefHeight="35.0" prefWidth="35.0" GridPane.rowIndex="1">
                             <font>
-                                <Font name="Arial Bold" size="12.0"/>
+                                <Font name="Arial Bold" size="12.0" />
                             </font>
                         </Button>
                     </children>
                 </GridPane>
-                <Label fx:id="textpacer" alignment="CENTER" layoutX="488.0" layoutY="6.0" prefHeight="42.0"
-                       prefWidth="510.0" text="Sistema de Avaliação ">
+                <Label fx:id="textpacer" alignment="CENTER" layoutX="488.0" layoutY="6.0" prefHeight="42.0" prefWidth="510.0" text="Sistema de Avaliação ">
                     <font>
-                        <Font name="Arial Bold" size="24.0"/>
+                        <Font name="Arial Bold" size="24.0" />
                     </font>
                 </Label>
                 <GridPane layoutX="100.0" layoutY="8.0" prefHeight="61.0" prefWidth="351.0">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="96.800048828125" minWidth="10.0"
-                                           prefWidth="48.00001220703125"/>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="303.99998779296874" minWidth="10.0"
-                                           prefWidth="303.99998779296874"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="96.800048828125" minWidth="10.0" prefWidth="48.00001220703125" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="303.99998779296874" minWidth="10.0" prefWidth="303.99998779296874" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <Label fx:id="nomeAluno" alignment="CENTER" text="Nome:">
                             <font>
-                                <Font name="Arial Bold" size="14.0"/>
+                                <Font name="Arial Bold" size="14.0" />
                             </font>
                         </Label>
                         <Label fx:id="idAluno" alignment="CENTER" text="Email:" GridPane.rowIndex="1">
                             <font>
-                                <Font name="Arial Bold" size="14.0"/>
+                                <Font name="Arial Bold" size="14.0" />
                             </font>
                         </Label>
                         <Label fx:id="labelNome" text="Label" GridPane.columnIndex="1">
                             <font>
-                                <Font name="Arial" size="14.0"/>
+                                <Font name="Arial" size="14.0" />
                             </font>
                         </Label>
                         <Label fx:id="idEmail" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <font>
-                                <Font name="Arial" size="14.0"/>
+                                <Font name="Arial" size="14.0" />
                             </font>
                         </Label>
                     </children>
                 </GridPane>
                 <ImageView fitHeight="150.0" fitWidth="442.0" layoutX="1107.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../images/logogif.gif"/>
+                        <Image url="@../images/logogif.gif" />
                     </image>
                     <cursor>
-                        <Cursor fx:constant="WAIT"/>
+                        <Cursor fx:constant="WAIT" />
                     </cursor>
                 </ImageView>
             </children>
         </AnchorPane>
         <AnchorPane fx:id="tabelaAlunos" minHeight="0.0" minWidth="0.0" prefHeight="625.0" prefWidth="1549.0">
             <children>
-                <ImageView fx:id="logofatec" fitHeight="87.0" fitWidth="152.0" layoutX="1405.0" layoutY="562.0"
-                           nodeOrientation="INHERIT" preserveRatio="true">
+                <ImageView fx:id="logofatec" fitHeight="87.0" fitWidth="152.0" layoutX="1405.0" layoutY="562.0" nodeOrientation="INHERIT" preserveRatio="true">
                     <image>
-                        <Image url="@../images/Imagem1.png"/>
+                        <Image url="@../images/Imagem1.png" />
                     </image>
                 </ImageView>
-                <Label fx:id="nomegrupo" alignment="CENTER" layoutX="116.0" layoutY="29.0" text="NomedoGrupo"
-                       textAlignment="CENTER">
+                <Label fx:id="nomegrupo" alignment="CENTER" layoutX="116.0" layoutY="29.0" text="NomedoGrupo" textAlignment="CENTER">
                     <font>
-                        <Font name="Arial Bold" size="24.0"/>
+                        <Font name="Arial Bold" size="24.0" />
                     </font>
                 </Label>
-                <Button fx:id="btsalvar" layoutX="1253.0" layoutY="527.0" mnemonicParsing="false"
-                        text="Salvar Avaliação">
+                <Button fx:id="btsalvar" layoutX="1261.0" layoutY="529.0" mnemonicParsing="false" text="Salvar Avaliação">
                     <font>
-                        <Font name="Arial Bold" size="12.0"/>
+                        <Font name="Arial Bold" size="12.0" />
                     </font>
                 </Button>
-                <GridPane fx:id="gridavaliacao" alignment="CENTER" hgap="5.0" layoutX="-2.0" layoutY="86.0"
-                          prefHeight="122.0" prefWidth="340.0">
+                <GridPane fx:id="gridavaliacao" alignment="CENTER" hgap="5.0" layoutX="-2.0" layoutY="86.0" prefHeight="122.0" prefWidth="340.0">
                     <columnConstraints>
-                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="300.0" minWidth="200.0"
-                                           prefWidth="160.0"/>
-                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="252.800048828125"
-                                           minWidth="200.0" prefWidth="249.60006713867188"/>
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="300.0" minWidth="200.0" prefWidth="160.0" />
+                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="252.800048828125" minWidth="200.0" prefWidth="249.60006713867188" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <Label fx:id="textSprint" text="Sprint Atual:">
                             <font>
-                                <Font name="Arial Bold" size="18.0"/>
+                                <Font name="Arial Bold" size="18.0" />
                             </font>
                         </Label>
                         <Label fx:id="timeSprint" text="Período de Avaliação:" GridPane.rowIndex="2">
                             <font>
-                                <Font name="Arial Bold" size="18.0"/>
+                                <Font name="Arial Bold" size="18.0" />
                             </font>
                         </Label>
-                        <Label fx:id="pontosSprint" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                               minWidth="-Infinity" text="Pontos:" GridPane.rowIndex="1">
+                        <Label fx:id="pontosSprint" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Pontos:" GridPane.rowIndex="1">
                             <font>
-                                <Font name="Arial Bold" size="18.0"/>
+                                <Font name="Arial Bold" size="18.0" />
                             </font>
                         </Label>
                         <Label fx:id="infoSprint" text="!" GridPane.columnIndex="1">
                             <font>
-                                <Font name="Arial Bold" size="18.0"/>
+                                <Font name="Arial Bold" size="18.0" />
                             </font>
                         </Label>
                         <Label fx:id="infoPontos" text="!" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <font>
-                                <Font name="Arial Bold" size="18.0"/>
+                                <Font name="Arial Bold" size="18.0" />
                             </font>
                         </Label>
                         <Label fx:id="infoAvaliacao" text="!" GridPane.columnIndex="1" GridPane.rowIndex="2">
                             <font>
-                                <Font name="Arial Bold" size="18.0"/>
+                                <Font name="Arial Bold" size="18.0" />
                             </font>
                         </Label>
                     </children>
                 </GridPane>
-                <TableView fx:id="tableStudents" layoutX="403.0" layoutY="134.0" maxHeight="-Infinity"
-                           maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0"
-                           prefWidth="974.0">
+                <TableView fx:id="tableStudents" layoutX="411.0" layoutY="145.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="974.0">
                     <columns>
-                        <TableColumn fx:id="columnStudent" editable="false" maxWidth="300.0" minWidth="200.0"
-                                     prefWidth="300.0" text="Aluno"/>
+                        <TableColumn fx:id="columnStudent" editable="false" maxWidth="300.0" minWidth="200.0" prefWidth="300.0" text="Aluno" />
                     </columns>
                 </TableView>
                 <GridPane layoutX="1377.0" layoutY="69.0" prefHeight="64.0" prefWidth="138.0">
                     <columnConstraints>
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Label fx:id="qtPontos" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                               minWidth="-Infinity" text="Pontos ">
+                        <Label fx:id="qtPontos" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Pontos ">
                             <font>
-                                <Font name="Arial Bold" size="18.0"/>
+                                <Font name="Arial Bold" size="18.0" />
                             </font>
                         </Label>
                         <Label fx:id="qtdpontosDisp" visible="false" GridPane.rowIndex="1">
                             <font>
-                                <Font name="Arial Bold" size="18.0"/>
+                                <Font name="Arial Bold" size="18.0" />
                             </font>
                         </Label>
                     </children>

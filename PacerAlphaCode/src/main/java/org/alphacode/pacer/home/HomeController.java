@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -19,11 +20,22 @@ import java.util.Objects;
 
 public class HomeController {
 
+
+
     @FXML
     private AnchorPane Homepage;    // A manipulação de paginas é definida pela AnchorPane que muda conforme a opção do VBOX menuFIX
 
     @FXML
     private Button botaogerenciaraluno;
+
+    @FXML
+    private Button alphaCode;
+
+    @FXML
+    private Button btnConfig;
+
+    @FXML
+    public TableView tablegruposhome;
 
     @FXML
     private Button botaogerenciargrupos;
@@ -39,6 +51,9 @@ public class HomeController {
 
     @FXML
     private Button exit;
+
+    @FXML
+    private TableView tablesprinthome;
 
     @FXML
     private ImageView fatec;
@@ -104,4 +119,9 @@ public class HomeController {
     }
 
 
+    public void infoAlphaCode(ActionEvent actionEvent) {
+    }
+
+    public void openConfig(ActionEvent actionEvent) {
+    }
 }

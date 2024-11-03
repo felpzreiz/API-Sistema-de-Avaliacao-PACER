@@ -5,21 +5,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import org.alphacode.pacer.ExecuteApplication;
-import org.alphacode.pacer.alunoacess.TelaAlunoController;
-import org.alphacode.pacer.alunos.AlunoController;
 
-import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,7 +34,7 @@ public class SprintController {
     public Text textCriterios;
 
     @FXML
-    public Button teste;
+    public Text textSprints;
 
     @FXML
     private DatePicker addDataI;
@@ -55,19 +49,25 @@ public class SprintController {
     private Button btnDeleteC;
 
     @FXML
-    private Button btnEditar;
-
-    @FXML
     private Button btnRemoverS;
 
     @FXML
-    private TableColumn<?, ?> clnDataF;
+    private Button btnStartSprint;
 
     @FXML
-    private TableColumn<?, ?> clnDataI;
+    private Button btnEncerrarSprint;
 
     @FXML
-    private TableColumn<?, ?> clnSprint;
+    private TableColumn<Objects, String> nSprint;
+
+    @FXML
+    private TableColumn<Datas, LocalDate> inicioSprint;
+
+    @FXML
+    private TableColumn<Datas, LocalDate> fimSprint;
+
+    @FXML
+    private TableColumn statusSprint;
 
     @FXML
     private ListView<Criterios> criterios;
@@ -76,33 +76,88 @@ public class SprintController {
     private TextField nomeCriterio;
 
     @FXML
-    private TableView<?> tblSprint;
+    private TableView<Datas> tableSprint;
 
     private ObservableList<String> column = FXCollections.observableArrayList();
     private ObservableList<Criterios> lista = FXCollections.observableArrayList();
+    private ObservableList<Datas> dataSprint = FXCollections.observableArrayList();
 
     public SprintController() throws SQLException {
     }
 
-
     public void initialize() throws SQLException {
+        nSprint.setCellValueFactory(new PropertyValueFactory<>("idSprint"));
+        inicioSprint.setCellValueFactory(new PropertyValueFactory<>("dataInicial"));
+        fimSprint.setCellValueFactory(new PropertyValueFactory<>("dataFinal"));
+        tableSprint.setItems(dataSprint);
+        criterios.setItems(lista);
         style();
         criterios();
-        criterios.setItems(lista);
         exibirInstrucoes();
 
     }
 
-
     @FXML
-    void Adicionardatas(ActionEvent event) {
+    void addData(ActionEvent event) {
+        LocalDate dataInicial = addDataI.getValue();
+        LocalDate dataFinal = addDataF.getValue();
 
+        if (dataInicial != null && dataFinal != null) {
+            if (dataFinal.isAfter(dataInicial)) {
+                int idSprint = dataSprint.size() + 1;
+                Datas novaData = new Datas(idSprint, dataInicial, dataFinal);
+                dataSprint.add(novaData);
+            } else {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Erro!");
+                alert.setHeaderText("Datas escolhidas conflitantes");
+                alert.setContentText("Verifique as datas selecionadas");
+                alert.show();
+
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Erro!");
+            alert.setHeaderText("Campo de data vazio.");
+            alert.setContentText("Informe a data inicial e data final.");
+            alert.show();
+        }
+        System.out.println("Data Inicial: " + dataInicial + " Data Final: " + dataFinal);
+        addDataI.setValue(null);
+        addDataF.setValue(null);
     }
 
     @FXML
-    void Removersprint(ActionEvent event) {
+    void deleteSprint(ActionEvent event) {
+        Datas dataSelect = tableSprint.getSelectionModel().getSelectedItem();
+
+        if (dataSelect == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Nenhum período selecionado.");
+            alert.setContentText("Selecione um período para remover.");
+            alert.show();
+            return;
+        }
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Confirmar Remoção");
+        confirm.setHeaderText("Você tem certeza que deseja remover esta data?");
+        confirm.setContentText("Data inicial: " + dataSelect.getDataInicial() + " Data Final: " + dataSelect.getDataFinal());
+
+        ButtonType btnSim = new ButtonType("Sim");
+        ButtonType btnNao = new ButtonType("Não");
+        confirm.getButtonTypes().setAll(btnSim, btnNao);
+
+        confirm.showAndWait().ifPresent(response -> {
+            if (response == btnSim) {
+                dataSprint.remove(dataSelect);
+                contSprint();
+                tableSprint.refresh();
+            }
+        });
 
     }
+
 
     @FXML
     void acaodataF(ActionEvent event) {
@@ -173,14 +228,15 @@ public class SprintController {
     }
 
     @FXML
-    void editarsprint(ActionEvent event) {
-
+    public void style() {
+        String css = Objects.requireNonNull(getClass().getResource("/org/alphacode/pacer/styles.css")).toExternalForm();
+        criterios.getStylesheets().add(css);
     }
 
     private void exibirInstrucoes() {
-        String instrucoes =
+        String instrucoesC =
                 """
-                        Instruções para Uso de Critérios e Sprints:
+                        Instruções para Uso de Critérios:
                         
                         1. Defina os Critérios:
                            - Antes de iniciar uma Sprint, é fundamental estabelecer os critérios de avaliação.
@@ -195,13 +251,38 @@ public class SprintController {
                         Uma vez que o período de avaliação comece, não será possível remover critérios.
                         Certifique-se de que todos os critérios estejam corretos antes de iniciar a avaliação.""";
 
-        textCriterios.setText(instrucoes); // Define o texto das instruções
+        String instrucoesS =
+                """
+                            Instruções para Uso de Sprint:
+                        
+                        1. Preenchimento das Datas:
+                           - Selecione a **Data de Início** e a **Data Final** da Sprint.
+                           - Se necessário, é possível remover as datas já escolhidas.
+                        
+                        2. Iniciar o Período de Avaliação:
+                           - Para iniciar os períodos de avaliação, clique em **Iniciar Sprint**.
+                           - Uma vez iniciado, o período de avaliação não pode ser alterado.
+                        
+                        3. Encerrar a Sprint:
+                           - O botão **Encerrar Sprint** pode ser utilizado caso deseje interromper o período de avaliação.
+                           - Lembre-se: após iniciar, não será possível adicionar, remover as datas.
+                        
+                        * ATENÇÃO!
+                        Garanta que todas as informações estejam corretas antes de iniciar a avaliação, pois as mudanças não serão permitidas após o início.""";
+
+        textCriterios.setText(instrucoesC); // Define o texto das instruções
+        textSprints.setText(instrucoesS);
     }
 
+    public void startSprint(ActionEvent actionEvent) {
+    }
 
-    @FXML
-    public void style() {
-        String css = Objects.requireNonNull(getClass().getResource("/org/alphacode/pacer/styles.css")).toExternalForm();
-        criterios.getStylesheets().add(css);
+    public void encerrarSprint(ActionEvent actionEvent) {
+    }
+
+    public void contSprint() {
+        for (int i = 0; i < dataSprint.size(); i++) {
+            dataSprint.get(i).setIdSprint(i + 1); //
+        }
     }
 }

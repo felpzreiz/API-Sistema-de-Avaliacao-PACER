@@ -129,6 +129,7 @@ public class TelaAlunoController {
     public TelaAlunoController() throws SQLException {
     }
 
+    @FXML
     public void initializeTable(List<String> column) {                // O nome das colunas é considerada uma String
         tableStudents.setEditable(true);                                 // Tabela Editavél
         tableStudents.getColumns().clear();                               // Limpa os antigos registros de colunas
@@ -203,6 +204,11 @@ public class TelaAlunoController {
     public void acessConfig(ActionEvent actionEvent) {
     }
 
+    @FXML
+    public void style(){
+        String css = Objects.requireNonNull(getClass().getResource("/org/alphacode/pacer/styles.css")).toString();
+        tableStudents.getStylesheets().add(css);
+    }
 
     public float somaNotas() {
         qtdpontosDisp.setVisible(true);
@@ -226,12 +232,6 @@ public class TelaAlunoController {
 
 
 
-
-    @FXML
-    public void style(){
-        String css = Objects.requireNonNull(getClass().getResource("/org/alphacode/pacer/styles.css")).toString();
-        tableStudents.getStylesheets().add(css);
-    }
 
 
 }

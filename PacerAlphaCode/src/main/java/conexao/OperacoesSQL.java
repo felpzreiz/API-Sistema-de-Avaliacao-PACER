@@ -4,8 +4,10 @@ import org.alphacode.pacer.alunoacess.AlunosInterface;
 import org.alphacode.pacer.alunos.Alunos;
 import org.alphacode.pacer.grupos.Grupo;
 import org.alphacode.pacer.sprintsCriterios.Criterios;
+import org.alphacode.pacer.sprintsCriterios.Datas;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -139,7 +141,6 @@ public class OperacoesSQL {
         return listaGrupos; // Retorna a lista de alunos
     }
 
-
     //MÉTODOS PARA A TELA SRINTCONTROLLER
     public static List<Criterios> carregarCriterios(Statement stm) {
         List<Criterios> listaCriterios = new ArrayList<>();
@@ -192,12 +193,13 @@ public class OperacoesSQL {
 
     }
 
+    //MÉTODOS PARA ATUALUZAR A TABELA DINAMICA EM TELAALUNO
     public static List<AlunosInterface> carregarNomes(Statement stm) {
         List<AlunosInterface> listaNomes = new ArrayList<>();
         try {
             ResultSet rs = stm.executeQuery("SELECT nome FROM aluno");
             while (rs.next()) {
-               String aluno = rs.getString("nome");
+                String aluno = rs.getString("nome");
                 listaNomes.add(new AlunosInterface(aluno));
             }
         } catch (SQLException e) {
@@ -206,6 +208,48 @@ public class OperacoesSQL {
         return listaNomes;
     }
 
+    //MÉTODOS PARA ADICIONAR SPRINTS
+    public static void addSprint(Statement stm, int idSprint, LocalDate dataInicial, LocalDate dataFinal) {
+        String dataSprint = "INSERT INTO sprint (sprint, data_inicio, data_fim) VALUES ('" + idSprint + "','" + dataInicial + "','" + dataFinal + "')";
+        try {
+            stm.execute(dataSprint);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    //MÉTODOS PARA CARREGAR AS DATAS DAS SPRINTS
+    public static List<Datas> carregarDatas(Statement stm) {
+        List<Datas> listaDatas = new ArrayList<>();
+        try {
+            ResultSet rs = stm.executeQuery("SELECT  sprint, data_inicio, data_fim FROM  sprint");
+            while (rs.next()) {
+                int idSprint = rs.getInt("sprint");
+                LocalDate dataInicial = rs.getDate("data_inicio").toLocalDate();
+                LocalDate dataFinal = rs.getDate("data_fim").toLocalDate();
+                listaDatas.add(new Datas(idSprint, dataInicial, dataFinal));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaDatas;
+
+
+    }
+
+    public static void deleteSprint(Statement stm, int idSprint) {
+        String deleteDate = "DELETE FROM sprint WHERE sprint = ('" + idSprint + "')";
+        try {
+            stm.execute(deleteDate);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
 
 
         /*public static void inserirGrupo(Statement stm, String grupo){

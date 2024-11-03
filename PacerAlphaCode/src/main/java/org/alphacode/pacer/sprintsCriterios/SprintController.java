@@ -85,7 +85,7 @@ public class SprintController {
     public SprintController() throws SQLException {
     }
 
-    public void initialize() throws SQLException {
+    public void initialize() {
         nSprint.setCellValueFactory(new PropertyValueFactory<>("idSprint"));
         inicioSprint.setCellValueFactory(new PropertyValueFactory<>("dataInicial"));
         fimSprint.setCellValueFactory(new PropertyValueFactory<>("dataFinal"));
@@ -93,20 +93,24 @@ public class SprintController {
         criterios.setItems(lista);
         style();
         criterios();
+        carregarDatas();
         exibirInstrucoes();
 
     }
 
     @FXML
     void addData(ActionEvent event) {
+
         LocalDate dataInicial = addDataI.getValue();
         LocalDate dataFinal = addDataF.getValue();
 
         if (dataInicial != null && dataFinal != null) {
+
             if (dataFinal.isAfter(dataInicial)) {
                 int idSprint = dataSprint.size() + 1;
                 Datas novaData = new Datas(idSprint, dataInicial, dataFinal);
                 dataSprint.add(novaData);
+                OperacoesSQL.addSprint(stm, idSprint, dataInicial, dataFinal);
             } else {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Erro!");
@@ -130,6 +134,7 @@ public class SprintController {
     @FXML
     void deleteSprint(ActionEvent event) {
         Datas dataSelect = tableSprint.getSelectionModel().getSelectedItem();
+        int idData = tableSprint.getSelectionModel().getSelectedItem().getIdSprint();
 
         if (dataSelect == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -153,6 +158,8 @@ public class SprintController {
                 dataSprint.remove(dataSelect);
                 contSprint();
                 tableSprint.refresh();
+                OperacoesSQL.deleteSprint(stm, idData);
+
             }
         });
 
@@ -170,11 +177,19 @@ public class SprintController {
     }
 
     @FXML
-    void criterios() throws SQLException {
+    void criterios() {
         List<Criterios> criteriosC = OperacoesSQL.carregarCriterios(stm);
         lista.addAll(criteriosC);
         criterios.setItems(lista);
     }
+
+    @FXML
+    void carregarDatas() {
+        List<Datas> datas = OperacoesSQL.carregarDatas(stm);
+        dataSprint.addAll(datas);
+        tableSprint.setItems(dataSprint);
+    }
+
 
     @FXML
     void addC(ActionEvent event) {

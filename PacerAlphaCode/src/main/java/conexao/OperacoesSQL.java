@@ -321,4 +321,39 @@ public class OperacoesSQL {
     }
 
     //FIM DOS MÉTODOS PARA A TELA DE GRUPOS --------------------------
+
+    //MÉTODOS PARA A TELA DE LOGIN -----------------------------------
+
+    public static Boolean getUser(Statement stm, String email, String senha) {
+        Boolean user = false;
+        try {
+            ResultSet result = stm.executeQuery("SELECT count(*) FROM usuario WHERE email = '" + email + "' AND senha = '" + senha +"'");
+            while (result.next()) { // result.next() roda enquanto existirem dados no banco.
+                if (result.getInt("count") == 1) {
+                    user = true;
+                } else {
+                    user = false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user; //
+    }
+
+    public static String getEmailUser(Statement stm, String email) {
+        String email1 = "";
+        try {
+            ResultSet result = stm.executeQuery("SELECT email FROM usuario WHERE email = '" + email + "'");
+            while (result.next()) { // result.next() roda enquanto existirem dados no banco.
+                email1 = result.getString("email");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return email1; //
+    }
+
+    //FIM DOS MÉTODOS PARA A TELA DE LOGIN ---------------------------
+
 }

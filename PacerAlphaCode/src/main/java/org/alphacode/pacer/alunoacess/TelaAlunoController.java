@@ -23,10 +23,14 @@ import java.util.Map;
 import java.util.Objects;
 
 public class TelaAlunoController {
-
-
     OperacoesSQL conexao = new OperacoesSQL();
     Statement stm = OperacoesSQL.conectarBanco();
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    private String email;
 
     @FXML
     private Label idAluno;
@@ -117,6 +121,7 @@ public class TelaAlunoController {
 
     @FXML
     public void initialize() {
+        idEmail.setText("");
         listaAlunos = FXCollections.observableArrayList();                  // Inicio primeiro os alunos na coluna de estudantes
         List<String> colunas = OperacoesSQL.carregarColunas(stm);         //  Carrego as colunas para iniciar em seguida a tabela
         carregarAlunos();                                                                 // Trago o metodo de alunos
@@ -229,9 +234,9 @@ public class TelaAlunoController {
         return pontosSprint;
     }
 
-
-
-
-
-
+    @FXML
+    public void carregarDados(String email) throws SQLException {
+        setEmail(email);
+        idEmail.setText(this.email);
+    }
 }

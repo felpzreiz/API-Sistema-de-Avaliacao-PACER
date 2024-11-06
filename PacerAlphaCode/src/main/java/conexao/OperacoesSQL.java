@@ -320,6 +320,20 @@ public class OperacoesSQL {
         return sprints;
     }
 
+        public static void insertPontosGrupos(Statement stm, Integer sprint, String grupo, Double nota) { // METHOD PARA FAZER UM INSERT.
+        String inserePontos = "INSERT INTO pontos_grupo(id_sprint, id_grupo, pontos) " +
+                "VALUES (" +
+                "(SELECT id FROM sprint WHERE sprint="+sprint+")," +
+                "(SELECT id FROM grupo WHERE nome_grupo='"+grupo+"'), "+nota+")\n";
+
+        try {
+            stm.executeUpdate(inserePontos);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     //FIM DOS MÉTODOS PARA A TELA DE GRUPOS --------------------------
 
     //MÉTODOS PARA A TELA DE LOGIN -----------------------------------

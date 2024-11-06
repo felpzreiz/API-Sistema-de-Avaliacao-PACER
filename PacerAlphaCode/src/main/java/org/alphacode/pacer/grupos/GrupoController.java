@@ -26,6 +26,8 @@ import java.util.Optional;
 public class GrupoController {
     Statement stm = OperacoesSQL.conectarBanco();
 
+    private String grupoSelecao;
+
     @FXML
     public Button buttonEditGroup;
 
@@ -69,6 +71,12 @@ public class GrupoController {
 
     public GrupoController() throws SQLException {
     }
+
+    @FXML
+    private TableView<String> tableSprints;
+
+    @FXML
+    private Button buttonAddPoints;
 
     @FXML
     void initialize() {
@@ -169,6 +177,7 @@ public class GrupoController {
             nameSelectedGroup.setText("Grupo selecionado: " + grupoSelecionado.nomeGrupo);
             tableGrupoSelecionado.setItems(listaDados);
             carregarAlunos(grupoSelecionado.nomeGrupo);
+            setGrupoSelecionado(grupoSelecionado.nomeGrupo);
         }
     }
 
@@ -194,7 +203,21 @@ public class GrupoController {
         this.sprints = sprints;
     }
 
-    public void getSprintChoice(ActionEvent event) {
-        String cla = SprintChoice.getValue();
+    public Integer getSprintChoice(ActionEvent event) {
+        Integer sprint = Integer.parseInt(SprintChoice.getValue());
+        return(sprint);
+    }
+
+    public void setGrupoSelecionado(String grupo) {
+        this.grupoSelecao = grupo;
+    }
+
+    public String getGrupoSelecionado(){
+        return(grupoSelecao);
+    };
+
+    @FXML
+    void addPointsGroup(ActionEvent event) {
+        OperacoesSQL.insertPontosGrupos(stm, getSprintChoice(event), getGrupoSelecionado(), Double.parseDouble(pontosGrupo.getText()));
     }
 }

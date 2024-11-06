@@ -333,7 +333,6 @@ public class OperacoesSQL {
             e.printStackTrace();
         }
     }
-
     //FIM DOS MÉTODOS PARA A TELA DE GRUPOS --------------------------
 
     //MÉTODOS PARA A TELA DE LOGIN -----------------------------------

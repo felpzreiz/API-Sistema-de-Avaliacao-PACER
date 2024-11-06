@@ -21,7 +21,6 @@ import java.util.Objects;
 public class HomeController {
 
 
-
     @FXML
     private AnchorPane Homepage;    // A manipulação de paginas é definida pela AnchorPane que muda conforme a opção do VBOX menuFIX
 
@@ -71,6 +70,16 @@ public class HomeController {
     void exitPacer(ActionEvent event) throws IOException {
         Stage stage = (Stage) pacer.getScene().getWindow();
         stage.close();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/alphacode/pacer/home/Login.fxml"));
+        Parent login = loader.load();
+        Stage newStage = new Stage();
+        newStage.setTitle("Login");
+        Scene scene = new Scene(login, 545,620);
+        newStage.setScene(scene);
+        newStage.setResizable(false);
+        newStage.show();
+
     }
 
     @FXML

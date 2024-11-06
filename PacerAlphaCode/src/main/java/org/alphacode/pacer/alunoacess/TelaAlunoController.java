@@ -6,6 +6,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -15,6 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.converter.FloatStringConverter;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
@@ -134,7 +138,6 @@ public class TelaAlunoController {
     public TelaAlunoController() throws SQLException {
     }
 
-    @FXML
     public void initializeTable(List<String> column) {                // O nome das colunas é considerada uma String
         tableStudents.setEditable(true);                                 // Tabela Editavél
         tableStudents.getColumns().clear();                               // Limpa os antigos registros de colunas
@@ -142,18 +145,24 @@ public class TelaAlunoController {
         tableStudents.getColumns().add(columnStudent);            // Insere a coluna Alunos na Tabela
         columnStudent.setEditable(false);                           // Bloqueia a coluna de alunos na tabela
 
+        notaColunas = new HashMap<>();
+        int colunaX = 1;
         for (String col : column) {
 
-            notaColunas.put(col, listaAlunos.getFirst().getNotas().size());    // Mapeia o nome da coluna ao índice da nota
+            notaColunas.put(col, colunaX);
+            ;// Mapeia o nome da coluna ao índice da nota
+            System.out.println("Coluna: " + col + " com índice de nota: " + colunaX);
             TableColumn<AlunosInterface, Float> tableColumn = new TableColumn<>(col);
 
-
             tableColumn.setCellValueFactory(cellData -> {
-                int nota = notaColunas.get(col);
-                if (nota < cellData.getValue().getNotas().size()) {
-                    return new SimpleFloatProperty(cellData.getValue().getNotas().get(nota).getNota()).asObject();
+                int notaIndex = notaColunas.get(col);  // Obtém o índice da nota correspondente
+                AlunosInterface aluno = cellData.getValue();
+
+                if (notaIndex < aluno.getNotas().size()) {
+                    return new SimpleFloatProperty(aluno.getNotas().get(notaIndex).getNota()).asObject();
                 } else {
-                    return new SimpleFloatProperty(0.0f).asObject();
+                    aluno.addNotas(new Notas(0.0f));  // Criação da nota com valor inicial 0
+                    return new SimpleFloatProperty(0.0f).asObject();  // Retorna o valor padrão 0
                 }
             });
 
@@ -161,48 +170,62 @@ public class TelaAlunoController {
             tableColumn.setOnEditCommit(event -> {
                 AlunosInterface aluno = event.getRowValue();
                 String colunaNome = event.getTableColumn().getText();
-                int notaIndex = notaColunas.get(colunaNome);
+                int indiceNota = notaColunas.get(colunaNome);
 
-                float notaAluno = event.getNewValue();             // Nota digitada
+                String stringNota = event.getNewValue().toString().replace(',', '.');
 
-                System.out.println("Aluno: " + aluno.getNome() + " Nota digitada: " + notaAluno + " para " + colunaNome);
+                try {
 
-                float somaAtual = somaNotas();
+                    float notaDigitada = Float.parseFloat(stringNota);      // Nota digitada
+
+                    //System.out.println("Aluno: " + aluno.getNome() + " Nota digitada: " + notaDigitada + " para " + colunaNome);
 
 
-                if (notaAluno >= 0 && notaAluno <= 3) {
-                    if (pontosSprint() > somaNotas()) {
-                        if (notaIndex >= aluno.getNotas().size()) {
-                            aluno.addNotas(new Notas(notaAluno));
+                    if (notaDigitada >= 0 && notaDigitada <= 3) {
+
+                        float somaAtual = +notaDigitada + somaNotas();
+
+                        if (pontosSprint() >= somaAtual) {
+                            if (indiceNota >= aluno.getNotas().size()) {
+                                aluno.addNotas(new Notas(notaDigitada));
+                            } else {
+                                aluno.getNotas().get(indiceNota).setNota(notaDigitada);
+                            }
+                            tableStudents.refresh();
+                            somaNotas();
+
                         } else {
-                            aluno.getNotas().get(notaIndex).setNota(notaAluno);
+                            showAlert("Erro!", "ATENÇÃO", "Quantidade de pontos excedida.");
                         }
-                        somaNotas();
                     } else {
-                        Alert info = new Alert(Alert.AlertType.ERROR);
-                        info.setTitle("Erro");
-                        info.setHeaderText("ATENÇÃO! ");
-                        info.setContentText("Quantidade de pontos excedida.");
-                        info.show();
+
+                        showAlert("Erro!", "Nota inválida!", "A nota deve estar entre 0 e 3.");
+
                     }
-                } else {
-                    Alert info = new Alert(Alert.AlertType.INFORMATION);
-                    info.setTitle("Erro");
-                    info.setHeaderText("Nota inválida!");
-                    info.setContentText("A nota deve estar entre 0 e 3.");
-                    info.showAndWait();
+                } catch (NumberFormatException e) {
+                    showAlert("Formato inválido", "Formato de nota incorreto", "Por favor, insira um número válido (por exemplo: 1.5 ou 1,5).");
                 }
             });
             tableStudents.getColumns().add(tableColumn);
+            colunaX++;
         }
         tableStudents.setItems(listaAlunos);
         tableStudents.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     @FXML
-    public void exit(ActionEvent actionEvent) {
+    public void exit(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) homeAlunos.getScene().getWindow();
         stage.close();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/alphacode/pacer/home/Login.fxml"));
+        Parent login = loader.load();
+        Stage newStage = new Stage();
+        newStage.setTitle("Login");
+        Scene scene = new Scene(login, 545,620);
+        newStage.setScene(scene);
+        newStage.setResizable(false);
+        newStage.show();
     }
 
     @FXML
@@ -210,7 +233,7 @@ public class TelaAlunoController {
     }
 
     @FXML
-    public void style(){
+    public void style() {
         String css = Objects.requireNonNull(getClass().getResource("/org/alphacode/pacer/styles.css")).toString();
         tableStudents.getStylesheets().add(css);
     }
@@ -230,7 +253,7 @@ public class TelaAlunoController {
     public float pontosSprint() {
         infoPontos.setVisible(true);
         infoPontos.setText("10");
-        float pontosSprint = 9f;
+        float pontosSprint = 10f;
         return pontosSprint;
     }
 
@@ -238,5 +261,27 @@ public class TelaAlunoController {
     public void carregarDados(String email) throws SQLException {
         setEmail(email);
         idEmail.setText(this.email);
+        nomegrupo.setText(OperacoesSQL.carregarInfo(stm, email));
     }
+
+    @FXML
+    public void nomeGrupo(){
+
+
+
+
+    }
+
+
+    @FXML
+    public void showAlert(String title, String header, String content) {
+        Alert info = new Alert(Alert.AlertType.INFORMATION);
+        info.setTitle(title);
+        info.setHeaderText(header);
+        info.setContentText(content);
+        info.show();
+    }
+
 }
+
+

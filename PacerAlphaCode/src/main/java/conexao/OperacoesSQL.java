@@ -290,7 +290,7 @@ public class OperacoesSQL {
     public static List<Alunos> consultarDadosAlunos(Statement stm, String grupo) { // METHOD PARA FAZER UM SELECT.
         List<Alunos> listaAlunos = new ArrayList<>();
         try {
-            ResultSet result = stm.executeQuery("SELECT senha,email,grupo,* FROM aluno WHERE grupo='"+grupo+"'ORDER BY id ASC");
+            ResultSet result = stm.executeQuery("SELECT senha,email,grupo,* FROM aluno WHERE grupo='" + grupo + "'ORDER BY id ASC");
             while (result.next()) { // result.next() roda enquanto existirem dados no banco.
                 String nome = result.getString("nome");
                 String email = result.getString("email");
@@ -305,7 +305,7 @@ public class OperacoesSQL {
         return listaAlunos; // Retorna a lista de alunos
     }
 
-    public static ArrayList<String> consultarSprints(Statement stm){
+    public static ArrayList<String> consultarSprints(Statement stm) {
         ArrayList<String> sprints = new ArrayList<String>();
 
         try {
@@ -327,7 +327,7 @@ public class OperacoesSQL {
     public static Boolean getUser(Statement stm, String email, String senha) {
         Boolean user = false;
         try {
-            ResultSet result = stm.executeQuery("SELECT count(*) FROM usuario WHERE email = '" + email + "' AND senha = '" + senha +"'");
+            ResultSet result = stm.executeQuery("SELECT count(*) FROM usuario WHERE email = '" + email + "' AND senha = '" + senha + "'");
             while (result.next()) { // result.next() roda enquanto existirem dados no banco.
                 if (result.getInt("count") == 1) {
                     user = true;
@@ -355,5 +355,23 @@ public class OperacoesSQL {
     }
 
     //FIM DOS MÉTODOS PARA A TELA DE LOGIN ---------------------------
+
+
+    //MÉTODOS PARA A TELA DE AVAVALIAÇÃO ALUNO -----------------------------------
+
+    public static String carregarInfo(Statement stm, String idAluno) {
+        String query = "select grupo from aluno where email =    '" + idAluno + "'";
+        String grupo = null;
+        try {
+            ResultSet result = stm.executeQuery(query);
+            while (result.next()) {
+               grupo = result.getString("grupo");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return grupo;
+    }
+
 
 }

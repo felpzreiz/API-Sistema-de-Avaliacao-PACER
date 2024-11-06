@@ -57,10 +57,10 @@ public class LoginController {
 
     @FXML
     private void onButtonClick() throws IOException, SQLException {
-        if ((idEmail.getText() != null && !Objects.equals(idEmail.getText(), ""))&& (idSenha.getText() != null && !Objects.equals(idSenha.getText(), ""))) {
+        if ((idEmail.getText() != null && !Objects.equals(idEmail.getText(), "")) && (idSenha.getText() != null && !Objects.equals(idSenha.getText(), ""))) {
             Boolean user = OperacoesSQL.getUser(stm, idEmail.getText(), idSenha.getText());
             if (user == true) {
-                if (Objects.equals(OperacoesSQL.getEmailUser(stm, idEmail.getText()), "felipe@fatec.com")){
+                if (Objects.equals(OperacoesSQL.getEmailUser(stm, idEmail.getText()), "felipe@fatec.com")) {
                     FXMLLoader fxmlLoader = new FXMLLoader(ExecuteApplication.class.getResource("/org/alphacode/pacer/home/Home.fxml"));       //  Instancia uma nova cena que vai da Login.fxml para Home.fxml
                     Scene scene = new Scene(fxmlLoader.load());                                                                                                           // Carrega a Classe FXML para criar uma Cena
                     Stage newstage = new Stage();                                                                                                                                   // Stage é como Window, aqui é instanciado uma nova WINDOW
@@ -68,7 +68,10 @@ public class LoginController {
                     newstage.setScene(scene);
                     newstage.setMaximized(true);
                     newstage.show();
-                }else{
+
+                    Stage stage = (Stage) login.getScene().getWindow();
+                    stage.close();
+                } else {
                     FXMLLoader fxmlLoader = new FXMLLoader(ExecuteApplication.class.getResource("/org/alphacode/pacer/alunoacess/TelaAluno.fxml"));       //  Instancia uma nova cena que vai da Login.fxml para Home.fxml
                     Scene scene = new Scene(fxmlLoader.load());                                                                                                           // Carrega a Classe FXML para criar uma Cena
 
@@ -81,12 +84,15 @@ public class LoginController {
                     newstage.setScene(scene);
                     newstage.setMaximized(true);
                     newstage.show();
+
+                    Stage stage = (Stage) login.getScene().getWindow();
+                    stage.close();
                 }
-            }else{
+            } else {
                 checkEmailSenha.setText("E-mail ou Senha incorreta, tente novamente.");
                 checkEmailSenha.setVisible(true);
             }
-        }else{
+        } else {
             checkEmailSenha.setText("Preencha E-mail e Senha, tente novamente.");
             checkEmailSenha.setVisible(true);
         }

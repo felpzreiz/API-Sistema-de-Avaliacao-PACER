@@ -78,6 +78,7 @@ public class LoginController {
                     TelaAlunoController controller = fxmlLoader.getController();
                     controller.setEmail(idEmail.getText());
                     controller.carregarDados(idEmail.getText());
+                    controller.carregarAlunos(idEmail.getText());
 
                     Stage newstage = new Stage();                                                                                                                                   // Stage é como Window, aqui é instanciado uma nova WINDOW
                     newstage.setTitle("Home");                                                                                                                          // Declarado o título da window

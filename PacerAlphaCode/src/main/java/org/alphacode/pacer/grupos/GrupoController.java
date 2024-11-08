@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 
 import org.alphacode.pacer.ExecuteApplication;
 import org.alphacode.pacer.alunos.Alunos;
+import org.alphacode.pacer.sprintsCriterios.Datas;
 
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -27,6 +28,16 @@ public class GrupoController {
     Statement stm = OperacoesSQL.conectarBanco();
 
     private String grupoSelecao;
+
+    public Integer getIdGrupo() {
+        return idGrupo;
+    }
+
+    public void setIdGrupo(Integer idGrupo) {
+        this.idGrupo = idGrupo;
+    }
+
+    private Integer idGrupo;
 
     @FXML
     public Button buttonEditGroup;
@@ -73,7 +84,15 @@ public class GrupoController {
     }
 
     @FXML
-    private TableView<String> tableSprints;
+    private TableView<Sprint> tableSprints;
+
+    @FXML
+    private TableColumn<Sprint, Double> viewPontos;
+
+    @FXML
+    private TableColumn<Sprint, Integer> viewSprint;
+
+    ObservableList<Sprint> dataSprint;
 
     @FXML
     private Button buttonAddPoints;
@@ -85,6 +104,9 @@ public class GrupoController {
         grupos = FXCollections.observableArrayList(); // Inicializa a ObservableList
         telagrupos.setItems(grupos); // Associa a ObservableList à ListView
         carregarDados();
+
+        dataSprint = FXCollections.observableArrayList();
+        tableSprints.setItems(dataSprint);
 
         telagrupos.setCellFactory(lv -> new ListCell<Grupo>() {
             @Override
@@ -102,6 +124,9 @@ public class GrupoController {
 
         viewName.setCellValueFactory(new PropertyValueFactory<>("nome"));
         viewEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+
+        viewSprint.setCellValueFactory(new PropertyValueFactory<>("sprint"));
+        viewPontos.setCellValueFactory(new PropertyValueFactory<>("pontos"));
 
         SprintChoice.getItems().addAll(sprints);
         SprintChoice.setOnAction(this::getSprintChoice);
@@ -178,6 +203,9 @@ public class GrupoController {
             tableGrupoSelecionado.setItems(listaDados);
             carregarAlunos(grupoSelecionado.nomeGrupo);
             setGrupoSelecionado(grupoSelecionado.nomeGrupo);
+            System.out.println(getGrupoSelecionado());
+            setIdGrupo(OperacoesSQL.SelectIDGrupo(stm, getGrupoSelecionado()));
+            carregarSprints(idGrupo);
         }
     }
 
@@ -219,5 +247,13 @@ public class GrupoController {
     @FXML
     void addPointsGroup(ActionEvent event) {
         OperacoesSQL.insertPontosGrupos(stm, getSprintChoice(event), getGrupoSelecionado(), Double.parseDouble(pontosGrupo.getText()));
+        carregarSprints(getIdGrupo());
+    }
+
+    void carregarSprints(Integer id) {
+        List<Sprint> sprint = OperacoesSQL.carregarSprints(stm, id);
+        dataSprint.clear();
+        dataSprint.addAll(sprint);
+        tableSprints.setItems(dataSprint);
     }
 }

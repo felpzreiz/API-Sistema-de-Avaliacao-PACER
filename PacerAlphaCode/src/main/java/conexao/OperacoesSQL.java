@@ -3,6 +3,7 @@ package conexao;
 import org.alphacode.pacer.alunoacess.AlunosInterface;
 import org.alphacode.pacer.alunos.Alunos;
 import org.alphacode.pacer.grupos.Grupo;
+import org.alphacode.pacer.grupos.Sprint;
 import org.alphacode.pacer.sprintsCriterios.Criterios;
 import org.alphacode.pacer.sprintsCriterios.Datas;
 
@@ -207,7 +208,7 @@ public class OperacoesSQL {
     public static List<Datas> carregarDatas(Statement stm) {
         List<Datas> listaDatas = new ArrayList<>();
         try {
-            ResultSet rs = stm.executeQuery("SELECT  sprint, data_inicio, data_fim FROM  sprint");
+            ResultSet rs = stm.executeQuery("SELECT  sprint, data_inicio, data_fim FROM  sprint ORDER BY(sprint)");
             while (rs.next()) {
                 int idSprint = rs.getInt("sprint");
                 LocalDate dataInicial = rs.getDate("data_inicio").toLocalDate();
@@ -320,7 +321,7 @@ public class OperacoesSQL {
         return sprints;
     }
 
-        public static void insertPontosGrupos(Statement stm, Integer sprint, String grupo, Double nota) { // METHOD PARA FAZER UM INSERT.
+    public static void insertPontosGrupos(Statement stm, Integer sprint, String grupo, Double nota) { // METHOD PARA FAZER UM INSERT.
         String inserePontos = "INSERT INTO pontos_grupo(id_sprint, id_grupo, pontos) " +
                 "VALUES (" +
                 "(SELECT id FROM sprint WHERE sprint="+sprint+")," +
@@ -332,6 +333,46 @@ public class OperacoesSQL {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static List<Sprint> carregarSprints(Statement stm, Integer id) {
+        List<Sprint> listaSprints = new ArrayList<>();
+        try {
+            ResultSet rs = stm.executeQuery("SELECT sprint.sprint, pontos_grupo.id_grupo, pontos_grupo.pontos " +
+                    "FROM sprint " +
+                    "INNER JOIN pontos_grupo " +
+                    "ON pontos_grupo.id_sprint = sprint.id " +
+                    "WHERE id_grupo = "+id+"");
+            while (rs.next()) {
+                int sprint = rs.getInt("sprint");
+                Double pontos = (double) rs.getInt("pontos");
+
+                listaSprints.add(new Sprint(sprint, pontos));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listaSprints;
+
+
+    }
+
+    public static Integer SelectIDGrupo(Statement stm, String grupoteste) {
+        Integer idGrupo = 0;
+        try {
+            String query = "SELECT id FROM grupo WHERE nome_grupo='" + grupoteste + "'";
+            ResultSet result = stm.executeQuery(query);
+            if (result.next()) { // Muda para if, pois esperamos apenas um valor
+                idGrupo = Integer.parseInt(result.getString("id"));
+            } else {
+                System.out.println("Nenhum resultado encontrado para o grupo: " + grupoteste);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return idGrupo;
     }
     //FIM DOS MÉTODOS PARA A TELA DE GRUPOS --------------------------
 

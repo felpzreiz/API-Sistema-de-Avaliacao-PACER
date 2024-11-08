@@ -61,8 +61,8 @@
             <Button fx:id="buttonAddPoints" layoutX="529.0" layoutY="588.0" mnemonicParsing="false" onAction="#addPointsGroup" prefWidth="260.0" style="-fx-background-color: #038001;" text="Atribuir Pontuação" />
             <TableView fx:id="tableSprints" layoutX="31.0" layoutY="413.0" prefHeight="200.0" prefWidth="409.0">
               <columns>
-                <TableColumn prefWidth="144.79998779296875" text="Sprints" />
-                <TableColumn prefWidth="264.0" text="Pontos" />
+                <TableColumn fx:id="viewSprint" prefWidth="144.79998779296875" text="Sprints" />
+                <TableColumn fx:id="viewPontos" prefWidth="264.0" text="Pontos" />
               </columns>
             </TableView>
          </children>

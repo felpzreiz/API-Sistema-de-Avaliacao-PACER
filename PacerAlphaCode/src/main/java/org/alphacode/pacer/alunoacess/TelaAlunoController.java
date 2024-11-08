@@ -30,11 +30,26 @@ public class TelaAlunoController {
     OperacoesSQL conexao = new OperacoesSQL();
     Statement stm = OperacoesSQL.conectarBanco();
 
+
+    private String email;
+
     public void setEmail(String email) {
         this.email = email;
     }
 
-    private String email;
+    public void getEmail(String email) {
+        this.email = email;
+    }
+
+    private String grupo;
+
+    public void setGrupo(String grupo) {
+        this.grupo = grupo;
+    }
+
+    public String getGrupo(String s) {
+        return grupo;
+    }
 
     @FXML
     private Label idAluno;
@@ -115,20 +130,20 @@ public class TelaAlunoController {
     private Label tpRestante;
 
     private ObservableList<AlunosInterface> listaAlunos;
-    private List<AlunosInterface> alunos = OperacoesSQL.carregarNomes(stm);              // Declaro a lista de alunos diretamente com a query
+    private List<AlunosInterface> alunos;              // Declaro a lista de alunos diretamente com a query
     private Map<String, Integer> notaColunas;
 
     @FXML
-    public void carregarAlunos() {       // Carrego o nome dos alunos com base nos Objetos AlunosInterface e Query
+    public void carregarAlunos(String email) throws SQLException {       // Carrego o nome dos alunos com base nos Objetos AlunosInterface e Query
+        alunos = OperacoesSQL.alunosGrupo(stm, email);
         listaAlunos.addAll(alunos);
     }
 
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException {
         idEmail.setText("");
         listaAlunos = FXCollections.observableArrayList();                  // Inicio primeiro os alunos na coluna de estudantes
-        List<String> colunas = OperacoesSQL.carregarColunas(stm);         //  Carrego as colunas para iniciar em seguida a tabela
-        carregarAlunos();                                                                 // Trago o metodo de alunos
+        List<String> colunas = OperacoesSQL.carregarColunas(stm);         //  Carrego as colunas para iniciar em seguida a tabela         // Trago o metodo de alunos
         notaColunas = new HashMap<>();
         initializeTable(colunas);                                     // Inicio as colunas dinamicas
         pontosSprint();
@@ -222,7 +237,7 @@ public class TelaAlunoController {
         Parent login = loader.load();
         Stage newStage = new Stage();
         newStage.setTitle("Login");
-        Scene scene = new Scene(login, 545,620);
+        Scene scene = new Scene(login, 545, 620);
         newStage.setScene(scene);
         newStage.setResizable(false);
         newStage.show();
@@ -261,17 +276,36 @@ public class TelaAlunoController {
     public void carregarDados(String email) throws SQLException {
         setEmail(email);
         idEmail.setText(this.email);
+        labelNome.setText(OperacoesSQL.nomeAluno(stm, email));
         nomegrupo.setText(OperacoesSQL.carregarInfo(stm, email));
+        String idGrupo = OperacoesSQL.idGrupo(stm, email);
+
+        System.out.println("Aqui funciona: " + idGrupo);
     }
+
 
     @FXML
-    public void nomeGrupo(){
+    public void salvarNotas(ActionEvent actionEvent) {
+        for (AlunosInterface aluno : listaAlunos) {
+            String alunoAvaliado = aluno.getNome();
 
+            for (Map.Entry<String, Integer> nota : notaColunas.entrySet()) {
+                String colunaNome = nota.getKey();
+                int notaIndex = nota.getValue();
 
+                float notaId;
+                if (notaIndex < aluno.getNotas().size()) {
+                    notaId = aluno.getNotas().get(notaIndex).getNota();
+                } else {
+                    notaId = 0.0f;
+                }
+
+                System.out.println(alunoAvaliado + " " + colunaNome + " " + notaId);
+            }
+        }
 
 
     }
-
 
     @FXML
     public void showAlert(String title, String header, String content) {

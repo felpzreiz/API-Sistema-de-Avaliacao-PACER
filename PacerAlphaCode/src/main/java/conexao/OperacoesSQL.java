@@ -1,6 +1,7 @@
 package conexao;
 
 import org.alphacode.pacer.alunoacess.AlunosInterface;
+import org.alphacode.pacer.alunoacess.Dados;
 import org.alphacode.pacer.alunos.Alunos;
 import org.alphacode.pacer.grupos.Grupo;
 import org.alphacode.pacer.grupos.Sprint;
@@ -178,20 +179,6 @@ public class OperacoesSQL {
 
     }
 
-    //MÉTODOS PARA ATUALUZAR A TABELA DINAMICA EM TELAALUNO
-    public static List<AlunosInterface> carregarNomes(Statement stm) {
-        List<AlunosInterface> listaNomes = new ArrayList<>();
-        try {
-            ResultSet rs = stm.executeQuery("SELECT nome FROM aluno");
-            while (rs.next()) {
-                String aluno = rs.getString("nome");
-                listaNomes.add(new AlunosInterface(aluno));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return listaNomes;
-    }
 
     //MÉTODOS PARA ADICIONAR SPRINTS
     public static void addSprint(Statement stm, int idSprint, LocalDate dataInicial, LocalDate dataFinal) {
@@ -324,8 +311,8 @@ public class OperacoesSQL {
     public static void insertPontosGrupos(Statement stm, Integer sprint, String grupo, Double nota) { // METHOD PARA FAZER UM INSERT.
         String inserePontos = "INSERT INTO pontos_grupo(id_sprint, id_grupo, pontos) " +
                 "VALUES (" +
-                "(SELECT id FROM sprint WHERE sprint="+sprint+")," +
-                "(SELECT id FROM grupo WHERE nome_grupo='"+grupo+"'), "+nota+")\n";
+                "(SELECT id FROM sprint WHERE sprint=" + sprint + ")," +
+                "(SELECT id FROM grupo WHERE nome_grupo='" + grupo + "'), " + nota + ")\n";
 
         try {
             stm.executeUpdate(inserePontos);
@@ -413,13 +400,46 @@ public class OperacoesSQL {
 
     //MÉTODOS PARA A TELA DE AVAVALIAÇÃO ALUNO -----------------------------------
 
+
+    /*public static List<Dados> dadosAlunos( Statement stm, String email) {
+        List<Dados> listaDados = new ArrayList<>();
+
+        try {
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }*/
+
+
+    public static String nomeAluno(Statement stm, String email) {
+        String nAluno = "";
+        String query = "select nome from aluno where email = '" + email + "'";
+        try {
+            ResultSet result = stm.executeQuery(query);
+            while (result.next()) {
+                nAluno = result.getString("nome");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return nAluno;
+
+    }
+
+
     public static String carregarInfo(Statement stm, String idAluno) {
         String query = "select grupo from aluno where email =    '" + idAluno + "'";
         String grupo = null;
         try {
             ResultSet result = stm.executeQuery(query);
             while (result.next()) {
-               grupo = result.getString("grupo");
+                grupo = result.getString("grupo");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -427,5 +447,70 @@ public class OperacoesSQL {
         return grupo;
     }
 
+    public static String idGrupo(Statement stm, String email) {
+        String nomeGrupo = "";
+        String idGrupo = "";
+        String query = "select (grupo) from aluno where email = '" + email + "'";
 
+        try {
+            ResultSet result = stm.executeQuery(query);
+            if (result.next()) {
+                nomeGrupo = result.getString("grupo");
+            }
+            result.close();
+
+            if (!nomeGrupo.isEmpty()) {
+                String query1 = "select (id) from grupo where nome_grupo = '" + nomeGrupo + "'";
+                ResultSet result1 = stm.executeQuery(query1);
+                if (result1.next()) {
+                    idGrupo = result1.getString("id");
+                }
+                result1.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return idGrupo;
+    }
+
+    //MÉTODOS PARA ATUALUZAR A TABELA DINAMICA EM TELAALUNO
+    public static List<AlunosInterface> carregarNomes(Statement stm) {
+        List<AlunosInterface> listaNomes = new ArrayList<>();
+        try {
+            ResultSet rs = stm.executeQuery("SELECT nome FROM aluno");
+            while (rs.next()) {
+                String aluno = rs.getString("nome");
+                listaNomes.add(new AlunosInterface(aluno));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaNomes;
+    }
+
+
+    public static List<AlunosInterface> alunosGrupo(Statement stm, String email) throws SQLException {
+        List<AlunosInterface> listaAlunos = new ArrayList<>();
+        String grupo = "";
+        String query = "select grupo from aluno where email = '" + email + "'";
+
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            if (rs.next()) {
+                grupo = rs.getString("grupo");
+
+            }
+            String query1 = "select nome from aluno where grupo = '" + grupo + "'";
+            ResultSet rs1 = stm.executeQuery(query1);
+            while (rs1.next()) {
+                String nome = rs1.getString("nome");
+                listaAlunos.add(new AlunosInterface(nome));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaAlunos;
+    }
 }

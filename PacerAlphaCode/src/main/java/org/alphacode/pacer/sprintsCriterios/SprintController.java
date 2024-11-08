@@ -1,15 +1,16 @@
 package org.alphacode.pacer.sprintsCriterios;
 
 import conexao.OperacoesSQL;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
@@ -18,8 +19,10 @@ import java.util.Objects;
 
 public class SprintController {
 
+
     OperacoesSQL conexao = new OperacoesSQL();
     Statement stm = OperacoesSQL.conectarBanco();
+
 
     @FXML
     private AnchorPane pageSprintCriterios;
@@ -55,13 +58,16 @@ public class SprintController {
     private Button btnEncerrarSprint;
 
     @FXML
-    private TableColumn<Datas, Integer> nSprint;  // Alterado para Integer
+    private TableColumn<Objects, String> nSprint;
+
     @FXML
     private TableColumn<Datas, LocalDate> inicioSprint;
+
     @FXML
     private TableColumn<Datas, LocalDate> fimSprint;
+
     @FXML
-    private TableColumn<Datas, String> statusSprint;  // Para mostrar o status da sprint (se necessário)
+    private TableColumn statusSprint;
 
     @FXML
     private ListView<Criterios> criterios;
@@ -80,28 +86,26 @@ public class SprintController {
     }
 
     public void initialize() {
-        // Configuração das colunas da TableView
         nSprint.setCellValueFactory(new PropertyValueFactory<>("idSprint"));
-        inicioSprint.setCellValueFactory(cellData -> cellData.getValue().dataInicialProperty());
-        fimSprint.setCellValueFactory(cellData -> cellData.getValue().dataFinalProperty());
-
-        // Para statusSprint, você pode adicionar um status customizado, como "Ativo", "Encerrado", etc.
-        statusSprint.setCellValueFactory(cellData -> new SimpleStringProperty("Ativo"));  // Exemplo de status
-
+        inicioSprint.setCellValueFactory(new PropertyValueFactory<>("dataInicial"));
+        fimSprint.setCellValueFactory(new PropertyValueFactory<>("dataFinal"));
         tableSprint.setItems(dataSprint);
         criterios.setItems(lista);
         style();
         criterios();
         carregarDatas();
         exibirInstrucoes();
+
     }
 
     @FXML
     void addData(ActionEvent event) {
+
         LocalDate dataInicial = addDataI.getValue();
         LocalDate dataFinal = addDataF.getValue();
 
         if (dataInicial != null && dataFinal != null) {
+
             if (dataFinal.isAfter(dataInicial)) {
                 int idSprint = dataSprint.size() + 1;
                 Datas novaData = new Datas(idSprint, dataInicial, dataFinal);
@@ -113,6 +117,7 @@ public class SprintController {
                 alert.setHeaderText("Datas escolhidas conflitantes");
                 alert.setContentText("Verifique as datas selecionadas");
                 alert.show();
+
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -121,7 +126,7 @@ public class SprintController {
             alert.setContentText("Informe a data inicial e data final.");
             alert.show();
         }
-
+        System.out.println("Data Inicial: " + dataInicial + " Data Final: " + dataFinal);
         addDataI.setValue(null);
         addDataF.setValue(null);
     }
@@ -139,7 +144,6 @@ public class SprintController {
             alert.show();
             return;
         }
-
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Confirmar Remoção");
         confirm.setHeaderText("Você tem certeza que deseja remover esta data?");
@@ -155,8 +159,21 @@ public class SprintController {
                 contSprint();
                 tableSprint.refresh();
                 OperacoesSQL.deleteSprint(stm, idData);
+
             }
         });
+
+    }
+
+
+    @FXML
+    void acaodataF(ActionEvent event) {
+
+    }
+
+    @FXML
+    void acaodataI(ActionEvent event) {
+
     }
 
     @FXML
@@ -172,6 +189,7 @@ public class SprintController {
         dataSprint.addAll(datas);
         tableSprint.setItems(dataSprint);
     }
+
 
     @FXML
     void addC(ActionEvent event) {
@@ -271,21 +289,15 @@ public class SprintController {
         textSprints.setText(instrucoesS);
     }
 
-    public void contSprint() {
-        for (int i = 0; i < dataSprint.size(); i++) {
-            dataSprint.get(i).setIdSprint(i + 1); // Recalcula o ID de cada sprint
-        }
-    }
-
-    public void acaodataI(ActionEvent actionEvent) {
-    }
-
-    public void acaodataF(ActionEvent actionEvent) {
-    }
-
     public void startSprint(ActionEvent actionEvent) {
     }
 
     public void encerrarSprint(ActionEvent actionEvent) {
+    }
+
+    public void contSprint() {
+        for (int i = 0; i < dataSprint.size(); i++) {
+            dataSprint.get(i).setIdSprint(i + 1); //
+        }
     }
 }

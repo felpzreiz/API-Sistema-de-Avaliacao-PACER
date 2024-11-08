@@ -9,17 +9,20 @@ public class Datas {
     private LocalDate dataInicial;
     private LocalDate dataFinal;
 
+    // Construtor com ID, data inicial e data final
     public Datas(int idSprint, LocalDate dataInicial, LocalDate dataFinal) {
         this.idSprint = idSprint;
         this.dataInicial = dataInicial;
         this.dataFinal = dataFinal;
     }
 
+    // Construtor sem o ID da sprint
     public Datas(LocalDate dataInicial, LocalDate dataFinal) {
         this.dataInicial = dataInicial;
         this.dataFinal = dataFinal;
     }
 
+    // Getters e Setters
     public int getIdSprint() {
         return idSprint;
     }
@@ -28,22 +31,30 @@ public class Datas {
         this.idSprint = idSprint;
     }
 
-
-    public String getDataInicial() {
-        DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return dataInicial.format(dateFormat);
+    public LocalDate getDataInicial() {
+        return dataInicial;
     }
 
     public void setDataInicial(LocalDate dataInicial) {
         this.dataInicial = dataInicial;
     }
 
-    public String getDataFinal() {
-        DateTimeFormatter dateFormat =  DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return dataFinal.format(dateFormat);
+    public LocalDate getDataFinal() {
+        return dataFinal;
     }
 
     public void setDataFinal(LocalDate dataFinal) {
         this.dataFinal = dataFinal;
+    }
+
+    // Método adicional para formatar as datas, caso precise exibir como String em outro lugar
+    public String getDataInicialFormatada() {
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return dataInicial.format(dateFormat);
+    }
+
+    public String getDataFinalFormatada() {
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return dataFinal.format(dateFormat);
     }
 }

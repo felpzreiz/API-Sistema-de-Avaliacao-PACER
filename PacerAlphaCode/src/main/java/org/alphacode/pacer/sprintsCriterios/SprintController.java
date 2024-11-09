@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -59,10 +60,10 @@ public class SprintController {
     private TableColumn<Datas, Integer> nSprint;  // Alterado para Integer
 
     @FXML
-    private TableColumn<Datas, LocalDate> inicioSprint;
+    private TableColumn<Datas, String> inicioSprint;  // Alterado para String
 
     @FXML
-    private TableColumn<Datas, LocalDate> fimSprint;
+    private TableColumn<Datas, String> fimSprint;  // Alterado para String
 
     @FXML
     private TableColumn<Datas, String> statusSprint;  // Para mostrar o status da sprint (se necessário)
@@ -86,8 +87,20 @@ public class SprintController {
     public void initialize() {
         // Configuração das colunas da TableView
         nSprint.setCellValueFactory(new PropertyValueFactory<>("idSprint"));
-        inicioSprint.setCellValueFactory(new PropertyValueFactory<>("dataInicial"));
-        fimSprint.setCellValueFactory(new PropertyValueFactory<>("dataFinal"));
+
+        // Para inicioSprint, formatar a data no formato "dd/MM/yyyy"
+        inicioSprint.setCellValueFactory(cellData -> {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String formattedDate = cellData.getValue().getDataInicial().format(formatter);
+            return new SimpleStringProperty(formattedDate);
+        });
+
+        // Para fimSprint, formatar a data no formato "dd/MM/yyyy"
+        fimSprint.setCellValueFactory(cellData -> {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String formattedDate = cellData.getValue().getDataFinal().format(formatter);
+            return new SimpleStringProperty(formattedDate);
+        });
 
         // Para statusSprint, você pode adicionar um status customizado, como "Ativo", "Encerrado", etc.
         statusSprint.setCellValueFactory(cellData -> new SimpleStringProperty("Ativo"));  // Exemplo de status

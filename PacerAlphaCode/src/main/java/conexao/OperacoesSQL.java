@@ -329,7 +329,7 @@ public class OperacoesSQL {
                     "FROM sprint " +
                     "INNER JOIN pontos_grupo " +
                     "ON pontos_grupo.id_sprint = sprint.id " +
-                    "WHERE id_grupo = "+id+"");
+                    "WHERE id_grupo = " + id + "");
             while (rs.next()) {
                 int sprint = rs.getInt("sprint");
                 Double pontos = (double) rs.getInt("pontos");
@@ -513,4 +513,74 @@ public class OperacoesSQL {
         }
         return listaAlunos;
     }
+
+
+    public static int getIdAlunoAvaliado(Statement stm, String aluno) {
+        int id = 0;
+        String query = "select id from aluno where nome = '" + aluno + "'";
+
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                id = rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+    public static int getIdGrupo(Statement stm, String nome) {
+        int id = 0;
+        String grupo = "";
+        String query = "select grupo from aluno where nome = '" + nome + "'";
+
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                grupo = rs.getString("grupo");
+            }
+            String query1 = "select id from grupo where nome_grupo = '" + grupo + "'";
+            ResultSet rs1 = stm.executeQuery(query1);
+            while (rs1.next()) {
+                id = rs1.getInt("id");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+
+    public static int getIdCriterio(Statement stm, String criterio) {
+        int id = 0;
+        String query = "select id from criterios where criterio = '" + criterio + "'";
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                id = rs.getInt("id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+    public static int getIdSprint(Statement stm, LocalDate localDate) {
+        int id = 0;
+        localDate = java.time.LocalDate.now();
+        String query = "select id from sprint where  data_inicio < '" + localDate + "' and  data_fim > '" + localDate + "' ";
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                id = rs.getInt("id");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return id;
+    }
+
 }

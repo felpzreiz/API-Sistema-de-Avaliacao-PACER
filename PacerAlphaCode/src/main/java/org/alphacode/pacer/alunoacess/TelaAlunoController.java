@@ -1,5 +1,6 @@
 package org.alphacode.pacer.alunoacess;
 
+import com.almasb.fxgl.scene3d.Cone;
 import conexao.OperacoesSQL;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.collections.FXCollections;
@@ -19,8 +20,8 @@ import javafx.stage.Stage;
 import javafx.util.converter.FloatStringConverter;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,7 @@ public class TelaAlunoController {
         this.grupo = grupo;
     }
 
-    public String getGrupo(String s) {
+    public String getGrupo(String grupo) {
         return grupo;
     }
 
@@ -165,8 +166,8 @@ public class TelaAlunoController {
         for (String col : column) {
 
             notaColunas.put(col, colunaX);
-            ;// Mapeia o nome da coluna ao índice da nota
-            System.out.println("Coluna: " + col + " com índice de nota: " + colunaX);
+            // Mapeia o nome da coluna ao índice da nota
+
             TableColumn<AlunosInterface, Float> tableColumn = new TableColumn<>(col);
 
             tableColumn.setCellValueFactory(cellData -> {
@@ -198,7 +199,7 @@ public class TelaAlunoController {
 
                     if (notaDigitada >= 0 && notaDigitada <= 3) {
 
-                        float somaAtual = +notaDigitada + somaNotas();
+                        float somaAtual = notaDigitada + somaNotas();
 
                         if (pontosSprint() >= somaAtual) {
                             if (indiceNota >= aluno.getNotas().size()) {
@@ -278,32 +279,60 @@ public class TelaAlunoController {
         idEmail.setText(this.email);
         labelNome.setText(OperacoesSQL.nomeAluno(stm, email));
         nomegrupo.setText(OperacoesSQL.carregarInfo(stm, email));
-        String idGrupo = OperacoesSQL.idGrupo(stm, email);
-
-        System.out.println("Aqui funciona: " + idGrupo);
     }
 
 
     @FXML
-    public void salvarNotas(ActionEvent actionEvent) {
-        for (AlunosInterface aluno : listaAlunos) {
-            String alunoAvaliado = aluno.getNome();
+    public void salvarNotas(ActionEvent actionEvent) throws SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
 
-            for (Map.Entry<String, Integer> nota : notaColunas.entrySet()) {
-                String colunaNome = nota.getKey();
-                int notaIndex = nota.getValue();
+        try {
+            con = DriverManager.getConnection(
+                    "jdbc:postgresql://localhost:5432/pacer", "adminpacer", "AdminPacer1234"
+            );
+            String query = "Insert into avaliacao (id_aluno_avaliador, id_aluno_avaliado, id_grupo, id_sprint, id_criterio, nota) VALUES (?,?,?,?,?,?)";
+            pstmt = con.prepareStatement(query);
 
-                float notaId;
-                if (notaIndex < aluno.getNotas().size()) {
-                    notaId = aluno.getNotas().get(notaIndex).getNota();
-                } else {
-                    notaId = 0.0f;
+            for (AlunosInterface aluno : listaAlunos) {
+                String alunoAvaliado = aluno.getNome();
+
+                for (Map.Entry<String, Integer> nota : notaColunas.entrySet()) {
+                    String colunaNome = nota.getKey();
+                    int notaIndex = nota.getValue();
+
+                    float notaId;
+                    if (notaIndex < aluno.getNotas().size()) {
+                        notaId = aluno.getNotas().get(notaIndex).getNota();
+                    } else {
+                        notaId = 0.0f;
+                    }
+
+                    LocalDate LocalDate = java.time.LocalDate.now();
+                    int idAvaliador = OperacoesSQL.SelectIDEdit(stm, this.email);
+                    int idAvaliado = OperacoesSQL.getIdAlunoAvaliado(stm, alunoAvaliado);
+                    int idGrupo = OperacoesSQL.getIdGrupo(stm, alunoAvaliado);
+                    int idSprint = OperacoesSQL.getIdSprint(stm, LocalDate);
+                    int idCriterio = OperacoesSQL.getIdCriterio(stm, colunaNome);
+
+                    pstmt.setInt(1, idAvaliador);
+                    pstmt.setInt(2, idAvaliado);
+                    pstmt.setInt(3, idGrupo);
+                    pstmt.setInt(4, idSprint);
+                    pstmt.setInt(5, idCriterio);
+                    pstmt.setFloat(6, notaId);
+                    pstmt.executeUpdate();
+
+                    System.out.println(idAvaliador + " " + idAvaliado + " " + idGrupo + " " + idSprint + " " + idCriterio + " " + notaId);
                 }
-
-                System.out.println(alunoAvaliado + " " + colunaNome + " " + notaId);
             }
-        }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (pstmt != null) pstmt.close();
+            if (con != null) con.close();
 
+        }
 
     }
 

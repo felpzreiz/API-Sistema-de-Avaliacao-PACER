@@ -14,7 +14,7 @@ import javafx.collections.ObservableList;
 
 import org.alphacode.pacer.ExecuteApplication;
 import org.alphacode.pacer.alunos.Alunos;
-import org.alphacode.pacer.sprintsCriterios.Datas;
+
 
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class GrupoController {
+
     Statement stm = OperacoesSQL.conectarBanco();
 
     private String grupoSelecao;
@@ -79,6 +80,15 @@ public class GrupoController {
 
     @FXML
     private TextField pontosGrupo;
+
+    @FXML
+    private Label nameSelectedGroup1;
+
+    @FXML
+    private TableView<Sprint> tableResults;
+
+    @FXML
+    private TableColumn nomeAluno;
 
     public GrupoController() throws SQLException {
     }

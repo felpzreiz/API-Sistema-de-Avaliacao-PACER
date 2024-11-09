@@ -286,7 +286,6 @@ public class TelaAlunoController {
     public void salvarNotas(ActionEvent actionEvent) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
-
         try {
             con = DriverManager.getConnection(
                     "jdbc:postgresql://localhost:5432/pacer", "adminpacer", "AdminPacer1234"
@@ -323,7 +322,6 @@ public class TelaAlunoController {
                     pstmt.setFloat(6, notaId);
                     pstmt.executeUpdate();
 
-                    System.out.println(idAvaliador + " " + idAvaliado + " " + idGrupo + " " + idSprint + " " + idCriterio + " " + notaId);
                 }
             }
         } catch (SQLException e) {

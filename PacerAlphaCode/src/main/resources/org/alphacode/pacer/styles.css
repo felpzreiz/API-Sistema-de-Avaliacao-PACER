@@ -408,4 +408,117 @@
     -fx-font-family: "Arial";
 }
 
+#telagrupos {
+    -fx-background-color: #e7e7e7;
+    -fx-border-color: #e5dfdf;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+}
+
+#telagrupos .list-cell {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+#telagrupos .list-cell:hover {
+    -fx-background-color: #bbbbbb;
+}
+
+#telagrupos .list-cell:selected {
+    -fx-background-color: #829ebd;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+#tableGrupoSelecionado {
+    -fx-background-color: #e7e7e7;
+    -fx-border-color: #e5dfdf;
+    -fx-border-width: 1px;
+}
+
+#tableGrupoSelecionado .table-cell {
+    -fx-font-family: Arial;
+    -fx-font-size: 14px;
+}
+
+#tableGrupoSelecionado .table-column {
+    -fx-alignment: center;
+}
+
+#tableGrupoSelecionado .table-row-cell:hover {
+    -fx-background-color: #bbbbbb;
+}
+
+#tableGrupoSelecionado .table-row-cell:selected {
+    -fx-background-color: #829ebd;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+#tableGrupoSelecionado .column-header {
+    -fx-background-color: #bebfc5;
+    -fx-font-weight: bold;
+    -fx-border-color: #aaaaaa;
+    -fx-font-size: 14px;
+    -fx-font-family: Arial;
+}
+
+#tableSprints {
+    -fx-background-color: #e7e7e7;
+    -fx-border-color: #e5dfdf;
+    -fx-border-width: 1px;
+}
+
+#tableSprints .table-cell {
+    -fx-font-family: Arial;
+    -fx-font-size: 14px;
+}
+
+#tableSprints .table-column {
+    -fx-alignment: center;
+}
+
+#tableSprints .table-row-cell:hover {
+    -fx-background-color: #bbbbbb;
+}
+
+#tableSprints .table-row-cell:selected {
+    -fx-background-color: #829ebd;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+#tableSprints .column-header {
+    -fx-background-color: #bebfc5;
+    -fx-font-weight: bold;
+    -fx-border-color: #aaaaaa;
+    -fx-font-size: 14px;
+    -fx-font-family: Arial;
+}
+
+.checkbox {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+}
+
+#SprintChoice {
+    -fx-font-size: 16px;
+    -fx-text-fill: black;
+    -fx-font-family: "Arial";
+}
+
+
+#SprintChoice .checkbox.box {
+    -fx-background-color: #FFFFFF;
+    -fx-pref-width: 50px;
+    -fx-pref-height: 50px;
+}
+
+.checkbox:selected .box {
+    -fx-background-color: #829ebd;
+}
+
+.checkbox:selected {
+    -fx-text-fill: white; /* Cor do texto quando selecionado */
+}
 

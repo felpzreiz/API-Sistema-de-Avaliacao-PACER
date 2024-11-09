@@ -1,6 +1,5 @@
 package org.alphacode.pacer.alunoacess;
 
-import com.almasb.fxgl.scene3d.Cone;
 import conexao.OperacoesSQL;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.collections.FXCollections;
@@ -38,8 +37,9 @@ public class TelaAlunoController {
         this.email = email;
     }
 
-    public void getEmail(String email) {
+    public String getEmail(String email) {
         this.email = email;
+        return email;
     }
 
     private String grupo;
@@ -267,11 +267,12 @@ public class TelaAlunoController {
     }
 
     public float pontosSprint() {
+        float pontos = OperacoesSQL.getPontosSprint(stm, this.email);
         infoPontos.setVisible(true);
-        infoPontos.setText("10");
-        float pontosSprint = 10f;
-        return pontosSprint;
+        infoPontos.setText(String.valueOf(pontos));
+        return pontos;
     }
+
 
     @FXML
     public void carregarDados(String email) throws SQLException {
@@ -279,6 +280,12 @@ public class TelaAlunoController {
         idEmail.setText(this.email);
         labelNome.setText(OperacoesSQL.nomeAluno(stm, email));
         nomegrupo.setText(OperacoesSQL.carregarInfo(stm, email));
+
+        LocalDate LocalDate = java.time.LocalDate.now();
+        int idSprint = OperacoesSQL.getNSprint(stm, LocalDate);
+        infoSprint.setText(String.valueOf(idSprint));
+
+        pontosSprint();
     }
 
 

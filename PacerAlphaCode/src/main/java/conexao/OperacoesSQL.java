@@ -401,21 +401,6 @@ public class OperacoesSQL {
     //MÉTODOS PARA A TELA DE AVAVALIAÇÃO ALUNO -----------------------------------
 
 
-    /*public static List<Dados> dadosAlunos( Statement stm, String email) {
-        List<Dados> listaDados = new ArrayList<>();
-
-        try {
-
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-    }*/
-
-
     public static String nomeAluno(Statement stm, String email) {
         String nAluno = "";
         String query = "select nome from aluno where email = '" + email + "'";
@@ -489,7 +474,6 @@ public class OperacoesSQL {
         return listaNomes;
     }
 
-
     public static List<AlunosInterface> alunosGrupo(Statement stm, String email) throws SQLException {
         List<AlunosInterface> listaAlunos = new ArrayList<>();
         String grupo = "";
@@ -513,7 +497,6 @@ public class OperacoesSQL {
         }
         return listaAlunos;
     }
-
 
     public static int getIdAlunoAvaliado(Statement stm, String aluno) {
         int id = 0;
@@ -552,7 +535,6 @@ public class OperacoesSQL {
         return id;
     }
 
-
     public static int getIdCriterio(Statement stm, String criterio) {
         int id = 0;
         String query = "select id from criterios where criterio = '" + criterio + "'";
@@ -583,4 +565,54 @@ public class OperacoesSQL {
         return id;
     }
 
+    public static float getPontosSprint(Statement stm, String email) {
+        LocalDate localDate = java.time.LocalDate.now();
+        int idSprint = getIdSprint(stm, localDate);
+        float pontosS = 0;
+        int idGrupo = 0;
+        String grupo = "";
+        String query = "select grupo from aluno where email = '" + email + "'";
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                grupo = rs.getString("grupo");
+            }
+            String query1 = "select id from grupo where nome_grupo = '" + grupo + "'";
+            ResultSet rs1 = stm.executeQuery(query1);
+            while (rs1.next()) {
+                idGrupo = rs1.getInt("id");
+            }
+            String query2 = "select pontos from pontos_grupo where id_grupo = '" + idGrupo + "' and id_sprint ='" + idSprint + "'";
+            ResultSet rs2 = stm.executeQuery(query2);
+            while (rs2.next()) {
+                pontosS = rs2.getFloat("pontos");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return pontosS;
+    }
+
+    public static int getNSprint(Statement stm, LocalDate localDate) {
+        int sprint = 0;
+        localDate = java.time.LocalDate.now();
+        String query = "select sprint from sprint where  data_inicio < '" + localDate + "' and  data_fim > '" + localDate + "' ";
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                sprint = rs.getInt("sprint");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return sprint;
+    }
+
+
 }
+
+
+

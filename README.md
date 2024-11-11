@@ -8,7 +8,7 @@
 * [Backlog do Produto](#backlog-do-produto)
 * [Wireframe do projeto](#wireframe-do-projeto)
 * [Modelo DER](#modelo-der)
-* [Guia de Instalação e Manual](#guia-de-instalação)
+* [Guia de Instalação e Manual](#guia-de-instalação-e-manual)
 * [Autores do Projeto](#autores-do-projeto-equipe-alpha-code)
 
 # Descrição do Projeto e Funcionalidades
@@ -400,25 +400,25 @@ _<b>USABILIDADE_
 
 ### Definition of Done (DoD) - Acesso aos Resultados de Avaliação
 
-######           * **Em desenvolvimento, disponibilizado no fim da Sprint**
+######            * **Em desenvolvimento, disponibilizado no fim da Sprint**
 
 <br>
 
 ## Wireframe do projeto
 
-[Link Wireframe](https://www.figma.com/board/Ipnah7761NPMoBxkENVr4Y/Wireframe---Sistema-Pacer---Alpha-Code?node-id=2-6163&node-type=section&t=dFksliHYnWDUNbxQ-0)
+> [Link Wireframe](https://www.figma.com/board/Ipnah7761NPMoBxkENVr4Y/Wireframe---Sistema-Pacer---Alpha-Code?node-id=2-6163&node-type=section&t=dFksliHYnWDUNbxQ-0)
 
 ## Modelo DER
 
-[Link Modelo DER](documentacao/Modelo%20conceitual.png)
+> [Link Modelo DER](documentacao/Modelo%20conceitual.png)
 
 ## Guia de Instalação e Manual
 
-[Guia de Instalação](URL)
+> [Guia de Instalação](documentacao/GuiaDeInstalacao/README.md)
 
-[Manual do Usuário](documentacao/Instruções%20de%20Uso%20Interface%20Aluno.pdf)
+> [Manual do Usuário](documentacao/Manual/Instruções%20de%20Uso%20Interface%20Aluno.pdf)  `"Em desenvolvimento"`
 
-[Executável](out/artifacts/PacerAlphaCode_jar/PacerAlphaCode.jar)
+> [Executável](out/artifacts/PacerAlphaCode_jar/PacerAlphaCode.jar)
 
 ## Autores do Projeto Equipe Alpha Code
 

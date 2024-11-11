@@ -611,7 +611,28 @@ public class OperacoesSQL {
         return sprint;
     }
 
+    public static List<Alunos> getRAvaliacao(Statement stm, Integer idGrupo) {
+        List<Alunos> listaAlunos = new ArrayList<>();
 
+        String query = "select aluno.nome, avg(avaliacao.nota) as nota, aluno.grupo " +
+                "from aluno inner join avaliacao " +
+                "on avaliacao.id_aluno_avaliado = aluno.id where avaliacao.id_grupo = "+idGrupo+" " +
+                "group by aluno.id " +
+                "order by aluno.nome";
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                String nome = rs.getString("nome");
+                Double nota = rs.getDouble("nota");
+
+                listaAlunos.add(new Alunos(nome, nota));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listaAlunos;
+    }
 }
 
 

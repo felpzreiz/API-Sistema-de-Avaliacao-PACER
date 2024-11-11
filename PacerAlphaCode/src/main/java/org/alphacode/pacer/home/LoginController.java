@@ -60,7 +60,7 @@ public class LoginController {
         if ((idEmail.getText() != null && !Objects.equals(idEmail.getText(), "")) && (idSenha.getText() != null && !Objects.equals(idSenha.getText(), ""))) {
             Boolean user = OperacoesSQL.getUser(stm, idEmail.getText(), idSenha.getText());
             if (user == true) {
-                if (Objects.equals(OperacoesSQL.getEmailUser(stm, idEmail.getText()), "felipe@fatec.com")) {
+                if (Objects.equals(OperacoesSQL.getEmailUser(stm, idEmail.getText()), "professor@fatec.sp.gov.br")) {
                     FXMLLoader fxmlLoader = new FXMLLoader(ExecuteApplication.class.getResource("/org/alphacode/pacer/home/Home.fxml"));       //  Instancia uma nova cena que vai da Login.fxml para Home.fxml
                     Scene scene = new Scene(fxmlLoader.load());                                                                                                           // Carrega a Classe FXML para criar uma Cena
                     Stage newstage = new Stage();                                                                                                                                   // Stage é como Window, aqui é instanciado uma nova WINDOW

@@ -85,10 +85,15 @@ public class GrupoController {
     private Label nameSelectedGroup1;
 
     @FXML
-    private TableView<Sprint> tableResults;
+    private TableView<Alunos> tableResults;
+
+    private ObservableList<Alunos> resultados;
 
     @FXML
-    private TableColumn nomeAluno;
+    private TableColumn<Alunos, String> nomeAluno;
+
+    @FXML
+    private TableColumn<Alunos, Double> viewMedia;
 
     public GrupoController() throws SQLException {
     }
@@ -129,6 +134,12 @@ public class GrupoController {
                 }
             }
         });
+
+        resultados = FXCollections.observableArrayList();
+        tableResults.setItems(resultados);
+
+        nomeAluno.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        viewMedia.setCellValueFactory(new PropertyValueFactory<>("nota"));
 
         listaDados = FXCollections.observableArrayList();
 
@@ -216,6 +227,7 @@ public class GrupoController {
             System.out.println(getGrupoSelecionado());
             setIdGrupo(OperacoesSQL.SelectIDGrupo(stm, getGrupoSelecionado()));
             carregarSprints(idGrupo);
+            carregarResultados(idGrupo);
         }
     }
 
@@ -265,5 +277,12 @@ public class GrupoController {
         dataSprint.clear();
         dataSprint.addAll(sprint);
         tableSprints.setItems(dataSprint);
+    }
+
+    void carregarResultados(Integer id) {
+        List<Alunos> lista = OperacoesSQL.getRAvaliacao(stm, id);
+        resultados.clear();
+        resultados.addAll(lista);
+        tableResults.setItems(resultados);
     }
 }

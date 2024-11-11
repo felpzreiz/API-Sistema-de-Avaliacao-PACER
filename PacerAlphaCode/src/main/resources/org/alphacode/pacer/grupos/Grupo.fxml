@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.alphacode.pacer.grupos.GrupoController">
+<ScrollPane stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/22.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.alphacode.pacer.grupos.GrupoController">
     <AnchorPane fx:id="gGroups" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onDragDetected="#buttonEditGroup" prefHeight="800.0" prefWidth="1300.0">
         <Pane layoutX="41.0" layoutY="115.0" prefHeight="642.0" prefWidth="395.0" style="-fx-background-color: #ffffff;">
             <children>
@@ -94,6 +94,7 @@
                 <TableView fx:id="tableResults" layoutX="25.0" layoutY="344.0" prefHeight="275.0" prefWidth="769.0">
                     <columns>
                         <TableColumn fx:id="nomeAluno" prefWidth="75.0" text="Nome" />
+                  <TableColumn fx:id="viewMedia" prefWidth="199.20001220703125" text="Média" />
                     </columns>
                 </TableView>
                 <Label fx:id="nameSelectedGroup1" layoutX="26.0" layoutY="312.0" prefHeight="17.0" prefWidth="315.0" text="Notas">

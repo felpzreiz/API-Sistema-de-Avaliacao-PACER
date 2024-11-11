@@ -3,6 +3,7 @@ package org.alphacode.pacer.alunos;
 public class Alunos {
 
     String nome, email, grupo, repo;
+    Double nota;
 
     public Alunos(String nome, String email, String grupo, String repo) {
         this.nome = nome;
@@ -18,6 +19,11 @@ public class Alunos {
     }
 
     public Alunos(String email) {
+    }
+
+    public Alunos(String nome, Double nota) {
+        this.nome = nome;
+        this.nota = nota;
     }
 
     public String getNome() {
@@ -52,7 +58,13 @@ public class Alunos {
         this.repo = repo;
     }
 
+    public Double getNota() {
+        return nota;
+    }
 
+    public void setNota(Double nota) {
+        this.nota = nota;
+    }
 }
 
 

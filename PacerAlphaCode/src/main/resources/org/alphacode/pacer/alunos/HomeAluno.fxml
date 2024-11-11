@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="HomeAluno" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="800.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/22"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.alphacode.pacer.alunos.HomeAlunoController">
+    <cursor>
+        <Cursor fx:constant="DEFAULT"/>
+    </cursor>
+    <children>
+        <ImageView fx:id="logofatec" fitHeight="120.0" fitWidth="268.0" layoutX="518.0" layoutY="12.0"
+                   nodeOrientation="INHERIT" preserveRatio="true">
+            <image>
+                <Image url="@../images/Imagem1.png"/>
+            </image>
+        </ImageView>
+        <Label fx:id="textpacer" layoutX="395.0" layoutY="132.0" prefHeight="42.0" prefWidth="510.0"
+               text="Sistema de Avaliação PACER">
+            <font>
+                <Font name="Arial Bold" size="35.0"/>
+            </font>
+        </Label>
+        <GridPane fx:id="gripavaliacao" layoutX="250.0" layoutY="179.0" prefHeight="589.0" prefWidth="800.0">
+            <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="195.60001220703126" minHeight="10.0" prefHeight="113.60000610351562"
+                                valignment="CENTER" vgrow="SOMETIMES"/>
+                <RowConstraints maxHeight="478.3999877929688" minHeight="10.0" prefHeight="443.9999938964844"
+                                valignment="CENTER" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <TableView fx:id="tbavaliacao" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                    <columns>
+                        <TableColumn fx:id="ataluno" prefWidth="160.0" text="Alunos"/>
+                        <TableColumn fx:id="atproatividade" prefWidth="160.0" text="Proatividade"/>
+                        <TableColumn fx:id="atautonomia" prefWidth="160.0" text="Autonomia"/>
+                        <TableColumn fx:id="atcolaboracao" prefWidth="160.0" text="Colaboração"/>
+                        <TableColumn fx:id="atentrega" minWidth="4.800018310546875" prefWidth="160.0" text="Entrega"/>
+                    </columns>
+                </TableView>
+                <Label fx:id="textalpha" text="AlphaCode">
+                    <font>
+                        <Font name="Arial Bold" size="35.0"/>
+                    </font>
+                </Label>
+            </children>
+        </GridPane>
+    </children>
+</AnchorPane>

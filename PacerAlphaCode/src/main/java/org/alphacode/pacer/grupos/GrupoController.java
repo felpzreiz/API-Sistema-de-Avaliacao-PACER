@@ -1,6 +1,7 @@
 package org.alphacode.pacer.grupos;
 
 import conexao.OperacoesSQL;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import org.alphacode.pacer.ExecuteApplication;
+import org.alphacode.pacer.alunoacess.AlunosInterface;
 import org.alphacode.pacer.alunos.Alunos;
 
 
@@ -22,7 +24,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
 
 public class GrupoController {
 
@@ -73,6 +77,7 @@ public class GrupoController {
     private TableColumn<Alunos, String> viewName;
 
     private ObservableList<Alunos> listaDados;
+    private ObservableList<AlunosInterface> listaDados1;
 
     @FXML
     private ChoiceBox<String> SprintChoice;
@@ -85,15 +90,15 @@ public class GrupoController {
     private Label nameSelectedGroup1;
 
     @FXML
-    private TableView<Alunos> tableResults;
+    private TableView<AlunosInterface> tableResults;
 
-    private ObservableList<Alunos> resultados;
-
-    @FXML
-    private TableColumn<Alunos, String> nomeAluno;
+    private ObservableList<AlunosInterface> resultados;
 
     @FXML
-    private TableColumn<Alunos, Double> viewMedia;
+    private TableColumn<AlunosInterface, String> nomeAluno;
+
+    @FXML
+    private TableColumn<AlunosInterface, Float> viewMedia;
 
     public GrupoController() throws SQLException {
     }
@@ -115,7 +120,8 @@ public class GrupoController {
     @FXML
     void initialize() {
         getSprint();
-
+        resultados = FXCollections.observableArrayList();
+        listaDados1 = FXCollections.observableArrayList();
         grupos = FXCollections.observableArrayList(); // Inicializa a ObservableList
         telagrupos.setItems(grupos); // Associa a ObservableList à ListView
         carregarDados();
@@ -135,12 +141,6 @@ public class GrupoController {
             }
         });
 
-        resultados = FXCollections.observableArrayList();
-        tableResults.setItems(resultados);
-
-        nomeAluno.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        viewMedia.setCellValueFactory(new PropertyValueFactory<>("nota"));
-
         listaDados = FXCollections.observableArrayList();
 
         viewName.setCellValueFactory(new PropertyValueFactory<>("nome"));
@@ -152,6 +152,30 @@ public class GrupoController {
         SprintChoice.getItems().addAll(sprints);
         SprintChoice.setOnAction(this::getSprintChoice);
     }
+
+    @FXML
+    public void initializeTable(List<String> column) {
+        tableResults.getColumns().clear();
+        nomeAluno.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        nomeAluno.setVisible(true);
+        nomeAluno.setResizable(true);
+        tableResults.getColumns().add(nomeAluno);
+
+
+        for (String col : column) {
+            TableColumn<AlunosInterface, String> coluna = new TableColumn<>(col);
+
+            coluna.setCellValueFactory(cellData -> {
+                AlunosInterface criterio = cellData.getValue();
+                Object value = criterio.getParametro(col);
+                return new SimpleStringProperty(value != null ? value.toString() : "");
+            });
+
+            tableResults.getColumns().add(coluna);
+        }
+        tableResults.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+    }
+
 
     @FXML
     void adicionargrupo(ActionEvent event) throws IOException {
@@ -190,7 +214,7 @@ public class GrupoController {
                     // Se o usuário confirmar, remove o grupo
                     grupos.remove(selectedGroup); // Remove da ObservableList
                     OperacoesSQL.excluirGrupo(stm, selectedGroup.nomeGrupo);
-                }else{
+                } else {
                     Alert alerta = new Alert(Alert.AlertType.INFORMATION);
                     alerta.setTitle("Restrição: Grupo em atividade");
                     alerta.setHeaderText(null);
@@ -213,10 +237,6 @@ public class GrupoController {
         // Implementação do método de importação
     }
 
-    public void buttonEditGroup(MouseEvent mouseEvent) {
-        // Implementação para editar grupo
-    }
-
     public void EditedSelectedGroup(ActionEvent actionEvent) throws IOException {
         Grupo grupoSelecionado = telagrupos.getSelectionModel().getSelectedItem();
         if (grupoSelecionado != null) {
@@ -227,6 +247,8 @@ public class GrupoController {
             System.out.println(getGrupoSelecionado());
             setIdGrupo(OperacoesSQL.SelectIDGrupo(stm, getGrupoSelecionado()));
             carregarSprints(idGrupo);
+            List<String> colunas = OperacoesSQL.carregarColunas(stm);
+            initializeTable(colunas);
             carregarResultados(idGrupo);
         }
     }
@@ -243,28 +265,35 @@ public class GrupoController {
 
     public void carregarAlunos(String grupo) {
         List<Alunos> alunosList = OperacoesSQL.consultarDadosAlunos(stm, grupo);
+        List<AlunosInterface> alunosInterfaceList = OperacoesSQL.consultarDadosAlunos1(stm, grupo);
+
         listaDados.clear(); // Limpa a lista atual antes de carregar novos dados
+        listaDados1.clear();
         listaDados.addAll(alunosList); // Adiciona os dados retornados à lista
+        listaDados1.addAll(alunosInterfaceList);
         tableGrupoSelecionado.setItems(listaDados); // Define os itens da TableView
+        tableResults.setItems(listaDados1);
     }
 
-    public void getSprint(){
+    public void getSprint() {
         ArrayList<String> sprints = OperacoesSQL.consultarSprints(stm);
         this.sprints = sprints;
     }
 
     public Integer getSprintChoice(ActionEvent event) {
         Integer sprint = Integer.parseInt(SprintChoice.getValue());
-        return(sprint);
+        return (sprint);
     }
 
     public void setGrupoSelecionado(String grupo) {
         this.grupoSelecao = grupo;
     }
 
-    public String getGrupoSelecionado(){
-        return(grupoSelecao);
-    };
+    public String getGrupoSelecionado() {
+        return (grupoSelecao);
+    }
+
+    ;
 
     @FXML
     void addPointsGroup(ActionEvent event) {
@@ -280,9 +309,16 @@ public class GrupoController {
     }
 
     void carregarResultados(Integer id) {
-        List<Alunos> lista = OperacoesSQL.getRAvaliacao(stm, id);
+        List<AlunosInterface> lista = OperacoesSQL.getRAvaliacao(stm, id);
+
+        int nAlunos = lista.size();
+
+        for (AlunosInterface aluno : lista) {
+            aluno.carregarNotas(nAlunos);
+        }
         resultados.clear();
         resultados.addAll(lista);
         tableResults.setItems(resultados);
+
     }
 }

@@ -2,6 +2,7 @@ package conexao;
 
 import org.alphacode.pacer.alunoacess.AlunosInterface;
 import org.alphacode.pacer.alunoacess.Dados;
+import org.alphacode.pacer.alunoacess.Notas;
 import org.alphacode.pacer.alunos.Alunos;
 import org.alphacode.pacer.grupos.Grupo;
 import org.alphacode.pacer.grupos.Sprint;
@@ -11,7 +12,9 @@ import org.alphacode.pacer.sprintsCriterios.Datas;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OperacoesSQL {
 
@@ -285,6 +288,24 @@ public class OperacoesSQL {
 
                 // Cria um novo objeto Alunos e adiciona à lista1
                 Alunos aluno = new Alunos(nome, email, grupo);
+                listaAlunos.add(aluno);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaAlunos; // Retorna a lista de alunos
+    }
+
+    public static List<AlunosInterface> consultarDadosAlunos1(Statement stm, String grupo) { // METHOD PARA FAZER UM SELECT.
+        List<AlunosInterface> listaAlunos = new ArrayList<>();
+        try {
+            ResultSet result = stm.executeQuery("SELECT senha,email,grupo,* FROM aluno WHERE grupo='" + grupo + "'ORDER BY id ASC");
+            while (result.next()) { // result.next() roda enquanto existirem dados no banco.
+                String nome = result.getString("nome");
+                String email = result.getString("email");
+
+                // Cria um novo objeto Alunos e adiciona à lista1
+                AlunosInterface aluno = new AlunosInterface(nome);
                 listaAlunos.add(aluno);
             }
         } catch (SQLException e) {
@@ -611,27 +632,37 @@ public class OperacoesSQL {
         return sprint;
     }
 
-    public static List<Alunos> getRAvaliacao(Statement stm, Integer idGrupo) {
-        List<Alunos> listaAlunos = new ArrayList<>();
+    public static List<AlunosInterface> getRAvaliacao(Statement stm, Integer idGrupo) {
+        List<AlunosInterface> listaAlunos = new ArrayList<>();
 
-        String query = "select aluno.nome, avg(avaliacao.nota) as nota, aluno.grupo " +
-                "from aluno inner join avaliacao " +
-                "on avaliacao.id_aluno_avaliado = aluno.id where avaliacao.id_grupo = "+idGrupo+" " +
-                "group by aluno.id " +
+        String query = "select aluno.nome, coalesce(avg(avaliacao.nota), 0) as nota, aluno.grupo, criterios.criterio " +
+                "from aluno " +
+                "inner join avaliacao on avaliacao.id_aluno_avaliado = aluno.id " + "inner join criterios on avaliacao.id_criterio = criterios.id where avaliacao.id_grupo = " + idGrupo + " " +
+                "group by aluno.id, aluno.nome, aluno.grupo, criterios.id " +
                 "order by aluno.nome";
         try {
             ResultSet rs = stm.executeQuery(query);
+            Map<String, AlunosInterface> alunosMap = new HashMap<>();
             while (rs.next()) {
                 String nome = rs.getString("nome");
-                Double nota = rs.getDouble("nota");
+                Float nota = rs.getFloat("nota");
+                String criterio = rs.getString("criterio");
 
-                listaAlunos.add(new Alunos(nome, nota));
+                Notas notas = new Notas(criterio, nota);
+
+                AlunosInterface aluno = alunosMap.get(nome);
+                if (aluno == null) {
+                    aluno = new AlunosInterface(nome);
+                    alunosMap.put(nome, aluno);
+                }
+                aluno.addNotas(notas);
             }
-
+            listaAlunos.addAll(alunosMap.values());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return listaAlunos;
+
     }
 }
 

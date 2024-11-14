@@ -295,8 +295,8 @@ public class AlunoController {
                     Alunos aluno = new Alunos(nome, email, grupo, repo); // Instanciado um novo objeto aluno para receber os atributos
                     listaDados.add(aluno); // adiciona os valores na lista observável
                     csvImport.add(email);
-                    OperacoesSQL.inserirAluno(stm, aluno.email, aluno.repo, aluno.grupo, aluno.nome);// Guarda o email repetido para uma lista
                     OperacoesSQL.inserirUsuario(stm, aluno.email, createPassword(aluno.email));
+                    OperacoesSQL.inserirAluno(stm, aluno.email, aluno.repo, aluno.grupo, aluno.nome);// Guarda o email repetido para uma lista
                     OperacoesSQL.inserirGrupo(stm, aluno.grupo);
                 }
             }

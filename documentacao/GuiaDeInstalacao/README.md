@@ -42,11 +42,21 @@ No Query Tool, clique em File > Open e selecione o arquivo SQL baixado.
 
 O arquivo está disponível no link abaixo:
 
-> [Script Banco de Dados](../SchemaSQL/pacer.sql)
+> [Script Banco de Dados](../SchemaSQL/schema.sql)
+
+Após, execute o seguinte comando para criar o acesso do professor à aplicação.
+
+>` INSERT INTO usuario (email, senha) VALUES ('professor@fatec.sp.gov.br' , 'Informe aqui a senha de acesso desejada');`
 
 ### 4. Executável
 
-Agora que o banco de dados está configurado, você pode baixar o executável do Sistema de Avaliação para utilizá-lo
+Agora que o banco de dados está configurado, faça o download do JDK para que seja possível o funcionamento do executável.
+
+> [JDK](https://www.oracle.com/br/java/technologies/downloads/)
+
+Após baixado e instalado você pode baixar o executável do Sistema de Avaliação para utilizá-lo
 localmente.
 
-Faça o download do executável no link Executável e execute o arquivo `.jar`
+Faça o download do executável que encontra-se no README principal do projeto e execute o arquivo `.jar`.
+
+

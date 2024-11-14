@@ -522,3 +522,35 @@
     -fx-text-fill: white; /* Cor do texto quando selecionado */
 }
 
+#tableResults {
+    -fx-background-color: #e7e7e7;
+    -fx-border-color: #e5dfdf;
+    -fx-border-width: 1px;
+}
+
+#tableResults .table-cell {
+    -fx-font-family: Arial;
+    -fx-font-size: 14px;
+}
+
+#tableResults .table-column {
+    -fx-alignment: center;
+}
+
+#tableResults .table-row-cell:hover {
+    -fx-background-color: #bbbbbb;
+}
+
+#tableResults .table-row-cell:selected {
+    -fx-background-color: #829ebd;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+#tableResults .column-header {
+    -fx-background-color: #bebfc5;
+    -fx-font-weight: bold;
+    -fx-border-color: #aaaaaa;
+    -fx-font-size: 14px;
+    -fx-font-family: Arial;
+}

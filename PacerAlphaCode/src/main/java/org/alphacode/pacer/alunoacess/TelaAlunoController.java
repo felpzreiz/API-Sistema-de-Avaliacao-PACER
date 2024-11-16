@@ -19,6 +19,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.converter.FloatStringConverter;
 import org.alphacode.pacer.grupos.Sprint;
+import org.alphacode.pacer.password.RedefinirSenha;
 import org.alphacode.pacer.sprintsCriterios.Datas;
 
 import java.io.IOException;
@@ -298,16 +299,19 @@ public class TelaAlunoController {
     @FXML
     public void acessConfig(ActionEvent actionEvent) {
         try {  FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/alphacode/pacer/password/RedefinirSenha.fxml"));
+
             Parent root = loader.load();
+            RedefinirSenha controller = loader.getController();
+            controller.setEmail(idEmail.getText());
+
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setTitle("Senha do Usuario");
-
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println();
+
         }
 
 

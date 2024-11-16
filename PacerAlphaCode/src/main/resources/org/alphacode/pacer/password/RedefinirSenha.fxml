@@ -39,17 +39,17 @@
                         <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <PasswordField fx:id="nvSenha" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="300.0" promptText="Nova Senha:" GridPane.rowIndex="1">
+                        <PasswordField fx:id="newPass" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="300.0" promptText="Nova Senha:" GridPane.rowIndex="1">
                             <font>
                                 <Font name="Arial Bold" size="12.0" />
                             </font>
                         </PasswordField>
-                        <PasswordField fx:id="confirmarSenha" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="300.0" promptText="Confirme a Nova Senha:" GridPane.rowIndex="2">
+                        <PasswordField fx:id="confirmNew" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="300.0" promptText="Confirme a Nova Senha:" GridPane.rowIndex="2">
                             <font>
                                 <Font name="Arial Bold" size="12.0" />
                             </font>
                         </PasswordField>
-                        <PasswordField fx:id="nvSenha1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="300.0" promptText="Senha Atual:">
+                        <PasswordField fx:id="password" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="300.0" promptText="Senha Atual:">
                             <font>
                                 <Font name="Arial Bold" size="12.0" />
                             </font>

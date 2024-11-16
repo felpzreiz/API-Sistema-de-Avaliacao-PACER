@@ -1,7 +1,6 @@
 package conexao;
 
 import org.alphacode.pacer.alunoacess.AlunosInterface;
-import org.alphacode.pacer.alunoacess.Dados;
 import org.alphacode.pacer.alunoacess.Notas;
 import org.alphacode.pacer.alunos.Alunos;
 import org.alphacode.pacer.grupos.Grupo;
@@ -686,6 +685,36 @@ public class OperacoesSQL {
         return listaAlunos;
 
     }
+
+    //MÉTODOS PARA ALTERAÇÃO DE SENHA DO USUÁRIO
+
+    public static void updatePassword(Statement stm, String senha, String email) {
+        String query = "update usuario set senha = '" + senha + "' where email = '" + email + "'";
+        try {
+            stm.executeUpdate(query);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String getPassword(Statement stm, String email) {
+        String password = "";
+        String query = "select senha from usuario where email = '" + email + "'";
+
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                password = rs.getString("senha");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return password;
+    }
+
+
 }
 
 

@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.alphacode.pacer.ExecuteApplication;
 import conexao.OperacoesSQL;
+import org.alphacode.pacer.password.RedefinirSenha;
 import org.alphacode.pacer.sprintsCriterios.Datas;
 
 import java.io.IOException;
@@ -192,6 +193,8 @@ public class HomeController {
     public void openConfig(ActionEvent actionEvent) {
         try {  FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/alphacode/pacer/password/RedefinirSenha.fxml"));
             Parent root = loader.load();
+            RedefinirSenha controller = loader.getController();
+            controller.setEmail("professor@fatec.sp.gov.br");
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setTitle("Senha do Usuario");
@@ -199,7 +202,7 @@ public class HomeController {
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println();
+
         }
 
     }

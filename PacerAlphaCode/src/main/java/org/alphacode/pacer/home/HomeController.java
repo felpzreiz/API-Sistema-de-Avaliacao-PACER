@@ -190,5 +190,17 @@ public class HomeController {
     }
 
     public void openConfig(ActionEvent actionEvent) {
+        try {  FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/alphacode/pacer/password/RedefinirSenha.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Senha do Usuario");
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println();
+        }
+
     }
 }

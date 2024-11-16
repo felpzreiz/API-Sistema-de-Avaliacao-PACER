@@ -293,7 +293,6 @@ public class GrupoController {
         return (grupoSelecao);
     }
 
-    ;
 
     @FXML
     void addPointsGroup(ActionEvent event) {

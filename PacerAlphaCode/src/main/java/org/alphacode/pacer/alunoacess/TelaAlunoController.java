@@ -2,6 +2,7 @@ package org.alphacode.pacer.alunoacess;
 
 import conexao.OperacoesSQL;
 import javafx.beans.property.SimpleFloatProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,17 +18,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.converter.FloatStringConverter;
+import org.alphacode.pacer.grupos.Sprint;
+import org.alphacode.pacer.sprintsCriterios.Datas;
 
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class TelaAlunoController {
-    OperacoesSQL conexao = new OperacoesSQL();
+
     Statement stm = OperacoesSQL.conectarBanco();
 
 
@@ -80,6 +81,33 @@ public class TelaAlunoController {
     private Button btsalvar;
 
     @FXML
+    private Button btnIniciarAv;
+
+    @FXML
+    private TableView<Datas> tableSprint;
+
+    @FXML
+    private TableColumn<Datas, Integer> nSprint;
+
+    @FXML
+    private TableColumn<Datas, String> inicioSprint;
+
+    @FXML
+    private TableColumn<Datas, String> fimSprint;
+
+    @FXML
+    private TableColumn<Datas, String> fimAvaliacao;
+
+    @FXML
+    private TableView<Sprint> tableSprints;
+
+    @FXML
+    private TableColumn<Sprint, Double> viewPontos;
+
+    @FXML
+    private TableColumn<Sprint, Integer> viewSprint;
+
+    @FXML
     private TableColumn<AlunosInterface, String> columnStudent;
 
     @FXML
@@ -103,8 +131,6 @@ public class TelaAlunoController {
     @FXML
     private Label qtPontos;
 
-    @FXML
-    private Label timeSprint;
 
     @FXML
     private Label pontosSprint;
@@ -119,20 +145,16 @@ public class TelaAlunoController {
     private TableView<AlunosInterface> tableStudents;
 
     @FXML
-    private Label textDuracao;
-
-    @FXML
     private Label textSprint;
 
     @FXML
     private Label textpacer;
 
-    @FXML
-    private Label tpRestante;
-
     private ObservableList<AlunosInterface> listaAlunos;
     private List<AlunosInterface> alunos;              // Declaro a lista de alunos diretamente com a query
     private Map<String, Integer> notaColunas;
+    private ObservableList<Datas> dataSprint = FXCollections.observableArrayList();
+    private ObservableList<Sprint> sprintPoint;
 
     @FXML
     public void carregarAlunos(String email) throws SQLException {       // Carrego o nome dos alunos com base nos Objetos AlunosInterface e Query
@@ -141,13 +163,39 @@ public class TelaAlunoController {
     }
 
     @FXML
-    public void initialize() throws SQLException {
+    public void initialize() {
+
         idEmail.setText("");
-        listaAlunos = FXCollections.observableArrayList();                  // Inicio primeiro os alunos na coluna de estudantes
+        listaAlunos = FXCollections.observableArrayList();
+        sprintPoint = FXCollections.observableArrayList();           // Inicio primeiro os alunos na coluna de estudantes
         List<String> colunas = OperacoesSQL.carregarColunas(stm);         //  Carrego as colunas para iniciar em seguida a tabela         // Trago o metodo de alunos
         notaColunas = new HashMap<>();
         initializeTable(colunas);                                     // Inicio as colunas dinamicas
-        pontosSprint();
+
+
+        nSprint.setCellValueFactory(new PropertyValueFactory<>("idSprint"));
+        inicioSprint.setCellValueFactory(cellData -> {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String formattedDate = cellData.getValue().getDataInicial().format(formatter);
+            return new SimpleStringProperty(formattedDate);
+        });
+        // Para fimSprint, formatar a data no formato "dd/MM/yyyy"
+        fimSprint.setCellValueFactory(cellData -> {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String formattedDate = cellData.getValue().getDataFinal().format(formatter);
+            return new SimpleStringProperty(formattedDate);
+        });
+
+        fimAvaliacao.setCellValueFactory(cellData -> {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String formattedDate = cellData.getValue().getDataFinalAv().format(formatter);
+            return new SimpleStringProperty(formattedDate);
+        });  // Exemplo de status
+        viewSprint.setCellValueFactory(new PropertyValueFactory<>("sprint"));
+        viewPontos.setCellValueFactory(new PropertyValueFactory<>("pontos"));
+        tableSprints.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+        tableSprint.setItems(dataSprint);
+        carregarDatas();
         style();
     }
 
@@ -188,18 +236,20 @@ public class TelaAlunoController {
                 String colunaNome = event.getTableColumn().getText();
                 int indiceNota = notaColunas.get(colunaNome);
 
-                String stringNota = event.getNewValue().toString().replace(',', '.');
+                float notaDigitada = event.getNewValue();
 
                 try {
 
-                    float notaDigitada = Float.parseFloat(stringNota);      // Nota digitada
-
-                    //System.out.println("Aluno: " + aluno.getNome() + " Nota digitada: " + notaDigitada + " para " + colunaNome);
-
-
                     if (notaDigitada >= 0 && notaDigitada <= 3) {
 
-                        float somaAtual = notaDigitada + somaNotas();
+                        float somaTotal = somaNotas();
+                        float somaAtual = notaDigitada + somaTotal;
+
+                        System.out.println("Nota Digitada: " + notaDigitada);
+                        System.out.println("Soma Atual: " + somaAtual);
+                        System.out.println("Notas somadas: " + somaNotas());
+                        System.out.println("Pontos Sprint: " + pontosSprint());
+                        System.out.println("************************");
 
                         if (pontosSprint() >= somaAtual) {
                             if (indiceNota >= aluno.getNotas().size()) {
@@ -208,7 +258,6 @@ public class TelaAlunoController {
                                 aluno.getNotas().get(indiceNota).setNota(notaDigitada);
                             }
                             tableStudents.refresh();
-                            somaNotas();
 
                         } else {
                             showAlert("Erro!", "ATENÇÃO", "Quantidade de pontos excedida.");
@@ -224,9 +273,11 @@ public class TelaAlunoController {
             });
             tableStudents.getColumns().add(tableColumn);
             colunaX++;
+
+
         }
         tableStudents.setItems(listaAlunos);
-        tableStudents.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableStudents.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
     }
 
     @FXML
@@ -246,6 +297,20 @@ public class TelaAlunoController {
 
     @FXML
     public void acessConfig(ActionEvent actionEvent) {
+        try {  FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/alphacode/pacer/password/RedefinirSenha.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Senha do Usuario");
+
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println();
+        }
+
+
     }
 
     @FXML
@@ -256,13 +321,14 @@ public class TelaAlunoController {
 
     public float somaNotas() {
         qtdpontosDisp.setVisible(true);
-        float somaNotas = 0.0f;
+        float somaNotas = 0;
         for (AlunosInterface aluno : listaAlunos) {
             for (Notas nota : aluno.getNotas()) {
                 somaNotas += nota.getNota();
             }
         }
         qtdpontosDisp.setText(String.valueOf(somaNotas));
+
         return somaNotas;
     }
 
@@ -273,21 +339,58 @@ public class TelaAlunoController {
         return pontos;
     }
 
-
     @FXML
-    public void carregarDados(String email) throws SQLException {
+    public void carregarDados(String email) {
         setEmail(email);
         idEmail.setText(this.email);
         labelNome.setText(OperacoesSQL.nomeAluno(stm, email));
         nomegrupo.setText(OperacoesSQL.carregarInfo(stm, email));
-
         LocalDate LocalDate = java.time.LocalDate.now();
         int idSprint = OperacoesSQL.getNSprint(stm, LocalDate);
         infoSprint.setText(String.valueOf(idSprint));
-
+        int idGrupo = OperacoesSQL.getIdGrupoEmail(stm, email);
+        carregarSprints(idGrupo);
         pontosSprint();
     }
 
+    @FXML
+    void carregarDatas() {
+        List<Datas> datas = OperacoesSQL.carregarDatas(stm);
+        dataSprint.addAll(datas);
+        tableSprint.setItems(dataSprint);
+    }
+
+    @FXML
+    void carregarSprints(Integer id) {
+        List<Sprint> sprint = OperacoesSQL.carregarSprints(stm, id);
+        sprintPoint.clear();
+        sprintPoint.addAll(sprint);
+        tableSprints.setItems(sprintPoint);
+    }
+
+    @FXML
+    public void iniciarAv(ActionEvent actionEvent) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Iniciar Avaliação");
+        dialog.setHeaderText("Inicie a avaliação da sprint");
+        dialog.setContentText("Digite o número da sprint:");
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(sprint -> {
+            try {
+                int numeroSprint = Integer.parseInt(sprint);
+                System.out.println("Avaliação da Sprint " + numeroSprint + " iniciada!");
+                iniciarAvaliacaoNoBanco(numeroSprint);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    private void iniciarAvaliacaoNoBanco(int numeroSprint) {
+
+
+    }
 
     @FXML
     public void salvarNotas(ActionEvent actionEvent) throws SQLException {
@@ -297,7 +400,8 @@ public class TelaAlunoController {
             con = DriverManager.getConnection(
                     "jdbc:postgresql://localhost:5432/pacer", "adminpacer", "AdminPacer1234"
             );
-            String query = "Insert into avaliacao (id_aluno_avaliador, id_aluno_avaliado, id_grupo, id_sprint, id_criterio, nota) VALUES (?,?,?,?,?,?)";
+            String query = "needaonedance" +
+                    "Insert into avaliacao (id_aluno_avaliador, id_aluno_avaliado, id_grupo, id_sprint, id_criterio, nota) VALUES (?,?,?,?,?,?)";
             pstmt = con.prepareStatement(query);
 
             for (AlunosInterface aluno : listaAlunos) {
@@ -337,6 +441,7 @@ public class TelaAlunoController {
             if (pstmt != null) pstmt.close();
             if (con != null) con.close();
 
+            showAlert("Avaliação", "Concluída com Sucesso", "A avaliação foi concluída com sucesso. Não há mais ações pendentes.");
         }
 
     }
@@ -349,5 +454,6 @@ public class TelaAlunoController {
         info.setContentText(content);
         info.show();
     }
+
 
 }

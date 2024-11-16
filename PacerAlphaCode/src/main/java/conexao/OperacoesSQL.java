@@ -185,7 +185,7 @@ public class OperacoesSQL {
 
     //MÉTODOS PARA ADICIONAR SPRINTS
     public static void addSprint(Statement stm, int idSprint, LocalDate dataInicial, LocalDate dataFinal) {
-        String dataSprint = "INSERT INTO sprint (sprint, data_inicio, data_fim) VALUES ('" + idSprint + "','" + dataInicial + "','" + dataFinal + "')";
+        String dataSprint = "INSERT INTO sprint (sprint, data_inicio, data_fim, fim_avaliacao) VALUES ('" + idSprint + "','" + dataInicial + "','" + dataFinal + "','" + dataFinal.plusDays(7) + "')";
         try {
             stm.execute(dataSprint);
         } catch (SQLException e) {
@@ -198,12 +198,13 @@ public class OperacoesSQL {
     public static List<Datas> carregarDatas(Statement stm) {
         List<Datas> listaDatas = new ArrayList<>();
         try {
-            ResultSet rs = stm.executeQuery("SELECT  sprint, data_inicio, data_fim FROM  sprint ORDER BY(sprint)");
+            ResultSet rs = stm.executeQuery("SELECT  sprint, data_inicio, data_fim, fim_avaliacao FROM  sprint ORDER BY(sprint)");
             while (rs.next()) {
                 int idSprint = rs.getInt("sprint");
                 LocalDate dataInicial = rs.getDate("data_inicio").toLocalDate();
                 LocalDate dataFinal = rs.getDate("data_fim").toLocalDate();
-                listaDatas.add(new Datas(idSprint, dataInicial, dataFinal));
+                LocalDate dataFinalAv = rs.getDate("fim_avaliacao").toLocalDate();
+                listaDatas.add(new Datas(idSprint, dataInicial, dataFinal, dataFinalAv));
             }
 
         } catch (SQLException e) {
@@ -421,7 +422,6 @@ public class OperacoesSQL {
 
     //MÉTODOS PARA A TELA DE AVAVALIAÇÃO ALUNO -----------------------------------
 
-
     public static String nomeAluno(Statement stm, String email) {
         String nAluno = "";
         String query = "select nome from aluno where email = '" + email + "'";
@@ -438,7 +438,6 @@ public class OperacoesSQL {
 
     }
 
-
     public static String carregarInfo(Statement stm, String idAluno) {
         String query = "select grupo from aluno where email =    '" + idAluno + "'";
         String grupo = null;
@@ -452,6 +451,7 @@ public class OperacoesSQL {
         }
         return grupo;
     }
+
 
     public static String idGrupo(Statement stm, String email) {
         String nomeGrupo = "";
@@ -538,6 +538,28 @@ public class OperacoesSQL {
         int id = 0;
         String grupo = "";
         String query = "select grupo from aluno where nome = '" + nome + "'";
+
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                grupo = rs.getString("grupo");
+            }
+            String query1 = "select id from grupo where nome_grupo = '" + grupo + "'";
+            ResultSet rs1 = stm.executeQuery(query1);
+            while (rs1.next()) {
+                id = rs1.getInt("id");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+    public static int getIdGrupoEmail(Statement stm, String email) {
+        int id = 0;
+        String grupo = "";
+        String query = "select grupo from aluno where email = '" + email + "'";
 
         try {
             ResultSet rs = stm.executeQuery(query);

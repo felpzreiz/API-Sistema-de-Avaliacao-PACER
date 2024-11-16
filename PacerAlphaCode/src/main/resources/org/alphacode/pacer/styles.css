@@ -554,3 +554,28 @@
     -fx-font-size: 14px;
     -fx-font-family: Arial;
 }
+
+#confirmarSenha {
+    -fx-background-color: transparent;
+    -fx-border-color: #696969;
+    -fx-border-width: 0px 0px 2px 0px;
+}
+
+#nvSenha {
+    -fx-background-color: transparent;
+    -fx-border-color: #696969;
+    -fx-border-width: 0px 0px 2px 0px;
+}
+
+#nvSenha1 {
+    -fx-background-color: transparent;
+    -fx-border-color: #696969;
+    -fx-border-width: 0px 0px 2px 0px;
+}
+
+#exitPass{    -fx-background-color: #dd2828;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+
+}

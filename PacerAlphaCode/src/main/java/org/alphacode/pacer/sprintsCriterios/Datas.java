@@ -8,6 +8,7 @@ public class Datas {
     private int idSprint;
     private LocalDate dataInicial;
     private LocalDate dataFinal;
+    private LocalDate dataFinalAv;
 
     // Construtor com ID, data inicial e data final
     public Datas(int idSprint, LocalDate dataInicial, LocalDate dataFinal) {
@@ -20,6 +21,13 @@ public class Datas {
     public Datas(LocalDate dataInicial, LocalDate dataFinal) {
         this.dataInicial = dataInicial;
         this.dataFinal = dataFinal;
+    }
+
+    public Datas(int idSprint, LocalDate dataInicial, LocalDate dataFinal, LocalDate dataFinalAv) {
+        this.idSprint = idSprint;
+        this.dataInicial = dataInicial;
+        this.dataFinal = dataFinal;
+        this.dataFinalAv = dataFinalAv;
     }
 
     // Getters e Setters
@@ -56,5 +64,13 @@ public class Datas {
     public String getDataFinalFormatada() {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return dataFinal.format(dateFormat);
+    }
+
+    public LocalDate getDataFinalAv() {
+        return dataFinalAv;
+    }
+
+    public void setDataFinalAv(LocalDate dataFinalAv) {
+        this.dataFinalAv = dataFinalAv;
     }
 }

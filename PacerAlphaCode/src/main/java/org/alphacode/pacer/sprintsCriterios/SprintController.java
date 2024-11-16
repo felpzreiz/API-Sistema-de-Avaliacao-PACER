@@ -66,7 +66,7 @@ public class SprintController {
     private TableColumn<Datas, String> fimSprint;  // Alterado para String
 
     @FXML
-    private TableColumn<Datas, String> statusSprint;  // Para mostrar o status da sprint (se necessário)
+    private TableColumn<Datas, String> fimAvaliacao;  // Para mostrar o status da sprint (se necessário)
 
     @FXML
     private ListView<Criterios> criterios;
@@ -102,11 +102,16 @@ public class SprintController {
             return new SimpleStringProperty(formattedDate);
         });
 
-        // Para statusSprint, você pode adicionar um status customizado, como "Ativo", "Encerrado", etc.
-        statusSprint.setCellValueFactory(cellData -> new SimpleStringProperty("Ativo"));  // Exemplo de status
+
+        fimAvaliacao.setCellValueFactory(cellData -> {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String formattedDate = cellData.getValue().getDataFinalAv().format(formatter);
+            return new SimpleStringProperty(formattedDate);
+        });
 
         tableSprint.setItems(dataSprint);
         criterios.setItems(lista);
+
         style();
         criterios();
         carregarDatas();

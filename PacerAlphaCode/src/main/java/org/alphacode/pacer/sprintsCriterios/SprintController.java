@@ -20,7 +20,6 @@ import java.util.Objects;
 
 public class SprintController {
 
-    OperacoesSQL conexao = new OperacoesSQL();
     Statement stm = OperacoesSQL.conectarBanco();
 
     @FXML
@@ -87,27 +86,9 @@ public class SprintController {
     public void initialize() {
         // Configuração das colunas da TableView
         nSprint.setCellValueFactory(new PropertyValueFactory<>("idSprint"));
-
-        // Para inicioSprint, formatar a data no formato "dd/MM/yyyy"
-        inicioSprint.setCellValueFactory(cellData -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String formattedDate = cellData.getValue().getDataInicial().format(formatter);
-            return new SimpleStringProperty(formattedDate);
-        });
-
-        // Para fimSprint, formatar a data no formato "dd/MM/yyyy"
-        fimSprint.setCellValueFactory(cellData -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String formattedDate = cellData.getValue().getDataFinal().format(formatter);
-            return new SimpleStringProperty(formattedDate);
-        });
-
-
-        fimAvaliacao.setCellValueFactory(cellData -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String formattedDate = cellData.getValue().getDataFinalAv().format(formatter);
-            return new SimpleStringProperty(formattedDate);
-        });
+        inicioSprint.setCellValueFactory(cellData -> new SimpleStringProperty(formatarData(cellData.getValue().getDataInicial())));
+        fimSprint.setCellValueFactory(cellData -> new SimpleStringProperty(formatarData(cellData.getValue().getDataFinal())));
+        fimAvaliacao.setCellValueFactory(cellData -> new SimpleStringProperty(formatarData(cellData.getValue().getDataFinalAv())));
 
         tableSprint.setItems(dataSprint);
         criterios.setItems(lista);
@@ -118,30 +99,30 @@ public class SprintController {
         exibirInstrucoes();
     }
 
+    private String formatarData(LocalDate data) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return data != null ? data.format(formatter) : "";  // Retorna uma string vazia caso o valor seja null
+    }
+
     @FXML
     void addData(ActionEvent event) {
         LocalDate dataInicial = addDataI.getValue();
         LocalDate dataFinal = addDataF.getValue();
+        LocalDate dataFinalAv = addDataF.getValue().plusDays(7);
 
         if (dataInicial != null && dataFinal != null) {
             if (dataFinal.isAfter(dataInicial)) {
                 int idSprint = dataSprint.size() + 1;
-                Datas novaData = new Datas(idSprint, dataInicial, dataFinal);
+
+                Datas novaData = new Datas(idSprint, dataInicial, dataFinal, dataFinalAv);
                 dataSprint.add(novaData);
                 OperacoesSQL.addSprint(stm, idSprint, dataInicial, dataFinal);
+                tableSprint.refresh();
             } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Erro!");
-                alert.setHeaderText("Datas escolhidas conflitantes");
-                alert.setContentText("Verifique as datas selecionadas");
-                alert.show();
+                showWarning("Erro!","Datas escolhidas conflitantes", "Verifique as datas selecionadas");
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Erro!");
-            alert.setHeaderText("Campo de data vazio.");
-            alert.setContentText("Informe a data inicial e data final.");
-            alert.show();
+            showWarning("Erro!", "Campo de data vazio.","Informe a data inicial e data final." );
         }
 
         addDataI.setValue(null);
@@ -154,11 +135,7 @@ public class SprintController {
         int idData = tableSprint.getSelectionModel().getSelectedItem().getIdSprint();
 
         if (dataSelect == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Erro");
-            alert.setHeaderText("Nenhum período selecionado.");
-            alert.setContentText("Selecione um período para remover.");
-            alert.show();
+            showWarning("Erro!","Nenhum período selecionado.",  "Selecione um período para remover.");
             return;
         }
 
@@ -198,11 +175,7 @@ public class SprintController {
     @FXML
     void addC(ActionEvent event) {
         if (nomeCriterio.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText("Campo vazio.");
-            alert.setContentText("Informe um critério.");
-            alert.show();
+            showWarning("Erro!", "Campo vazio.","Informe um critério.");
         } else {
             String coluna = nomeCriterio.getText().trim();
             Criterios novoCriterio = new Criterios(coluna);
@@ -219,13 +192,10 @@ public class SprintController {
         Criterios select = criterios.getSelectionModel().getSelectedItem();
 
         if (select == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Nenhum Critério Selecionado");
-            alert.setHeaderText(null);
-            alert.setContentText("Por favor, selecione um critério para remover.");
-            alert.show();
+            showWarning("Erro!", "Nenhum Critério Selecionado.","Selecione um critério para remover.");
             return;
         }
+
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Confirmar Remoção");
@@ -310,4 +280,14 @@ public class SprintController {
 
     public void encerrarSprint(ActionEvent actionEvent) {
     }
+
+    @FXML
+    public void showWarning(String title, String header, String content){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.show();
+    }
+
 }

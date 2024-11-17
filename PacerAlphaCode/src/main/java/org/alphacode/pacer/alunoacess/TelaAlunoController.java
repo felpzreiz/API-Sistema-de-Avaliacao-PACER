@@ -165,39 +165,27 @@ public class TelaAlunoController {
 
     @FXML
     public void initialize() {
-
         idEmail.setText("");
         listaAlunos = FXCollections.observableArrayList();
         sprintPoint = FXCollections.observableArrayList();           // Inicio primeiro os alunos na coluna de estudantes
         List<String> colunas = OperacoesSQL.carregarColunas(stm);         //  Carrego as colunas para iniciar em seguida a tabela         // Trago o metodo de alunos
         notaColunas = new HashMap<>();
         initializeTable(colunas);                                     // Inicio as colunas dinamicas
-
-
         nSprint.setCellValueFactory(new PropertyValueFactory<>("idSprint"));
-        inicioSprint.setCellValueFactory(cellData -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String formattedDate = cellData.getValue().getDataInicial().format(formatter);
-            return new SimpleStringProperty(formattedDate);
-        });
-        // Para fimSprint, formatar a data no formato "dd/MM/yyyy"
-        fimSprint.setCellValueFactory(cellData -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String formattedDate = cellData.getValue().getDataFinal().format(formatter);
-            return new SimpleStringProperty(formattedDate);
-        });
-
-        fimAvaliacao.setCellValueFactory(cellData -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String formattedDate = cellData.getValue().getDataFinalAv().format(formatter);
-            return new SimpleStringProperty(formattedDate);
-        });  // Exemplo de status
+        inicioSprint.setCellValueFactory(cellData -> new SimpleStringProperty(formatarData(cellData.getValue().getDataInicial())));
+        fimSprint.setCellValueFactory(cellData -> new SimpleStringProperty(formatarData(cellData.getValue().getDataFinal())));
+        fimAvaliacao.setCellValueFactory(cellData -> new SimpleStringProperty(formatarData(cellData.getValue().getDataFinalAv())));
         viewSprint.setCellValueFactory(new PropertyValueFactory<>("sprint"));
         viewPontos.setCellValueFactory(new PropertyValueFactory<>("pontos"));
         tableSprints.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
         tableSprint.setItems(dataSprint);
         carregarDatas();
         style();
+    }
+
+    private String formatarData(LocalDate data) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return data != null ? data.format(formatter) : "";  // Retorna uma string vazia caso o valor seja null
     }
 
     public TelaAlunoController() throws SQLException {
@@ -298,7 +286,8 @@ public class TelaAlunoController {
 
     @FXML
     public void acessConfig(ActionEvent actionEvent) {
-        try {  FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/alphacode/pacer/password/RedefinirSenha.fxml"));
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/alphacode/pacer/password/RedefinirSenha.fxml"));
 
             Parent root = loader.load();
             RedefinirSenha controller = loader.getController();
@@ -349,8 +338,7 @@ public class TelaAlunoController {
         idEmail.setText(this.email);
         labelNome.setText(OperacoesSQL.nomeAluno(stm, email));
         nomegrupo.setText(OperacoesSQL.carregarInfo(stm, email));
-        LocalDate LocalDate = java.time.LocalDate.now();
-        int idSprint = OperacoesSQL.getNSprint(stm, LocalDate);
+        int idSprint = OperacoesSQL.getNSprint(stm);
         infoSprint.setText(String.valueOf(idSprint));
         int idGrupo = OperacoesSQL.getIdGrupoEmail(stm, email);
         carregarSprints(idGrupo);
@@ -359,6 +347,7 @@ public class TelaAlunoController {
 
     @FXML
     void carregarDatas() {
+        tableSprint.getItems().clear();
         List<Datas> datas = OperacoesSQL.carregarDatas(stm);
         dataSprint.addAll(datas);
         tableSprint.setItems(dataSprint);
@@ -366,6 +355,7 @@ public class TelaAlunoController {
 
     @FXML
     void carregarSprints(Integer id) {
+        tableSprints.getItems().clear();
         List<Sprint> sprint = OperacoesSQL.carregarSprints(stm, id);
         sprintPoint.clear();
         sprintPoint.addAll(sprint);
@@ -373,22 +363,48 @@ public class TelaAlunoController {
     }
 
     @FXML
-    public void iniciarAv(ActionEvent actionEvent) {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Iniciar Avaliação");
-        dialog.setHeaderText("Inicie a avaliação da sprint");
-        dialog.setContentText("Digite o número da sprint:");
-        Optional<String> result = dialog.showAndWait();
-        result.ifPresent(sprint -> {
-            try {
-                int numeroSprint = Integer.parseInt(sprint);
-                System.out.println("Avaliação da Sprint " + numeroSprint + " iniciada!");
-                iniciarAvaliacaoNoBanco(numeroSprint);
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
+    public void iniciarAv(ActionEvent actionEvent) throws SQLException {
+        try {
+            LocalDate now = LocalDate.now();
+
+            int idSprint = OperacoesSQL.getNSprint(stm);
+            System.out.println(idSprint);
+            Sprint sprint = OperacoesSQL.getSprintID(stm, idSprint);
+
+            if (sprint == null) {
+                showAlert("Erro", "Sprint não encontrada", "Não foi possível encontrar uma sprint com o ID: " + idSprint);
+                return;
             }
-        });
+            System.out.println(fimSprint);
+            System.out.println(fimAvaliacao);
+            LocalDate fimSprint = sprint.getData_fim();
+            LocalDate fimAvaliacao = sprint.getFim_avaliacao();
+
+            if (now.isAfter(fimSprint) && now.isBefore(fimAvaliacao)) {
+                TextInputDialog dialog = new TextInputDialog();
+                dialog.setTitle("Iniciar Avaliação");
+                dialog.setHeaderText("Inicie a avaliação da sprint");
+                dialog.setContentText("Digite o número da sprint:");
+
+                Optional<String> result = dialog.showAndWait();
+                result.ifPresent(sprintNum -> {
+                    try {
+                        int numeroSprint = Integer.parseInt(sprintNum);
+                        System.out.println("Avaliação da Sprint " + numeroSprint + " iniciada!");
+                        iniciarAvaliacaoNoBanco(numeroSprint);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } else {
+                showAlert("Erro", "Período de Avaliação Inválido", "O período de avaliação ainda não começou ou já terminou.");
+            }
+        } catch (NullPointerException e) {
+            System.err.println();
+            e.printStackTrace();
+        }
     }
+
 
     @FXML
     private void iniciarAvaliacaoNoBanco(int numeroSprint) {

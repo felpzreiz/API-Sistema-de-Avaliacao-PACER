@@ -153,37 +153,42 @@ public class HomeController {
     }
 
     private void carregarSprints() throws SQLException {
-        // Criar uma lista de sprints
-        OperacoesSQL operacoesSQL = new OperacoesSQL();
-        Statement stm = operacoesSQL.conectarBanco();
-        ObservableList<Datas> sprints = FXCollections.observableArrayList();
+        try {
+            // Criar uma lista de sprints
+            OperacoesSQL operacoesSQL = new OperacoesSQL();
+            Statement stm = OperacoesSQL.conectarBanco();
+            ObservableList<Datas> sprints = FXCollections.observableArrayList();
 
-        // Carregar as sprints do banco de dados
-        List<Datas> datas = operacoesSQL.carregarDatas(stm);
-        sprints.addAll(datas);
+            // Carregar as sprints do banco de dados
+            List<Datas> datas = OperacoesSQL.carregarDatas(stm);
+            sprints.addAll(datas);
 
-        // Configurar as colunas da tabela
-        nSprintReplica.setCellValueFactory(new PropertyValueFactory<>("idSprint"));
+            // Configurar as colunas da tabela
+            nSprintReplica.setCellValueFactory(new PropertyValueFactory<>("idSprint"));
 
-        // Para a coluna de data inicial, usar o formato "dd/MM/yyyy"
-        inicioSprintReplica.setCellValueFactory(cellData -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String formattedDate = cellData.getValue().getDataInicial().format(formatter);
-            return new SimpleStringProperty(formattedDate);
-        });
+            // Para a coluna de data inicial, usar o formato "dd/MM/yyyy"
+            inicioSprintReplica.setCellValueFactory(cellData -> {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                String formattedDate = cellData.getValue().getDataInicial().format(formatter);
+                return new SimpleStringProperty(formattedDate);
+            });
 
-        // Para a coluna de data final, usar o formato "dd/MM/yyyy"
-        fimSprintReplica.setCellValueFactory(cellData -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            String formattedDate = cellData.getValue().getDataFinal().format(formatter);
-            return new SimpleStringProperty(formattedDate);
-        });
+            // Para a coluna de data final, usar o formato "dd/MM/yyyy"
+            fimSprintReplica.setCellValueFactory(cellData -> {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                String formattedDate = cellData.getValue().getDataFinal().format(formatter);
+                return new SimpleStringProperty(formattedDate);
+            });
 
-        // Definindo status "Ativo" (você pode modificar isso conforme necessário)
-        statusSprintReplica.setCellValueFactory(cellData -> new SimpleStringProperty("Ativo"));
+            // Definindo status "Ativo" (você pode modificar isso conforme necessário)
+            statusSprintReplica.setCellValueFactory(cellData -> new SimpleStringProperty("Ativo"));
 
-        // Adicionar as sprints à tabela
-        tableSprintReplica.setItems(sprints);
+            // Adicionar as sprints à tabela
+            tableSprintReplica.setItems(sprints);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+
+        }
 
     }
 

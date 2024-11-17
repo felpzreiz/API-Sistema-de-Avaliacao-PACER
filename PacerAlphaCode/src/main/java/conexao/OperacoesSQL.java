@@ -181,12 +181,15 @@ public class OperacoesSQL {
 
     }
 
-
     //MÉTODOS PARA ADICIONAR SPRINTS
     public static void addSprint(Statement stm, int idSprint, LocalDate dataInicial, LocalDate dataFinal) {
-        String dataSprint = "INSERT INTO sprint (sprint, data_inicio, data_fim, fim_avaliacao) VALUES ('" + idSprint + "','" + dataInicial + "','" + dataFinal + "','" + dataFinal.plusDays(7) + "')";
-        try {
-            stm.execute(dataSprint);
+        String query = "INSERT INTO sprint (sprint, data_inicio, data_fim, fim_avaliacao) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setInt(1, idSprint);
+            ps.setObject(2, dataInicial);
+            ps.setObject(3, dataFinal);
+            ps.setObject(4, dataFinal.plusDays(7));
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -227,7 +230,6 @@ public class OperacoesSQL {
     }
 
     //FIM DOS MÉTODOS PARA CARREGAR AS DATAS DAS SPRINTS -------------
-
 
     //MÉTODOS PARA A TELA DE GRUPOS ----------------------------------
 
@@ -637,18 +639,36 @@ public class OperacoesSQL {
         return pontosS;
     }
 
-    public static int getNSprint(Statement stm, LocalDate localDate) {
+    public static int getNSprint(Statement stm) {
         int sprint = 0;
-        localDate = java.time.LocalDate.now();
-        String query = "select sprint from sprint where  data_inicio < '" + localDate + "' and  data_fim > '" + localDate + "' ";
-        try {
-            ResultSet rs = stm.executeQuery(query);
-            while (rs.next()) {
+        LocalDate now = LocalDate.now();
+        String query = "select sprint from sprint where fim_avaliacao < ?";
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setObject(1, now);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
                 sprint = rs.getInt("sprint");
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+        }
+        return sprint;
+    }
+
+    public static Sprint getSprintID(Statement stm, Integer idSprint) throws SQLException {
+        Sprint sprint = null;
+        String query = "select sprint, data_inicio, data_fim, fim_avaliacao from sprint where sprint = ?";
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setInt(1, idSprint);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                 sprint = new Sprint(
+                        rs.getInt("sprint"), rs.getDate("data_inicio").toLocalDate(),
+                        rs.getDate("data_fim").toLocalDate(), rs.getDate("fim_avaliacao").toLocalDate()
+                        );
+            }
         }
         return sprint;
     }

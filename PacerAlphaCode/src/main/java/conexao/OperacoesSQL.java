@@ -736,7 +736,7 @@ public class OperacoesSQL {
 
     public static Integer getCountStudents(Statement stm, Integer idGrupo) {
         Integer count = 0;
-        String query = "with teste as" +
+        String query = "with teste as(" +
                 "select nome_grupo " +
                 "from grupo " +
                 "where id = "+idGrupo+" " +

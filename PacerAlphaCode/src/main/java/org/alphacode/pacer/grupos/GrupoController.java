@@ -310,7 +310,7 @@ public class GrupoController {
     void carregarResultados(Integer id) {
         List<AlunosInterface> lista = OperacoesSQL.getRAvaliacao(stm, id);
 
-        int nAlunos = lista.size();
+        int nAlunos = OperacoesSQL.getCountStudents(stm, id);
 
         for (AlunosInterface aluno : lista) {
             aluno.carregarNotas(nAlunos);

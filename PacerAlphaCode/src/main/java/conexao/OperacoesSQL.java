@@ -734,6 +734,28 @@ public class OperacoesSQL {
         return password;
     }
 
+    public static Integer getCountStudents(Statement stm, Integer idGrupo) {
+        Integer count = 0;
+        String query = "with teste as" +
+                "select nome_grupo " +
+                "from grupo " +
+                "where id = "+idGrupo+" " +
+                ") select count(email) as num_alunos" +
+                "from aluno " +
+                "inner join teste on teste.nome_grupo = aluno.grupo " +
+                "where aluno.grupo = teste.nome_grupo";
+
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                count = rs.getInt("num_alunos");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 
 }
 

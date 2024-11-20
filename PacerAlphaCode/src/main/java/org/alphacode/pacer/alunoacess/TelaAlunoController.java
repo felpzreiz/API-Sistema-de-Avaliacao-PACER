@@ -420,8 +420,7 @@ public class TelaAlunoController {
             con = DriverManager.getConnection(
                     "jdbc:postgresql://localhost:5432/pacer", "adminpacer", "AdminPacer1234"
             );
-            String query = "needaonedance" +
-                    "Insert into avaliacao (id_aluno_avaliador, id_aluno_avaliado, id_grupo, id_sprint, id_criterio, nota) VALUES (?,?,?,?,?,?)";
+            String query = "Insert into avaliacao (id_aluno_avaliador, id_aluno_avaliado, id_grupo, id_sprint, id_criterio, nota) VALUES (?,?,?,?,?,?)";
             pstmt = con.prepareStatement(query);
 
             for (AlunosInterface aluno : listaAlunos) {

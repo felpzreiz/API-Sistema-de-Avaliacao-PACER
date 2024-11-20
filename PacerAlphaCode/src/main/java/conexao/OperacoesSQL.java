@@ -74,8 +74,9 @@ public class OperacoesSQL {
     }
 
     public static void excluir(Statement stm, String email) {
-        String excluiAluno = "DELETE FROM usuario WHERE email = '" + email + "';" +
-                "DELETE FROM aluno WHERE email = '" + email + "'";
+        String excluiAluno =
+                "DELETE FROM aluno WHERE email = '" + email + "';"+
+                "DELETE FROM usuario WHERE email = '" + email + "'";
         try {
             stm.executeUpdate(excluiAluno);
 
@@ -641,10 +642,10 @@ public class OperacoesSQL {
 
     public static int getNSprint(Statement stm) {
         int sprint = 0;
-        LocalDate now = LocalDate.now();
-        String query = "select sprint from sprint where fim_avaliacao < ?";
+        String query = "SELECT sprint " +
+                "FROM sprint " +
+                "WHERE CURRENT_DATE BETWEEN data_fim + 1 AND fim_avaliacao";
         try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
-            ps.setObject(1, now);
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -735,12 +736,13 @@ public class OperacoesSQL {
     }
 
     public static Integer getCountStudents(Statement stm, Integer idGrupo) {
+        System.out.println(idGrupo);
         Integer count = 0;
         String query = "with teste as(" +
                 "select nome_grupo " +
                 "from grupo " +
                 "where id = "+idGrupo+" " +
-                ") select count(email) as num_alunos" +
+                ") select count(email) as num_alunos "+
                 "from aluno " +
                 "inner join teste on teste.nome_grupo = aluno.grupo " +
                 "where aluno.grupo = teste.nome_grupo";

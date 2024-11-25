@@ -39,9 +39,9 @@ public class TelaAlunoController {
         this.email = email;
     }
 
-    public String getEmail(String email) {
-        this.email = email;
-        return email;
+
+    public String getEmail() {
+        return this.email;
     }
 
     private String grupo;
@@ -228,41 +228,39 @@ public class TelaAlunoController {
                 float notaDigitada = event.getNewValue();
 
                 try {
+                    try {
+                        if (notaDigitada >= 0 && notaDigitada <= 3) {
+                            if (indiceNota < aluno.getNotas().size()) {
+                                float notaAnterior = aluno.getNotas().get(indiceNota).getNota();
+                                if (pontosSprint() >= somaNotas() - notaAnterior + notaDigitada) {
+                                    aluno.getNotas().get(indiceNota).setNota(notaDigitada);
+                                } else {
+                                    showAlert("Erro!", "ATENÇÃO", "Quantidade de pontos excedida.");
+                                }
 
-                    if (notaDigitada >= 0 && notaDigitada <= 3) {
-
-                        float somaTotal = somaNotas();
-                        float somaAtual = notaDigitada + somaTotal;
-
-                        System.out.println("Nota Digitada: " + notaDigitada);
-                        System.out.println("Soma Atual: " + somaAtual);
-                        System.out.println("Notas somadas: " + somaNotas());
-                        System.out.println("Pontos Sprint: " + pontosSprint());
-                        System.out.println("************************");
-
-                        if (pontosSprint() >= somaAtual) {
-                            if (indiceNota >= aluno.getNotas().size()) {
-                                aluno.addNotas(new Notas(notaDigitada));
                             } else {
-                                aluno.getNotas().get(indiceNota).setNota(notaDigitada);
+                                if (pontosSprint() >= somaNotas() + notaDigitada) {
+                                    if (indiceNota >= aluno.getNotas().size()) {
+                                        aluno.addNotas(new Notas(notaDigitada));
+                                    } else {
+                                        aluno.getNotas().get(indiceNota).setNota(notaDigitada);
+                                    }
+                                }
                             }
-                            tableStudents.refresh();
-
                         } else {
-                            showAlert("Erro!", "ATENÇÃO", "Quantidade de pontos excedida.");
+                            showAlert("Erro!", "Nota inválida!", "A nota deve estar entre 0 e 3.");
                         }
-                    } else {
-
-                        showAlert("Erro!", "Nota inválida!", "A nota deve estar entre 0 e 3.");
-
+                        somaNotas();
+                        tableStudents.refresh();
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
                     }
-                } catch (NumberFormatException e) {
-                    showAlert("Formato inválido", "Formato de nota incorreto", "Por favor, insira um número válido (por exemplo: 1.5 ou 1,5).");
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
             tableStudents.getColumns().add(tableColumn);
             colunaX++;
-
 
         }
         tableStudents.setItems(listaAlunos);
@@ -326,7 +324,9 @@ public class TelaAlunoController {
     }
 
     public float pontosSprint() {
-        float pontos = OperacoesSQL.getPontosSprint(stm, this.email);
+        int idSprint = OperacoesSQL.getIdSprint(stm);
+        int idGrupo = OperacoesSQL.getIdGrupoEmail(stm, getEmail());
+        float pontos = OperacoesSQL.getPontosSprint(stm, idGrupo, idSprint);
         infoPontos.setVisible(true);
         infoPontos.setText(String.valueOf(pontos));
         return pontos;
@@ -441,7 +441,7 @@ public class TelaAlunoController {
                     int idAvaliador = OperacoesSQL.SelectIDEdit(stm, this.email);
                     int idAvaliado = OperacoesSQL.getIdAlunoAvaliado(stm, alunoAvaliado);
                     int idGrupo = OperacoesSQL.getIdGrupo(stm, alunoAvaliado);
-                    int idSprint = OperacoesSQL.getIdSprint(stm, LocalDate);
+                    int idSprint = OperacoesSQL.getIdSprint(stm);
                     int idCriterio = OperacoesSQL.getIdCriterio(stm, colunaNome);
 
                     pstmt.setInt(1, idAvaliador);

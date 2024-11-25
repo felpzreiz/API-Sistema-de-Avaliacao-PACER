@@ -75,8 +75,8 @@ public class OperacoesSQL {
 
     public static void excluir(Statement stm, String email) {
         String excluiAluno =
-                "DELETE FROM aluno WHERE email = '" + email + "';"+
-                "DELETE FROM usuario WHERE email = '" + email + "'";
+                "DELETE FROM aluno WHERE email = '" + email + "';" +
+                        "DELETE FROM usuario WHERE email = '" + email + "'";
         try {
             stm.executeUpdate(excluiAluno);
 
@@ -594,49 +594,38 @@ public class OperacoesSQL {
         return id;
     }
 
-    public static int getIdSprint(Statement stm, LocalDate localDate) {
-        int id = 0;
-        localDate = java.time.LocalDate.now();
-        String query = "select id from sprint where  data_inicio < '" + localDate + "' and  data_fim > '" + localDate + "' ";
+    public static int getIdSprint(Statement stm) {
+        int idSprint = 0;
+        String query = "select id from sprint where current_date between data_fim + 1 and fim_avaliacao";
         try {
             ResultSet rs = stm.executeQuery(query);
             while (rs.next()) {
-                id = rs.getInt("id");
+                idSprint = rs.getInt("id");
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return id;
+        return idSprint;
     }
 
-    public static float getPontosSprint(Statement stm, String email) {
-        LocalDate localDate = java.time.LocalDate.now();
-        int idSprint = getIdSprint(stm, localDate);
-        float pontosS = 0;
-        int idGrupo = 0;
-        String grupo = "";
-        String query = "select grupo from aluno where email = '" + email + "'";
-        try {
-            ResultSet rs = stm.executeQuery(query);
-            while (rs.next()) {
-                grupo = rs.getString("grupo");
-            }
-            String query1 = "select id from grupo where nome_grupo = '" + grupo + "'";
-            ResultSet rs1 = stm.executeQuery(query1);
-            while (rs1.next()) {
-                idGrupo = rs1.getInt("id");
-            }
-            String query2 = "select pontos from pontos_grupo where id_grupo = '" + idGrupo + "' and id_sprint ='" + idSprint + "'";
-            ResultSet rs2 = stm.executeQuery(query2);
-            while (rs2.next()) {
-                pontosS = rs2.getFloat("pontos");
-            }
+    public static float getPontosSprint(Statement stm, int idGrupo, int idSprint) {
+        float pontosS = 0f;
 
+
+        String query = "select pontos from pontos_grupo where id_grupo = ? and id_sprint = ?";
+
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setInt(1, idGrupo);
+            ps.setInt(2, idSprint);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                pontosS = rs.getFloat("pontos");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
         return pontosS;
     }
 
@@ -665,10 +654,10 @@ public class OperacoesSQL {
             ps.setInt(1, idSprint);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                 sprint = new Sprint(
+                sprint = new Sprint(
                         rs.getInt("sprint"), rs.getDate("data_inicio").toLocalDate(),
                         rs.getDate("data_fim").toLocalDate(), rs.getDate("fim_avaliacao").toLocalDate()
-                        );
+                );
             }
         }
         return sprint;
@@ -741,8 +730,8 @@ public class OperacoesSQL {
         String query = "with teste as(" +
                 "select nome_grupo " +
                 "from grupo " +
-                "where id = "+idGrupo+" " +
-                ") select count(email) as num_alunos "+
+                "where id = " + idGrupo + " " +
+                ") select count(email) as num_alunos " +
                 "from aluno " +
                 "inner join teste on teste.nome_grupo = aluno.grupo " +
                 "where aluno.grupo = teste.nome_grupo";

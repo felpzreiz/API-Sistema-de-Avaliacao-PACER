@@ -696,6 +696,23 @@ public class OperacoesSQL {
 
     }
 
+    public static Boolean checkAvaliacao(Statement stm, Integer idAluno, Integer idSprint) throws SQLException {
+        boolean check = false;
+        String query = "select id_aluno_avaliador, id_sprint from avaliacao where id_aluno_avaliador = ? and id_sprint = ?";
+
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setInt(1, idAluno);
+            ps.setInt(2, idSprint);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                if (rs.getInt("id_aluno_avaliador") == idAluno && rs.getInt("id_sprint") == idSprint) {
+                    check = true;
+                }
+            }
+        }
+        return check;
+    }
+
     //MÉTODOS PARA ALTERAÇÃO DE SENHA DO USUÁRIO
 
     public static void updatePassword(Statement stm, String senha, String email) {

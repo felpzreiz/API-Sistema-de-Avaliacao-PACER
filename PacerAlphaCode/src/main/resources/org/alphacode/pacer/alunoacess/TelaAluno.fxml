@@ -117,11 +117,6 @@
                               <Font name="Arial Bold" size="20.0" />
                           </font>
                       </Label>
-                  <Button fx:id="btnIniciarAv" layoutX="752.0" layoutY="18.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#iniciarAv" prefHeight="30.0" prefWidth="150.0" text="Iniciar Avaliação">
-                     <font>
-                        <Font name="Arial Bold" size="12.0" />
-                     </font>
-                  </Button>
                         <Button fx:id="btsalvar" layoutX="752.0" layoutY="345.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#salvarNotas" prefHeight="30.0" prefWidth="150.0" text="Salvar Avaliação">
                             <font>
                                 <Font name="Arial Bold" size="12.0" />

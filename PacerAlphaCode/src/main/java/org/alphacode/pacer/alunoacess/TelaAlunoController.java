@@ -414,55 +414,62 @@ public class TelaAlunoController {
 
     @FXML
     public void salvarNotas(ActionEvent actionEvent) throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        try {
-            con = DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/pacer", "adminpacer", "AdminPacer1234"
-            );
-            String query = "Insert into avaliacao (id_aluno_avaliador, id_aluno_avaliado, id_grupo, id_sprint, id_criterio, nota) VALUES (?,?,?,?,?,?)";
-            pstmt = con.prepareStatement(query);
 
-            for (AlunosInterface aluno : listaAlunos) {
-                String alunoAvaliado = aluno.getNome();
+        int idAvaliador = OperacoesSQL.SelectIDEdit(stm, this.email);
+        int idSprint = OperacoesSQL.getIdSprint(stm);
+        boolean check = OperacoesSQL.checkAvaliacao(stm, idAvaliador, idSprint);
+        if (check) {
+            showAlert("Atenção!", "Erro!", "A avaliação para a Sprint atual já foi realizada.");
+        } else {
+            Connection con = null;
+            PreparedStatement pstmt = null;
+            try {
+                con = DriverManager.getConnection(
+                        "jdbc:postgresql://localhost:5432/pacer", "adminpacer", "AdminPacer1234"
+                );
+                String query = "Insert into avaliacao (id_aluno_avaliador, id_aluno_avaliado, id_grupo, id_sprint, id_criterio, nota) VALUES (?,?,?,?,?,?)";
+                pstmt = con.prepareStatement(query);
 
-                for (Map.Entry<String, Integer> nota : notaColunas.entrySet()) {
-                    String colunaNome = nota.getKey();
-                    int notaIndex = nota.getValue();
+                for (AlunosInterface aluno : listaAlunos) {
+                    String alunoAvaliado = aluno.getNome();
 
-                    float notaId;
-                    if (notaIndex < aluno.getNotas().size()) {
-                        notaId = aluno.getNotas().get(notaIndex).getNota();
-                    } else {
-                        notaId = 0.0f;
+                    for (Map.Entry<String, Integer> nota : notaColunas.entrySet()) {
+                        String colunaNome = nota.getKey();
+                        int notaIndex = nota.getValue();
+
+                        float notaId;
+                        if (notaIndex < aluno.getNotas().size()) {
+                            notaId = aluno.getNotas().get(notaIndex).getNota();
+                        } else {
+                            notaId = 0.0f;
+                        }
+
+                        LocalDate LocalDate = java.time.LocalDate.now();
+                        idAvaliador = OperacoesSQL.SelectIDEdit(stm, this.email);
+                        int idAvaliado = OperacoesSQL.getIdAlunoAvaliado(stm, alunoAvaliado);
+                        int idGrupo = OperacoesSQL.getIdGrupo(stm, alunoAvaliado);
+                        idSprint = OperacoesSQL.getIdSprint(stm);
+                        int idCriterio = OperacoesSQL.getIdCriterio(stm, colunaNome);
+
+                        pstmt.setInt(1, idAvaliador);
+                        pstmt.setInt(2, idAvaliado);
+                        pstmt.setInt(3, idGrupo);
+                        pstmt.setInt(4, idSprint);
+                        pstmt.setInt(5, idCriterio);
+                        pstmt.setFloat(6, notaId);
+                        pstmt.executeUpdate();
+
                     }
-
-                    LocalDate LocalDate = java.time.LocalDate.now();
-                    int idAvaliador = OperacoesSQL.SelectIDEdit(stm, this.email);
-                    int idAvaliado = OperacoesSQL.getIdAlunoAvaliado(stm, alunoAvaliado);
-                    int idGrupo = OperacoesSQL.getIdGrupo(stm, alunoAvaliado);
-                    int idSprint = OperacoesSQL.getIdSprint(stm);
-                    int idCriterio = OperacoesSQL.getIdCriterio(stm, colunaNome);
-
-                    pstmt.setInt(1, idAvaliador);
-                    pstmt.setInt(2, idAvaliado);
-                    pstmt.setInt(3, idGrupo);
-                    pstmt.setInt(4, idSprint);
-                    pstmt.setInt(5, idCriterio);
-                    pstmt.setFloat(6, notaId);
-                    pstmt.executeUpdate();
-
                 }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            } finally {
+                if (pstmt != null) pstmt.close();
+                if (con != null) con.close();
+
+                showAlert("Avaliação", "Concluída com Sucesso", "A avaliação foi concluída com sucesso. Não há mais ações pendentes.");
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            if (pstmt != null) pstmt.close();
-            if (con != null) con.close();
-
-            showAlert("Avaliação", "Concluída com Sucesso", "A avaliação foi concluída com sucesso. Não há mais ações pendentes.");
         }
-
     }
 
     @FXML
@@ -473,6 +480,5 @@ public class TelaAlunoController {
         info.setContentText(content);
         info.show();
     }
-
 
 }

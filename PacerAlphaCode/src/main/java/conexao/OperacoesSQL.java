@@ -234,6 +234,31 @@ public class OperacoesSQL {
 
     //MÉTODOS PARA A TELA DE GRUPOS ----------------------------------
 
+    public static Boolean testPointsSprint(Statement stm, Integer sprint, String grupo) {
+        Boolean resultado = false;
+        try {
+            ResultSet result = stm.executeQuery("SELECT count(pontos_grupo.id) " +
+                    "FROM pontos_grupo " +
+                    "LEFT JOIN grupo ON pontos_grupo.id_grupo = grupo.id " +
+                    "LEFT JOIN sprint ON pontos_grupo.id_sprint = sprint.id " +
+                    "WHERE grupo.nome_grupo = '" + grupo + "' " +
+                    "AND sprint.sprint = " + sprint );
+            while (result.next()) { // result.next() roda enquanto existirem dados no banco.
+                Integer Contagem = Integer.parseInt(result.getString("count"));
+
+                if (Contagem == 0) {
+                    resultado = false;
+                } else {
+                    resultado = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultado; //
+    }
+
     public static Boolean lookGroup(Statement stm, String grupo) {
         Boolean resultado = false;
         try {

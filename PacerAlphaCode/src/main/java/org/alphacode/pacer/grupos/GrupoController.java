@@ -296,8 +296,19 @@ public class GrupoController {
 
     @FXML
     void addPointsGroup(ActionEvent event) {
-        OperacoesSQL.insertPontosGrupos(stm, getSprintChoice(event), getGrupoSelecionado(), Double.parseDouble(pontosGrupo.getText()));
-        carregarSprints(getIdGrupo());
+        if(OperacoesSQL.testPointsSprint(stm, getSprintChoice(event), getGrupoSelecionado()) == true){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Operação Bloqueada");
+            alert.setHeaderText("Você já adicionou a pontuação desse grupo para essa sprint!");
+
+            ButtonType okButton = new ButtonType("OK");
+            alert.getButtonTypes().setAll( okButton);
+
+            alert.showAndWait();
+        }else{
+            OperacoesSQL.insertPontosGrupos(stm, getSprintChoice(event), getGrupoSelecionado(), Double.parseDouble(pontosGrupo.getText()));
+            carregarSprints(getIdGrupo());
+        }
     }
 
     void carregarSprints(Integer id) {

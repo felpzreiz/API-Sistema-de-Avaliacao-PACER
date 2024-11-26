@@ -111,15 +111,19 @@ public class SprintController {
         LocalDate dataFinalAv = addDataF.getValue().plusDays(7);
 
         if (dataInicial != null && dataFinal != null) {
-            if (dataFinal.isAfter(dataInicial)) {
-                int idSprint = dataSprint.size() + 1;
+            if(OperacoesSQL.testDateSprint(stm, dataInicial, dataFinal) == true){
+                showWarning("Erro!", "Datas escolhidas conflitantes", "Verifique as datas selecionadas");
+            }else{
+                if (dataFinal.isAfter(dataInicial)) {
+                    int idSprint = dataSprint.size() + 1;
 
-                Datas novaData = new Datas(idSprint, dataInicial, dataFinal, dataFinalAv);
-                dataSprint.add(novaData);
-                OperacoesSQL.addSprint(stm, idSprint, dataInicial, dataFinal);
-                tableSprint.refresh();
-            } else {
-                showWarning("Erro!","Datas escolhidas conflitantes", "Verifique as datas selecionadas");
+                    Datas novaData = new Datas(idSprint, dataInicial, dataFinal, dataFinalAv);
+                    dataSprint.add(novaData);
+                    OperacoesSQL.addSprint(stm, idSprint, dataInicial, dataFinal);
+                    tableSprint.refresh();
+                } else {
+                    showWarning("Erro!", "Datas escolhidas conflitantes", "Verifique as datas selecionadas");
+                }
             }
         } else {
             showWarning("Erro!", "Campo de data vazio.","Informe a data inicial e data final." );

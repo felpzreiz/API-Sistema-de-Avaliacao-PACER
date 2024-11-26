@@ -790,6 +790,29 @@ public class OperacoesSQL {
         return count;
     }
 
+    public static Boolean testDateSprint(Statement stm, LocalDate start_date, LocalDate end_date) {
+        Boolean resultado = false;
+        try {
+            ResultSet result = stm.executeQuery("SELECT count(id) " +
+                    "FROM sprint " +
+                    "WHERE '"+ start_date +"' BETWEEN data_inicio AND data_fim " +
+                    "OR '"+ end_date +"' BETWEEN data_inicio AND data_fim");
+            while (result.next()) { // result.next() roda enquanto existirem dados no banco.
+                Integer Contagem = Integer.parseInt(result.getString("count"));
+
+                if (Contagem == 0) {
+                    resultado = false;
+                } else {
+                    resultado = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultado; //
+    }
+
 }
 
 

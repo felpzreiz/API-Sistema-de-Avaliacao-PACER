@@ -199,11 +199,7 @@ public class AlunoController {
                 }
             });
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText(null);
-            alert.setContentText("Selecione um aluno.");
-            alert.showAndWait();
+            showAlert("Erro!", null, "Selecione um aluno.");
         }
     }
 
@@ -223,25 +219,30 @@ public class AlunoController {
 
     @FXML
     public void EditedSelectedStudent(ActionEvent actionEvent) throws IOException, SQLException {
+
+
         Alunos selectedStudent = viewStudent.getSelectionModel().getSelectedItem();
 
-        this.selecaoNome = selectedStudent.getNome();
-        this.selecaoEmail = selectedStudent.getEmail();
-        this.selecaoGrupo = selectedStudent.getGrupo();
+        if (selectedStudent != null) {
+            this.selecaoNome = selectedStudent.getNome();
+            this.selecaoEmail = selectedStudent.getEmail();
+            this.selecaoGrupo = selectedStudent.getGrupo();
 
-        //AQUI PEGA O REPOSITÓRIO, POIS ELE NÃO ESTÁ NA TABELA DE ALUNOCONTROLLER.JAVA
-        try {
-            ResultSet nStudent = stm.executeQuery("SELECT git AS git FROM aluno WHERE email = '" + selectedStudent.getEmail() + "'");
-            if (nStudent.next()) {
-                String git = nStudent.getString("git");
-                this.selecaoRepo = String.valueOf(git);
-                System.out.println(selecaoRepo);
+            //AQUI PEGA O REPOSITÓRIO, POIS ELE NÃO ESTÁ NA TABELA DE ALUNOCONTROLLER.JAVA
+            try {
+                ResultSet nStudent = stm.executeQuery("SELECT git AS git FROM aluno WHERE email = '" + selectedStudent.getEmail() + "'");
+                if (nStudent.next()) {
+                    String git = nStudent.getString("git");
+                    this.selecaoRepo = String.valueOf(git);
+                    System.out.println(selecaoRepo);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            abrirEdit();
+        } else {
+            showAlert("Erro!", null, "Selecione um aluno.");
         }
-
-        abrirEdit();
     }
 
     public void abrirEdit() throws IOException, SQLException {
@@ -260,11 +261,7 @@ public class AlunoController {
             stage.show();
             nStudents();
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText(null);
-            alert.setContentText("Selecione um aluno.");
-            alert.showAndWait();
+            showAlert("Erro!", null, "Selecione um aluno.");
         }
     }
 
@@ -283,13 +280,24 @@ public class AlunoController {
         String linha;
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) { // BufferedReader Lê o arquivo linha por linha - FileReader é o leitor do arquivo
             br.readLine(); // br.read.Line é utilizado para ler linha por linha
+
+            boolean dadosImportados = false;
+            boolean erroImportacao = false;
+
             while ((linha = br.readLine()) != null) { // Enquanto a linha for diferente de nula vai continuar lendo
                 String[] texto = linha.split(";"); // Criado um Array com o nome texto ela recebe o texto delimitado pelo ";" linha.split é uma função da classe String para dividir a string
 
-                String nome = (texto.length > 1) ? texto[0].trim() : "";
+
+                if (texto.length < 4 || texto[0].trim().isEmpty() || texto[1].trim().isEmpty() ||
+                        texto[2].trim().isEmpty() || texto[3].trim().isEmpty()) {
+                    erroImportacao = true;
+                    continue;
+                }
+
+                String nome = texto[0].trim();
                 String email = texto[1].trim();
-                String grupo = (texto.length > 2) ? texto[2].trim() : ""; //Considerando que a posição 0 seja o nome .trim() ignora espaços vazios
-                String repo = (texto.length > 3) ? texto[3].trim() : ""; //  grupo recebe o a posição 1, porém para ignorar o vazio foi feito um operador ternario (condição) ? valor_se_verdadeiro : valor_se_falso
+                String grupo = texto[2].trim();   //Considerando que a posição 0 seja o nome .trim() ignora espaços vazios
+                String repo = texto[3].trim(); //  grupo recebe o a posição 1, porém para ignorar o vazio foi feito um operador ternario (condição) ? valor_se_verdadeiro : valor_se_falso
                 // O arquivo dá erro caso encontre uma coluna vazia devido o array, deste modo considerei vazio
                 if (!csvImport.contains(email)) {// Por meio do HashSet eu verifico as duplicatas de acordo com os email que eu já adicionei
                     Alunos aluno = new Alunos(nome, email, grupo, repo); // Instanciado um novo objeto aluno para receber os atributos
@@ -298,17 +306,28 @@ public class AlunoController {
                     OperacoesSQL.inserirUsuario(stm, aluno.email, createPassword(aluno.email));
                     OperacoesSQL.inserirAluno(stm, aluno.email, aluno.repo, aluno.grupo, aluno.nome);// Guarda o email repetido para uma lista
                     OperacoesSQL.inserirGrupo(stm, aluno.grupo);
+
+                    dadosImportados = true;
                 }
             }
+            if (erroImportacao) {
+                showAlert("Erro ao Importar CSV", "Campos Vazios Detectados",
+                        "O CSV contém campos vazios ou inválidos. Dados incompletos não foram importados.");
+            } else if (dadosImportados) {
+                showAlert("Atenção!", "Importação Completa", "Dados importados com sucesso!");
+            }
             csvImport.clear();
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Importar CSV");
-            info.setContentText("Dados importados com sucesso.");
-            info.show();
             refreshBD();
             viewStudent.setItems(listaDados);// Envia os valores para a tabela
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erro", "Falha ao ler o arquivo", "Ocorreu um erro ao tentar ler o arquivo CSV.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Erro", "Falha na operação SQL", "Ocorreu um erro ao inserir os dados no banco de dados.");
         } catch (Exception e) {
             e.printStackTrace();
+            showAlert("Erro", "Erro desconhecido", "Ocorreu um erro inesperado durante a importação.");
         }
     }
 
@@ -373,6 +392,18 @@ public class AlunoController {
 
         return array[0];
     }
+
+
+    @FXML
+    public void showAlert(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.show();
+    }
+
+
 }
 
 

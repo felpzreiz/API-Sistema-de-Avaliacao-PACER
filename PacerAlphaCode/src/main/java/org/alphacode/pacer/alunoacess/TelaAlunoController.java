@@ -421,53 +421,59 @@ public class TelaAlunoController {
         if (check) {
             showAlert("Atenção!", "Erro!", "A avaliação para a Sprint atual já foi realizada.");
         } else {
-            Connection con = null;
-            PreparedStatement pstmt = null;
-            try {
-                con = DriverManager.getConnection(
-                        "jdbc:postgresql://localhost:5432/pacer", "adminpacer", "AdminPacer1234"
-                );
-                String query = "Insert into avaliacao (id_aluno_avaliador, id_aluno_avaliado, id_grupo, id_sprint, id_criterio, nota) VALUES (?,?,?,?,?,?)";
-                pstmt = con.prepareStatement(query);
 
-                for (AlunosInterface aluno : listaAlunos) {
-                    String alunoAvaliado = aluno.getNome();
+            boolean isConfirmed = confirm("Avaliação", "Salvar Avaliação.",
+                    "Ao confirmar, as notas serão enviadas e não poderão ser alteradas após o envio.");
 
-                    for (Map.Entry<String, Integer> nota : notaColunas.entrySet()) {
-                        String colunaNome = nota.getKey();
-                        int notaIndex = nota.getValue();
+            if (isConfirmed) {
+                Connection con = null;
+                PreparedStatement pstmt = null;
+                try {
+                    con = DriverManager.getConnection(
+                            "jdbc:postgresql://localhost:5432/pacer", "adminpacer", "AdminPacer1234"
+                    );
+                    String query = "Insert into avaliacao (id_aluno_avaliador, id_aluno_avaliado, id_grupo, id_sprint, id_criterio, nota) VALUES (?,?,?,?,?,?)";
+                    pstmt = con.prepareStatement(query);
 
-                        float notaId;
-                        if (notaIndex < aluno.getNotas().size()) {
-                            notaId = aluno.getNotas().get(notaIndex).getNota();
-                        } else {
-                            notaId = 0.0f;
+                    for (AlunosInterface aluno : listaAlunos) {
+                        String alunoAvaliado = aluno.getNome();
+
+                        for (Map.Entry<String, Integer> nota : notaColunas.entrySet()) {
+                            String colunaNome = nota.getKey();
+                            int notaIndex = nota.getValue();
+
+                            float notaId;
+                            if (notaIndex < aluno.getNotas().size()) {
+                                notaId = aluno.getNotas().get(notaIndex).getNota();
+                            } else {
+                                notaId = 0.0f;
+                            }
+
+                            LocalDate LocalDate = java.time.LocalDate.now();
+                            idAvaliador = OperacoesSQL.SelectIDEdit(stm, this.email);
+                            int idAvaliado = OperacoesSQL.getIdAlunoAvaliado(stm, alunoAvaliado);
+                            int idGrupo = OperacoesSQL.getIdGrupo(stm, alunoAvaliado);
+                            idSprint = OperacoesSQL.getIdSprint(stm);
+                            int idCriterio = OperacoesSQL.getIdCriterio(stm, colunaNome);
+
+                            pstmt.setInt(1, idAvaliador);
+                            pstmt.setInt(2, idAvaliado);
+                            pstmt.setInt(3, idGrupo);
+                            pstmt.setInt(4, idSprint);
+                            pstmt.setInt(5, idCriterio);
+                            pstmt.setFloat(6, notaId);
+                            pstmt.executeUpdate();
+
                         }
-
-                        LocalDate LocalDate = java.time.LocalDate.now();
-                        idAvaliador = OperacoesSQL.SelectIDEdit(stm, this.email);
-                        int idAvaliado = OperacoesSQL.getIdAlunoAvaliado(stm, alunoAvaliado);
-                        int idGrupo = OperacoesSQL.getIdGrupo(stm, alunoAvaliado);
-                        idSprint = OperacoesSQL.getIdSprint(stm);
-                        int idCriterio = OperacoesSQL.getIdCriterio(stm, colunaNome);
-
-                        pstmt.setInt(1, idAvaliador);
-                        pstmt.setInt(2, idAvaliado);
-                        pstmt.setInt(3, idGrupo);
-                        pstmt.setInt(4, idSprint);
-                        pstmt.setInt(5, idCriterio);
-                        pstmt.setFloat(6, notaId);
-                        pstmt.executeUpdate();
-
                     }
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            } finally {
-                if (pstmt != null) pstmt.close();
-                if (con != null) con.close();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    if (pstmt != null) pstmt.close();
+                    if (con != null) con.close();
 
-                showAlert("Avaliação", "Concluída com Sucesso", "A avaliação foi concluída com sucesso. Não há mais ações pendentes.");
+                    showAlert("Avaliação", "Concluída com Sucesso", "A avaliação foi concluída com sucesso. Não há mais ações pendentes.");
+                }
             }
         }
     }
@@ -479,6 +485,17 @@ public class TelaAlunoController {
         info.setHeaderText(header);
         info.setContentText(content);
         info.show();
+    }
+
+    @FXML
+    public boolean confirm(String title, String header, String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 
 }

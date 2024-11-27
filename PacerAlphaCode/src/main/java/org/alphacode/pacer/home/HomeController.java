@@ -14,7 +14,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.alphacode.pacer.ExecuteApplication;
 import conexao.OperacoesSQL;
 import org.alphacode.pacer.password.RedefinirSenha;
 import org.alphacode.pacer.sprintsCriterios.Datas;
@@ -28,6 +27,14 @@ import java.util.List;
 import java.util.Objects;
 
 public class HomeController {
+
+    public TableView tableSprinthome;
+    public ListView gruposhome;
+    public Button gerarrelatoriogrupo;
+    public Button gerarrelatorioaluno;
+    public ListView alunoshome;
+    public ListView criterioshome;
+    Statement stm = OperacoesSQL.conectarBanco();
 
     @FXML
     private AnchorPane Homepage;
@@ -54,19 +61,19 @@ public class HomeController {
     private ImageView logo;
 
     @FXML
-    private TableColumn<Datas, Integer> nSprintReplica;
+    private TableColumn<Datas, Integer> nSprint;
 
     @FXML
-    private TableColumn<Datas, String> inicioSprintReplica;  // Alterado para String para formatar a data
+    private TableColumn<Datas, String> inicioSprint;  // Alterado para String para formatar a data
 
     @FXML
-    private TableColumn<Datas, String> fimSprintReplica;  // Alterado para String para formatar a data
+    private TableColumn<Datas, String> fimSprint;  // Alterado para String para formatar a data
 
     @FXML
-    private TableColumn<Datas, String> statusSprintReplica;
+    private TableColumn<Datas, String> fimAvaliacao;
 
     @FXML
-    private TableView<Datas> tableSprintReplica;
+    private TableView<Datas> tableSprint;
 
     @FXML
     private Button botaohome;
@@ -91,6 +98,12 @@ public class HomeController {
 
     @FXML
     private SplitPane pacer;
+
+
+    private ObservableList<Datas> dataSprint = FXCollections.observableArrayList();
+
+    public HomeController() throws SQLException {
+    }
 
     @FXML
     void exitPacer(ActionEvent event) throws IOException {
@@ -143,60 +156,36 @@ public class HomeController {
     }
 
     @FXML
-    public void initialize() throws SQLException {
-        // Arquivo CSS para customizar os botões
-        String css = Objects.requireNonNull(getClass().getResource("/org/alphacode/pacer/styles.css")).toExternalForm();
-        menuFix.getStylesheets().add(css);
+    public void initialize(){
+        nSprint.setCellValueFactory(new PropertyValueFactory<>("idSprint"));
+        inicioSprint.setCellValueFactory(cellData -> new SimpleStringProperty(formatarData(cellData.getValue().getDataInicial())));
+        fimSprint.setCellValueFactory(cellData -> new SimpleStringProperty(formatarData(cellData.getValue().getDataFinal())));
+        fimAvaliacao.setCellValueFactory(cellData -> new SimpleStringProperty(formatarData(cellData.getValue().getDataFinalAv())));
+        tableSprint.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+        tableSprint.setItems(dataSprint);
+        carregarDatas();
+        style();
 
-        // Carregar as sprints na tabela
-        carregarSprints();
     }
 
-    private void carregarSprints() throws SQLException {
-        try {
-            // Criar uma lista de sprints
-            OperacoesSQL operacoesSQL = new OperacoesSQL();
-            Statement stm = OperacoesSQL.conectarBanco();
-            ObservableList<Datas> sprints = FXCollections.observableArrayList();
+    @FXML
+    public void style() {
+        String css = Objects.requireNonNull(getClass().getResource("/org/alphacode/pacer/styles.css")).toExternalForm();
+        menuFix.getStylesheets().add(css);
+    }
 
-            // Carregar as sprints do banco de dados
-            List<Datas> datas = OperacoesSQL.carregarDatas(stm);
-            sprints.addAll(datas);
 
-            // Configurar as colunas da tabela
-            nSprintReplica.setCellValueFactory(new PropertyValueFactory<>("idSprint"));
-
-            // Para a coluna de data inicial, usar o formato "dd/MM/yyyy"
-            inicioSprintReplica.setCellValueFactory(cellData -> {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                String formattedDate = cellData.getValue().getDataInicial().format(formatter);
-                return new SimpleStringProperty(formattedDate);
-            });
-
-            // Para a coluna de data final, usar o formato "dd/MM/yyyy"
-            fimSprintReplica.setCellValueFactory(cellData -> {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                String formattedDate = cellData.getValue().getDataFinal().format(formatter);
-                return new SimpleStringProperty(formattedDate);
-            });
-
-            // Definindo status "Ativo" (você pode modificar isso conforme necessário)
-            statusSprintReplica.setCellValueFactory(cellData -> new SimpleStringProperty("Ativo"));
-
-            // Adicionar as sprints à tabela
-            tableSprintReplica.setItems(sprints);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-
-        }
-
+    private String formatarData(LocalDate data) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return data != null ? data.format(formatter) : "";  // Retorna uma string vazia caso o valor seja null
     }
 
     public void infoAlphaCode(ActionEvent actionEvent) {
     }
 
     public void openConfig(ActionEvent actionEvent) {
-        try {  FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/alphacode/pacer/password/RedefinirSenha.fxml"));
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/alphacode/pacer/password/RedefinirSenha.fxml"));
             Parent root = loader.load();
             RedefinirSenha controller = loader.getController();
             controller.setEmail("professor@fatec.sp.gov.br");
@@ -210,5 +199,13 @@ public class HomeController {
 
         }
 
+    }
+
+    @FXML
+    void carregarDatas() {
+        tableSprint.getItems().clear();
+        List<Datas> datas = OperacoesSQL.carregarDatas(stm);
+        dataSprint.addAll(datas);
+        tableSprint.setItems(dataSprint);
     }
 }

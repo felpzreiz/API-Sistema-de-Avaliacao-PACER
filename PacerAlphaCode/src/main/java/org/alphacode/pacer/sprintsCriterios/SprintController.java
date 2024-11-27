@@ -178,16 +178,20 @@ public class SprintController {
 
     @FXML
     void addC(ActionEvent event) {
-        if (nomeCriterio.getText().isEmpty()) {
-            showWarning("Erro!", "Campo vazio.","Informe um critério.");
-        } else {
-            String coluna = nomeCriterio.getText().trim();
-            Criterios novoCriterio = new Criterios(coluna);
-            column.add(coluna);
-            lista.add(novoCriterio);
-            criterios.setItems(lista);
-            nomeCriterio.clear();
-            OperacoesSQL.inserirCriterio(stm, coluna);
+        if(OperacoesSQL.getStatus(stm) == false){
+            if (nomeCriterio.getText().isEmpty()) {
+                showWarning("Erro!", "Campo vazio.", "Informe um critério.");
+            } else {
+                String coluna = nomeCriterio.getText().trim();
+                Criterios novoCriterio = new Criterios(coluna);
+                column.add(coluna);
+                lista.add(novoCriterio);
+                criterios.setItems(lista);
+                nomeCriterio.clear();
+                OperacoesSQL.inserirCriterio(stm, coluna);
+            }
+        }else{
+            showWarning("Erro!", "Existem sprints ativas.", "Não é possível manipular criterios, quando existem sprints ativas.");
         }
     }
 
@@ -280,6 +284,8 @@ public class SprintController {
     }
 
     public void startSprint(ActionEvent actionEvent) {
+        Datas selectedSprint = tableSprint.getSelectionModel().getSelectedItem();
+        OperacoesSQL.updateStatus(stm, selectedSprint.getIdSprint());
     }
 
     public void encerrarSprint(ActionEvent actionEvent) {
@@ -293,5 +299,4 @@ public class SprintController {
         alert.setContentText(content);
         alert.show();
     }
-
 }

@@ -693,7 +693,8 @@ public class OperacoesSQL {
 
         String query = "select aluno.nome, coalesce(avg(avaliacao.nota), 0) as nota, aluno.grupo, criterios.criterio " +
                 "from aluno " +
-                "inner join avaliacao on avaliacao.id_aluno_avaliado = aluno.id " + "inner join criterios on avaliacao.id_criterio = criterios.id where avaliacao.id_grupo = " + idGrupo + " " +
+                "inner join avaliacao on avaliacao.id_aluno_avaliado = aluno.id " +
+                "inner join criterios on avaliacao.id_criterio = criterios.id where avaliacao.id_grupo = " + idGrupo + " " +
                 "group by aluno.id, aluno.nome, aluno.grupo, criterios.id " +
                 "order by aluno.nome";
         try {
@@ -813,7 +814,33 @@ public class OperacoesSQL {
         return resultado; //
     }
 
+    public static void updateStatus(Statement stm, Integer id) {
+        String query = "update sprint set status = true where sprint = '" + id + "'";
+        try {
+            stm.executeUpdate(query);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Boolean getStatus(Statement stm) {
+        Boolean resultado = false;
+        try {
+            ResultSet result = stm.executeQuery("SELECT count(status) FROM sprint WHERE status = true");
+            while (result.next()) { // result.next() roda enquanto existirem dados no banco.
+                Integer Contagem = Integer.parseInt(result.getString("count"));
+
+                if (Contagem == 0) {
+                    resultado = false;
+                } else {
+                    resultado = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultado; //
+    }
 }
-
-
-

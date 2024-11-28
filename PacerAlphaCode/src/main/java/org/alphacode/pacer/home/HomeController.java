@@ -103,6 +103,8 @@ public class HomeController {
 
     private ObservableList<Datas> dataSprint = FXCollections.observableArrayList();
     private ObservableList<String> dadosaluno = FXCollections.observableArrayList();
+    private ObservableList<String> dadoscriterios = FXCollections.observableArrayList();
+    private ObservableList<String> dadosgrupos = FXCollections.observableArrayList();
 
     public HomeController() throws SQLException {
     }
@@ -158,7 +160,8 @@ public class HomeController {
     }
 
     @FXML
-    public void initialize(){
+    public void initialize() {
+        // Configuração das colunas da table
         nSprint.setCellValueFactory(new PropertyValueFactory<>("idSprint"));
         inicioSprint.setCellValueFactory(cellData -> new SimpleStringProperty(formatarData(cellData.getValue().getDataInicial())));
         fimSprint.setCellValueFactory(cellData -> new SimpleStringProperty(formatarData(cellData.getValue().getDataFinal())));
@@ -166,9 +169,12 @@ public class HomeController {
         tableSprint.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
         tableSprint.setItems(dataSprint);
         carregarDatas();
-        style();
-
+        carregarCriterios();  // Carrega os critérios na ListView
+        carregarGrupos();  // Carrega os grupos na ListView
+        style();  // Estilo do menu
     }
+
+
 
     @FXML
     public void style() {
@@ -218,4 +224,48 @@ public class HomeController {
 
         alunoshome.setItems(dadosaluno);  // Atualiza a ListView com os novos dados
     }
+    @FXML
+    void carregarCriterios() {
+        criterioshome.getItems().clear();  // Limpa a ListView de critérios
+
+        // Obtenha a lista de critérios do banco de dados
+        List<String> listaCriterios = OperacoesSQL.dadosCriterios(stm);
+
+        // Limpa a lista de critérios atual antes de adicionar novos dados
+        dadoscriterios.clear();
+
+        // Adiciona os critérios na lista
+        dadoscriterios.addAll(listaCriterios);  // Adiciona todos os critérios de uma vez
+
+        // Atualiza a ListView com os novos dados
+        criterioshome.setItems(dadoscriterios);
+
+        // Debug: Imprime os critérios para verificar se está funcionando
+        for (String criterio : dadoscriterios) {
+            System.out.println(criterio);  // Imprime os critérios para depuração
+        }
+    }
+    @FXML
+    void carregarGrupos() {
+        gruposhome.getItems().clear();  // Limpa a ListView de grupos
+
+        // Obtenha a lista de grupos do banco de dados
+        List<String> listaGrupos = OperacoesSQL.dadosGrupos(stm);
+
+        // Limpa a lista de grupos atual antes de adicionar novos dados
+        dadosgrupos.clear();
+
+        // Adiciona os grupos na lista
+        dadosgrupos.addAll(listaGrupos);  // Adiciona todos os grupos de uma vez
+
+        // Atualiza a ListView com os novos dados
+        gruposhome.setItems(dadosgrupos);
+
+        // Debug: Imprime os grupos para verificar se está funcionando
+        for (String grupo : dadosgrupos) {
+            System.out.println(grupo);  // Imprime os grupos para depuração
+        }
+    }
+
+
 }

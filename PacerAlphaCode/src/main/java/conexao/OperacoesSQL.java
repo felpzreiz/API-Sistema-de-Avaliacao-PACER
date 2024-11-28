@@ -851,7 +851,7 @@ public class OperacoesSQL {
     //MÉTODOS PARA ALTERAÇÃO DA HOME
     public static List<Alunos> dadosaluno(Statement stm) {
         List<Alunos> listaAlunos = new ArrayList<>();
-        String query = "SELECT nome FROM aluno";  // Exemplo de SQL para buscar nomes
+        String query = "SELECT nome FROM aluno";
         try {
             ResultSet rs = stm.executeQuery(query);
             while (rs.next()) {
@@ -864,4 +864,32 @@ public class OperacoesSQL {
         }
         return listaAlunos;
     }
+    public static List<String> dadosCriterios(Statement stm) {
+        List<String> listaCriterios = new ArrayList<>();
+        String query = "select criterio from criterios";
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                listaCriterios.add(rs.getString("criterio"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaCriterios;
+    }
+    public static List<String> dadosGrupos(Statement stm) {
+        List<String> listaGrupos = new ArrayList<>();
+        String query = "select nome_grupo from grupo";
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                listaGrupos.add(rs.getString("nome_grupo"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaGrupos;
+    }
+
+
 }

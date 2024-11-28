@@ -13,28 +13,27 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import conexao.OperacoesSQL;
 import org.alphacode.pacer.alunos.Alunos;
 import org.alphacode.pacer.password.RedefinirSenha;
 import org.alphacode.pacer.sprintsCriterios.Datas;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class HomeController {
 
-    public TableView tableSprinthome;
-    public ListView gruposhome;
-    public Button gerarrelatoriogrupo;
-    public Button gerarrelatorioaluno;
-    public ListView alunoshome;
-    public ListView criterioshome;
+
+
     Statement stm = OperacoesSQL.conectarBanco();
 
     @FXML
@@ -100,11 +99,36 @@ public class HomeController {
     @FXML
     private SplitPane pacer;
 
+    @FXML
+    private TableView tableSprinthome;
+
+    @FXML
+    private ListView gruposhome;
+
+    @FXML
+    private Button gerarrelatoriogrupo;
+
+    @FXML
+    private Button gerarrelatorioaluno;
+
+    @FXML
+    private ListView alunoshome;
+
+    @FXML
+    private ListView criterioshome;
+
+    @FXML
+    private ChoiceBox<String> sprintAluno;
+
+    @FXML
+    private ChoiceBox<String> sprintGrupo;
+
 
     private ObservableList<Datas> dataSprint = FXCollections.observableArrayList();
     private ObservableList<String> dadosaluno = FXCollections.observableArrayList();
     private ObservableList<String> dadoscriterios = FXCollections.observableArrayList();
     private ObservableList<String> dadosgrupos = FXCollections.observableArrayList();
+    ArrayList<String> sprints = new ArrayList<>();
 
     public HomeController() throws SQLException {
     }
@@ -161,6 +185,15 @@ public class HomeController {
 
     @FXML
     public void initialize() {
+        getSprint();
+
+        sprintAluno.getItems().addAll(sprints);
+        sprintAluno.setOnAction(this::getSprintAluno);
+
+        sprintGrupo.getItems().addAll(sprints);
+        sprintGrupo.setOnAction(this::getSprintGrupo);
+
+
         // Configuração das colunas da table
         nSprint.setCellValueFactory(new PropertyValueFactory<>("idSprint"));
         inicioSprint.setCellValueFactory(cellData -> new SimpleStringProperty(formatarData(cellData.getValue().getDataInicial())));
@@ -266,6 +299,47 @@ public class HomeController {
             System.out.println(grupo);  // Imprime os grupos para depuração
         }
     }
+
+    public Integer getSprintAluno(ActionEvent event) {
+        Integer sprint = Integer.parseInt(sprintAluno.getValue());
+        return (sprint);
+    }
+
+    public Integer getSprintGrupo(ActionEvent event) {
+        Integer sprint = Integer.parseInt(sprintGrupo.getValue());
+        return (sprint);
+    }
+
+    public void getSprint() {
+        ArrayList<String> sprints = OperacoesSQL.consultarSprints(stm);
+        this.sprints = sprints;
+    }
+
+
+
+    public void alunoCSV(ActionEvent actionEvent) {
+        try {
+            FileChooser file = new FileChooser();
+            file.setTitle("Salvar Arquivo CSV");
+            file.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
+
+            File path = file.showSaveDialog(null);
+
+            if (path != null) {
+                String filePath = path.getAbsolutePath();
+                int alunoId = 1;
+                int sprintId = 31;
+                OperacoesSQL.gerarCSV(stm, filePath, alunoId, sprintId);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 
 
 }

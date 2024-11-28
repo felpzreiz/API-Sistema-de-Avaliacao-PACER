@@ -8,6 +8,9 @@ import org.alphacode.pacer.grupos.Sprint;
 import org.alphacode.pacer.sprintsCriterios.Criterios;
 import org.alphacode.pacer.sprintsCriterios.Datas;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -864,6 +867,7 @@ public class OperacoesSQL {
         }
         return listaAlunos;
     }
+
     public static List<String> dadosCriterios(Statement stm) {
         List<String> listaCriterios = new ArrayList<>();
         String query = "select criterio from criterios";
@@ -877,6 +881,7 @@ public class OperacoesSQL {
         }
         return listaCriterios;
     }
+
     public static List<String> dadosGrupos(Statement stm) {
         List<String> listaGrupos = new ArrayList<>();
         String query = "select nome_grupo from grupo";
@@ -891,5 +896,38 @@ public class OperacoesSQL {
         return listaGrupos;
     }
 
+    public static void gerarCSV(Statement stm, String filePath, int alunoId, int sprintId) {
 
+        String query = "select aluno.nome, criterios.criterio, sprint.sprint, avg(avaliacao.nota) as media " +
+                "from avaliacao " +
+                "inner join  criterios on criterios.id = avaliacao.id_criterio " +
+                "inner join  aluno on aluno.id = avaliacao.id_aluno_avaliado " +
+                "inner join sprint on sprint.id = avaliacao.id_sprint " +
+                "where aluno.id = ? and  sprint.id = ? " +
+                "group by aluno.nome, criterios.criterio, sprint.sprint";
+
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setInt(1, alunoId);
+            ps.setInt(2, sprintId);
+            ResultSet rs = ps.executeQuery();
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+                writer.write("Nome, Criterio, Sprint, Media");
+                writer.newLine();
+
+                while (rs.next()) {
+                    String nome = rs.getString("nome");
+                    String criterio = rs.getString("criterio");
+                    String sprint = rs.getString("sprint");
+                    float media = rs.getFloat("media");
+
+                    writer.write(String.format("%s,%s,%.2f", nome, criterio, sprint, media));
+                    writer.newLine();
+                }
+            }
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
 }

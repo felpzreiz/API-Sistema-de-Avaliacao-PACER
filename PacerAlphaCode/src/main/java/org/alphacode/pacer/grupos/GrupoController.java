@@ -3,6 +3,7 @@ package org.alphacode.pacer.grupos;
 import conexao.OperacoesSQL;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -31,6 +32,9 @@ import java.util.Optional;
 public class GrupoController {
 
     Statement stm = OperacoesSQL.conectarBanco();
+
+    @FXML
+    private Button generateReportButton;
 
     private String grupoSelecao;
 
@@ -82,6 +86,9 @@ public class GrupoController {
     @FXML
     private ChoiceBox<String> SprintChoice;
     ArrayList<String> sprints = new ArrayList<String>();
+
+    @FXML
+    public ChoiceBox<String> SprintChoice2;
 
     @FXML
     private TextField pontosGrupo;
@@ -151,6 +158,9 @@ public class GrupoController {
 
         SprintChoice.getItems().addAll(sprints);
         SprintChoice.setOnAction(this::getSprintChoice);
+
+        SprintChoice2.getItems().addAll(sprints);
+        SprintChoice2.setOnAction(this::getSprintChoice2);
     }
 
     @FXML
@@ -249,7 +259,6 @@ public class GrupoController {
             carregarSprints(idGrupo);
             List<String> colunas = OperacoesSQL.carregarColunas(stm);
             initializeTable(colunas);
-            carregarResultados(idGrupo);
         }
     }
 
@@ -285,6 +294,11 @@ public class GrupoController {
         return (sprint);
     }
 
+    public Integer getSprintChoice2(ActionEvent event) {
+        Integer sprint = Integer.parseInt(SprintChoice2.getValue());
+        return (sprint);
+    }
+
     public void setGrupoSelecionado(String grupo) {
         this.grupoSelecao = grupo;
     }
@@ -317,10 +331,15 @@ public class GrupoController {
         tableSprints.setItems(dataSprint);
     }
 
-    void carregarResultados(Integer id) {
-        List<AlunosInterface> lista = OperacoesSQL.getRAvaliacao(stm, id);
+    @FXML
+    void generateReport(ActionEvent event) {
+        carregarResultados(idGrupo, event);
+    }
 
-        int nAlunos = OperacoesSQL.getCountStudents(stm, id);
+    void carregarResultados(Integer id, ActionEvent event) {
+        List<AlunosInterface> lista = OperacoesSQL.getRAvaliacao(stm, id, getSprintChoice2(event));
+
+        int nAlunos = OperacoesSQL.getCountStudents(stm, id);;
 
         for (AlunosInterface aluno : lista) {
             aluno.carregarNotas(nAlunos);

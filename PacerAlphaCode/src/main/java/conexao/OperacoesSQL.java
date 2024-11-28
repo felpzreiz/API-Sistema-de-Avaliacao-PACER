@@ -688,13 +688,17 @@ public class OperacoesSQL {
         return sprint;
     }
 
-    public static List<AlunosInterface> getRAvaliacao(Statement stm, Integer idGrupo) {
+    public static List<AlunosInterface> getRAvaliacao(Statement stm, Integer idGrupo, Integer idSprint) {
         List<AlunosInterface> listaAlunos = new ArrayList<>();
 
-        String query = "select aluno.nome, coalesce(avg(avaliacao.nota), 0) as nota, aluno.grupo, criterios.criterio " +
+        String query = "with sprint_tab as (select id from sprint where sprint = " + idSprint + " )" +
+                "select aluno.nome, coalesce(sum(avaliacao.nota), 0) as nota, aluno.grupo, criterios.criterio " +
                 "from aluno " +
                 "inner join avaliacao on avaliacao.id_aluno_avaliado = aluno.id " +
-                "inner join criterios on avaliacao.id_criterio = criterios.id where avaliacao.id_grupo = " + idGrupo + " " +
+                "inner join sprint_tab on avaliacao.id_sprint = sprint_tab.id " +
+                "inner join criterios on avaliacao.id_criterio = criterios.id " +
+                "where avaliacao.id_grupo = " + idGrupo + " " +
+                "and avaliacao.id_sprint = sprint_tab.id " +
                 "group by aluno.id, aluno.nome, aluno.grupo, criterios.id " +
                 "order by aluno.nome";
         try {

@@ -127,12 +127,12 @@
       <ListView fx:id="criterioshome" layoutX="836.0" layoutY="150.0" prefHeight="200.0" prefWidth="450.0" />
       <ImageView fitHeight="123.0" fitWidth="238.0" layoutX="605.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/criterios1.png" />
+            <Image url="@../images/criterios.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="170.0" fitWidth="186.0" layoutX="650.0" layoutY="482.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/sprint1.png" />
+            <Image url="@../images/sprint.png" />
          </image>
       </ImageView>
         <cursor>

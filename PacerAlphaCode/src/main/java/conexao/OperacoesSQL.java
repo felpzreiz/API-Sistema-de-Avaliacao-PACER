@@ -847,4 +847,21 @@ public class OperacoesSQL {
 
         return resultado; //
     }
+
+    //MÉTODOS PARA ALTERAÇÃO DA HOME
+    public static List<Alunos> dadosaluno(Statement stm) {
+        List<Alunos> listaAlunos = new ArrayList<>();
+        String query = "SELECT nome FROM aluno";  // Exemplo de SQL para buscar nomes
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                Alunos aluno = new Alunos();
+                aluno.setNome(rs.getString("nome"));
+                listaAlunos.add(aluno);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaAlunos;
+    }
 }

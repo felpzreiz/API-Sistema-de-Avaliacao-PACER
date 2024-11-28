@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import conexao.OperacoesSQL;
+import org.alphacode.pacer.alunos.Alunos;
 import org.alphacode.pacer.password.RedefinirSenha;
 import org.alphacode.pacer.sprintsCriterios.Datas;
 
@@ -101,6 +102,7 @@ public class HomeController {
 
 
     private ObservableList<Datas> dataSprint = FXCollections.observableArrayList();
+    private ObservableList<String> dadosaluno = FXCollections.observableArrayList();
 
     public HomeController() throws SQLException {
     }
@@ -207,5 +209,13 @@ public class HomeController {
         List<Datas> datas = OperacoesSQL.carregarDatas(stm);
         dataSprint.addAll(datas);
         tableSprint.setItems(dataSprint);
+        List<Alunos> listaalunos = OperacoesSQL.dadosaluno(stm);
+        dadosaluno.clear();  // Limpa a lista antes de adicionar novos dados
+
+        for (Alunos aluno : listaalunos) {
+            dadosaluno.add(aluno.getNome());  // Adiciona o nome do aluno (String)
+        }
+
+        alunoshome.setItems(dadosaluno);  // Atualiza a ListView com os novos dados
     }
 }

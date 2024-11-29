@@ -49,7 +49,7 @@ public class HomeController {
     private Button btnConfig;
 
     @FXML
-    public TableView<Datas> tablegruposhome;
+    public TableView<Datas> tableviewGrupoH;
 
     @FXML
     private Button botaogerenciargrupos;
@@ -73,7 +73,7 @@ public class HomeController {
     private TableColumn<Datas, String> fimAvaliacao;
 
     @FXML
-    private TableView<Datas> tableSprint;
+    private TableView<Datas> viewSprintH;
 
     @FXML
     private Button botaohome;
@@ -82,13 +82,7 @@ public class HomeController {
     private Button exit;
 
     @FXML
-    private TableView tablesprinthome;
-
-    @FXML
     private ImageView fatec;
-
-    @FXML
-    private ImageView SprintImage;
 
     @FXML
     private ImageView grupimage;
@@ -100,10 +94,7 @@ public class HomeController {
     private SplitPane pacer;
 
     @FXML
-    private TableView tableSprinthome;
-
-    @FXML
-    private ListView gruposhome;
+    private ListView<String> viewGrupoH;
 
     @FXML
     private Button gerarrelatoriogrupo;
@@ -112,10 +103,22 @@ public class HomeController {
     private Button gerarrelatorioaluno;
 
     @FXML
-    private ListView alunoshome;
+    private ListView<String> viewAlunosH;
 
     @FXML
-    private ListView criterioshome;
+    private ListView<String> viewCriteriosH;
+
+    @FXML
+    private Button btnSearchA;
+
+    @FXML
+    private TextField searchAluno;
+
+    @FXML
+    private Button btnSearchG;
+
+    @FXML
+    private TextField searchG;
 
     @FXML
     private ChoiceBox<String> sprintAluno;
@@ -199,8 +202,8 @@ public class HomeController {
         inicioSprint.setCellValueFactory(cellData -> new SimpleStringProperty(formatarData(cellData.getValue().getDataInicial())));
         fimSprint.setCellValueFactory(cellData -> new SimpleStringProperty(formatarData(cellData.getValue().getDataFinal())));
         fimAvaliacao.setCellValueFactory(cellData -> new SimpleStringProperty(formatarData(cellData.getValue().getDataFinalAv())));
-        tableSprint.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
-        tableSprint.setItems(dataSprint);
+        viewSprintH.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+        viewSprintH.setItems(dataSprint);
         carregarDatas();
         carregarCriterios();  // Carrega os critérios na ListView
         carregarGrupos();  // Carrega os grupos na ListView
@@ -244,10 +247,10 @@ public class HomeController {
 
     @FXML
     void carregarDatas() {
-        tableSprint.getItems().clear();
+        viewSprintH.getItems().clear();
         List<Datas> datas = OperacoesSQL.carregarDatas(stm);
         dataSprint.addAll(datas);
-        tableSprint.setItems(dataSprint);
+        viewSprintH.setItems(dataSprint);
         List<Alunos> listaalunos = OperacoesSQL.dadosaluno(stm);
         dadosaluno.clear();  // Limpa a lista antes de adicionar novos dados
 
@@ -255,49 +258,24 @@ public class HomeController {
             dadosaluno.add(aluno.getNome());  // Adiciona o nome do aluno (String)
         }
 
-        alunoshome.setItems(dadosaluno);  // Atualiza a ListView com os novos dados
+        viewAlunosH.setItems(dadosaluno);  // Atualiza a ListView com os novos dados
     }
     @FXML
     void carregarCriterios() {
-        criterioshome.getItems().clear();  // Limpa a ListView de critérios
-
-        // Obtenha a lista de critérios do banco de dados
+        viewCriteriosH.getItems().clear();
         List<String> listaCriterios = OperacoesSQL.dadosCriterios(stm);
-
-        // Limpa a lista de critérios atual antes de adicionar novos dados
         dadoscriterios.clear();
-
-        // Adiciona os critérios na lista
-        dadoscriterios.addAll(listaCriterios);  // Adiciona todos os critérios de uma vez
-
-        // Atualiza a ListView com os novos dados
-        criterioshome.setItems(dadoscriterios);
-
-        // Debug: Imprime os critérios para verificar se está funcionando
-        for (String criterio : dadoscriterios) {
-            System.out.println(criterio);  // Imprime os critérios para depuração
-        }
+        dadoscriterios.addAll(listaCriterios);
+        viewCriteriosH.setItems(dadoscriterios);
     }
     @FXML
     void carregarGrupos() {
-        gruposhome.getItems().clear();  // Limpa a ListView de grupos
-
-        // Obtenha a lista de grupos do banco de dados
+        viewGrupoH.getItems().clear();
         List<String> listaGrupos = OperacoesSQL.dadosGrupos(stm);
-
-        // Limpa a lista de grupos atual antes de adicionar novos dados
         dadosgrupos.clear();
+        dadosgrupos.addAll(listaGrupos);
+        viewGrupoH.setItems(dadosgrupos);
 
-        // Adiciona os grupos na lista
-        dadosgrupos.addAll(listaGrupos);  // Adiciona todos os grupos de uma vez
-
-        // Atualiza a ListView com os novos dados
-        gruposhome.setItems(dadosgrupos);
-
-        // Debug: Imprime os grupos para verificar se está funcionando
-        for (String grupo : dadosgrupos) {
-            System.out.println(grupo);  // Imprime os grupos para depuração
-        }
     }
 
     public Integer getSprintAluno(ActionEvent event) {
@@ -315,8 +293,6 @@ public class HomeController {
         this.sprints = sprints;
     }
 
-
-
     public void alunoCSV(ActionEvent actionEvent) {
         try {
             FileChooser file = new FileChooser();
@@ -327,9 +303,8 @@ public class HomeController {
 
             if (path != null) {
                 String filePath = path.getAbsolutePath();
-                int alunoId = 1;
                 int sprintId = 31;
-                OperacoesSQL.gerarCSV(stm, filePath, alunoId, sprintId);
+                OperacoesSQL.gerarCSVAll(stm, filePath, sprintId);
             }
 
         } catch (Exception e) {

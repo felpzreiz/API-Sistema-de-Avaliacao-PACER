@@ -8,9 +8,8 @@ import org.alphacode.pacer.grupos.Sprint;
 import org.alphacode.pacer.sprintsCriterios.Criterios;
 import org.alphacode.pacer.sprintsCriterios.Datas;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -896,32 +895,34 @@ public class OperacoesSQL {
         return listaGrupos;
     }
 
-    public static void gerarCSV(Statement stm, String filePath, int alunoId, int sprintId) {
+    public static void gerarCSVAll(Statement stm, String filePath, int sprintId) {
 
-        String query = "select aluno.nome, criterios.criterio, sprint.sprint, avg(avaliacao.nota) as media " +
+        String query = "select aluno.nome, grupo.nome_grupo,  sprint.sprint, criterios.criterio, avg(avaliacao.nota) as media " +
                 "from avaliacao " +
+                "inner join grupo on grupo.id = avaliacao.id_grupo " +
                 "inner join  criterios on criterios.id = avaliacao.id_criterio " +
-                "inner join  aluno on aluno.id = avaliacao.id_aluno_avaliado " +
                 "inner join sprint on sprint.id = avaliacao.id_sprint " +
-                "where aluno.id = ? and  sprint.id = ? " +
-                "group by aluno.nome, criterios.criterio, sprint.sprint";
+                "inner join  aluno on aluno.id = avaliacao.id_aluno_avaliado " +
+                "where sprint.id = ? " +
+                "group by aluno.nome, grupo.nome_grupo, sprint.sprint, criterios.criterio ";
 
         try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
-            ps.setInt(1, alunoId);
-            ps.setInt(2, sprintId);
+            ps.setInt(1, sprintId);
             ResultSet rs = ps.executeQuery();
 
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-                writer.write("Nome, Criterio, Sprint, Media");
+            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), StandardCharsets.UTF_8))) {
+                writer.write((char)0xfeff); // utilizado para formatação de arquivos CSV em codificação para abrir em programas externos - como excel
+                writer.write("Nome; Grupo; Sprint; Criterio; Media");
                 writer.newLine();
 
                 while (rs.next()) {
                     String nome = rs.getString("nome");
+                    String grupo = rs.getString("nome_grupo");
+                    int sprint = rs.getInt("sprint");
                     String criterio = rs.getString("criterio");
-                    String sprint = rs.getString("sprint");
                     float media = rs.getFloat("media");
 
-                    writer.write(String.format("%s,%s,%.2f", nome, criterio, sprint, media));
+                    writer.write(String.format("%s; %s; %d; %s; %.2f", nome, grupo, sprint, criterio, media));
                     writer.newLine();
                 }
             }

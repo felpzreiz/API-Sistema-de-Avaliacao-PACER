@@ -30,8 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class HomeController {
+import static java.lang.Integer.valueOf;
 
+public class HomeController {
 
 
     Statement stm = OperacoesSQL.conectarBanco();
@@ -211,7 +212,6 @@ public class HomeController {
     }
 
 
-
     @FXML
     public void style() {
         String css = Objects.requireNonNull(getClass().getResource("/org/alphacode/pacer/styles.css")).toExternalForm();
@@ -260,6 +260,7 @@ public class HomeController {
 
         viewAlunosH.setItems(dadosaluno);  // Atualiza a ListView com os novos dados
     }
+
     @FXML
     void carregarCriterios() {
         viewCriteriosH.getItems().clear();
@@ -268,6 +269,7 @@ public class HomeController {
         dadoscriterios.addAll(listaCriterios);
         viewCriteriosH.setItems(dadoscriterios);
     }
+
     @FXML
     void carregarGrupos() {
         viewGrupoH.getItems().clear();
@@ -279,13 +281,27 @@ public class HomeController {
     }
 
     public Integer getSprintAluno(ActionEvent event) {
-        Integer sprint = Integer.parseInt(sprintAluno.getValue());
-        return (sprint);
+        String sprint = sprintAluno.getValue();
+        if (sprint == null || sprint.isEmpty()) {
+            return null;
+        }
+        try {
+            return Integer.parseInt(sprint);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
     public Integer getSprintGrupo(ActionEvent event) {
-        Integer sprint = Integer.parseInt(sprintGrupo.getValue());
-        return (sprint);
+        String sprint = sprintAluno.getValue();
+        if (sprint == null || sprint.isEmpty()) {
+            return null;
+        }
+        try {
+            return Integer.parseInt(sprint);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
     public void getSprint() {
@@ -293,19 +309,31 @@ public class HomeController {
         this.sprints = sprints;
     }
 
+
     public void alunoCSV(ActionEvent actionEvent) {
         try {
-            FileChooser file = new FileChooser();
-            file.setTitle("Salvar Arquivo CSV");
-            file.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
+            if (getSprintAluno(actionEvent) != null) {
+                try {
+                    int sprintId = OperacoesSQL.getIdSprintChoice(stm, getSprintAluno(actionEvent));
+                    FileChooser file = new FileChooser();
+                    file.setTitle("Salvar Arquivo CSV");
+                    file.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
 
-            File path = file.showSaveDialog(null);
+                    File path = file.showSaveDialog(null);
 
-            if (path != null) {
-                String filePath = path.getAbsolutePath();
-                int sprintId = 31;
-                OperacoesSQL.gerarCSVAll(stm, filePath, sprintId);
+                    if (path != null) {
+                        String filePath = path.getAbsolutePath();
+                        OperacoesSQL.gerarCSVAll(stm, filePath, sprintId);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
+            } else {
+                showAlert("Erro!", null, "Informe a Sprint desejada!");
             }
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -313,8 +341,43 @@ public class HomeController {
         }
     }
 
+    public void grupoCSV(ActionEvent actionEvent) {
+        try {
+            if (getSprintGrupo(actionEvent) != null) {
+                try {
+                    int sprintId = OperacoesSQL.getIdSprintChoice(stm, getSprintGrupo(actionEvent));
+                    FileChooser file = new FileChooser();
+                    file.setTitle("Salvar Arquivo CSV");
+                    file.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
+
+                    File path = file.showSaveDialog(null);
+
+                    if (path != null) {
+                        String filePath = path.getAbsolutePath();
+                        OperacoesSQL.gerarCSVGroup(stm, filePath, sprintId);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
+            } else {
+                showAlert("Erro!", null, "Informe a Sprint desejada!");
+            }
 
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
 
-
+    @FXML
+    public void showAlert(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.show();
+    }
 }

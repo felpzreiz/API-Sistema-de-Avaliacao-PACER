@@ -244,7 +244,7 @@ public class OperacoesSQL {
                     "LEFT JOIN grupo ON pontos_grupo.id_grupo = grupo.id " +
                     "LEFT JOIN sprint ON pontos_grupo.id_sprint = sprint.id " +
                     "WHERE grupo.nome_grupo = '" + grupo + "' " +
-                    "AND sprint.sprint = " + sprint );
+                    "AND sprint.sprint = " + sprint);
             while (result.next()) { // result.next() roda enquanto existirem dados no banco.
                 Integer Contagem = Integer.parseInt(result.getString("count"));
 
@@ -802,8 +802,8 @@ public class OperacoesSQL {
         try {
             ResultSet result = stm.executeQuery("SELECT count(id) " +
                     "FROM sprint " +
-                    "WHERE '"+ start_date +"' BETWEEN data_inicio AND data_fim " +
-                    "OR '"+ end_date +"' BETWEEN data_inicio AND data_fim");
+                    "WHERE '" + start_date + "' BETWEEN data_inicio AND data_fim " +
+                    "OR '" + end_date + "' BETWEEN data_inicio AND data_fim");
             while (result.next()) { // result.next() roda enquanto existirem dados no banco.
                 Integer Contagem = Integer.parseInt(result.getString("count"));
 
@@ -895,6 +895,26 @@ public class OperacoesSQL {
         return listaGrupos;
     }
 
+    public static int getIdSprintChoice(Statement stm, int nSprint) {
+        int sprint = 0;
+        ResultSet rs;
+        String query = "select id from sprint where sprint =? ";
+
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setInt(1, nSprint);
+            ps.execute();
+            rs = ps.getResultSet();
+            while(rs.next()) {
+                sprint = rs.getInt("id");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return sprint;
+    }
+
     public static void gerarCSVAll(Statement stm, String filePath, int sprintId) {
 
         String query = "select aluno.nome, grupo.nome_grupo,  sprint.sprint, criterios.criterio, avg(avaliacao.nota) as media " +
@@ -911,7 +931,44 @@ public class OperacoesSQL {
             ResultSet rs = ps.executeQuery();
 
             try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), StandardCharsets.UTF_8))) {
-                writer.write((char)0xfeff); // utilizado para formatação de arquivos CSV em codificação para abrir em programas externos - como excel
+                writer.write((char) 0xfeff); // utilizado para formatação de arquivos CSV em codificação para abrir em programas externos - como excel
+                writer.write("Nome; Grupo; Sprint; Criterio; Media");
+                writer.newLine();
+
+                while (rs.next()) {
+                    String nome = rs.getString("nome");
+                    String grupo = rs.getString("nome_grupo");
+                    int sprint = rs.getInt("sprint");
+                    String criterio = rs.getString("criterio");
+                    float media = rs.getFloat("media");
+
+                    writer.write(String.format("%s; %s; %d; %s; %.2f", nome, grupo, sprint, criterio, media));
+                    writer.newLine();
+                }
+            }
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void gerarCSVGroup(Statement stm, String filePath, int sprintId) {
+
+        String query = "select aluno.nome, grupo.nome_grupo,  sprint.sprint, criterios.criterio, avg(avaliacao.nota) as media " +
+                "from avaliacao " +
+                "inner join grupo on grupo.id = avaliacao.id_grupo " +
+                "inner join  criterios on criterios.id = avaliacao.id_criterio " +
+                "inner join sprint on sprint.id = avaliacao.id_sprint " +
+                "inner join  aluno on aluno.id = avaliacao.id_aluno_avaliado " +
+                "where sprint.id = ? " +
+                "group by aluno.nome, grupo.nome_grupo, sprint.sprint, criterios.criterio ";
+
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setInt(1, sprintId);
+            ResultSet rs = ps.executeQuery();
+
+            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), StandardCharsets.UTF_8))) {
+                writer.write((char) 0xfeff); // utilizado para formatação de arquivos CSV em codificação para abrir em programas externos - como excel
                 writer.write("Nome; Grupo; Sprint; Criterio; Media");
                 writer.newLine();
 

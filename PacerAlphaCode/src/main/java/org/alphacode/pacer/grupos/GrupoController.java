@@ -34,6 +34,9 @@ public class GrupoController {
     Statement stm = OperacoesSQL.conectarBanco();
 
     @FXML
+    private Button buttonRemovePoints;
+
+    @FXML
     private Button generateReportButton;
 
     private String grupoSelecao;
@@ -254,7 +257,6 @@ public class GrupoController {
             tableGrupoSelecionado.setItems(listaDados);
             carregarAlunos(grupoSelecionado.nomeGrupo);
             setGrupoSelecionado(grupoSelecionado.nomeGrupo);
-            System.out.println(getGrupoSelecionado());
             setIdGrupo(OperacoesSQL.SelectIDGrupo(stm, getGrupoSelecionado()));
             carregarSprints(idGrupo);
             List<String> colunas = OperacoesSQL.carregarColunas(stm);
@@ -322,6 +324,13 @@ public class GrupoController {
             OperacoesSQL.insertPontosGrupos(stm, getSprintChoice(event), getGrupoSelecionado(), Double.parseDouble(pontosGrupo.getText()));
             carregarSprints(getIdGrupo());
         }
+    }
+
+    @FXML
+    void removePointsGroup(ActionEvent event) {
+        Sprint sprintSelecionada = tableSprints.getSelectionModel().getSelectedItem();
+        OperacoesSQL.removePontosGrupos(stm, getGrupoSelecionado(), sprintSelecionada.getSprint());
+        carregarSprints(getIdGrupo());
     }
 
     void carregarSprints(Integer id) {

@@ -406,8 +406,6 @@ public class OperacoesSQL {
             ResultSet result = stm.executeQuery(query);
             if (result.next()) { // Muda para if, pois esperamos apenas um valor
                 idGrupo = Integer.parseInt(result.getString("id"));
-            } else {
-                System.out.println("Nenhum resultado encontrado para o grupo: " + grupoteste);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -776,7 +774,6 @@ public class OperacoesSQL {
     }
 
     public static Integer getCountStudents(Statement stm, Integer idGrupo) {
-        System.out.println(idGrupo);
         Integer count = 0;
         String query = "with teste as(" +
                 "select nome_grupo " +
@@ -1015,5 +1012,23 @@ public class OperacoesSQL {
         return grupoId;
     }
 
+    public static void removePontosGrupos(Statement stm, String grupo, Integer sprint) {
+        System.out.println(sprint);
+        String excluiPontos = "WITH grupo_tab AS (" +
+                "    SELECT id FROM grupo WHERE nome_grupo = '"+grupo+"'" +
+                "), sprint_tab AS( " +
+                "   SELECT id FROM sprint WHERE sprint = "+ sprint +" " +
+                ") DELETE FROM pontos_grupo " +
+                "USING grupo_tab, sprint_tab " +
+                "WHERE pontos_grupo.id_grupo = grupo_tab.id " +
+                "AND pontos_grupo.id_sprint = sprint_tab.id ";
+
+        try {
+            stm.executeUpdate(excluiPontos);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

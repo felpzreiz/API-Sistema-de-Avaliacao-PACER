@@ -3,6 +3,7 @@ package org.alphacode.pacer.home;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import conexao.OperacoesSQL;
 import org.alphacode.pacer.alunos.Alunos;
+import org.alphacode.pacer.grupos.Grupo;
 import org.alphacode.pacer.password.RedefinirSenha;
 import org.alphacode.pacer.sprintsCriterios.Datas;
 
@@ -28,6 +30,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import static java.lang.Integer.valueOf;
@@ -95,7 +98,7 @@ public class HomeController {
     private SplitPane pacer;
 
     @FXML
-    private ListView<String> viewGrupoH;
+    private ListView<Grupo> viewGrupoH;
 
     @FXML
     private Button gerarrelatoriogrupo;
@@ -104,16 +107,7 @@ public class HomeController {
     private Button gerarrelatorioaluno;
 
     @FXML
-    private ListView<String> viewAlunosH;
-
-    @FXML
     private ListView<String> viewCriteriosH;
-
-    @FXML
-    private Button btnSearchA;
-
-    @FXML
-    private TextField searchAluno;
 
     @FXML
     private Button btnSearchG;
@@ -131,8 +125,9 @@ public class HomeController {
     private ObservableList<Datas> dataSprint = FXCollections.observableArrayList();
     private ObservableList<String> dadosaluno = FXCollections.observableArrayList();
     private ObservableList<String> dadoscriterios = FXCollections.observableArrayList();
-    private ObservableList<String> dadosgrupos = FXCollections.observableArrayList();
+    private ObservableList<Grupo> dadosgrupos = FXCollections.observableArrayList();
     ArrayList<String> sprints = new ArrayList<>();
+    private FilteredList<Grupo> filteredDados;
 
     public HomeController() throws SQLException {
     }
@@ -197,6 +192,10 @@ public class HomeController {
         sprintGrupo.getItems().addAll(sprints);
         sprintGrupo.setOnAction(this::getSprintGrupo);
 
+        searchG.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterGroups(newValue);
+        });
+
 
         // Configuração das colunas da table
         nSprint.setCellValueFactory(new PropertyValueFactory<>("idSprint"));
@@ -218,6 +217,35 @@ public class HomeController {
         menuFix.getStylesheets().add(css);
     }
 
+    public void buttonBuscarStudent(ActionEvent actionEvent) {
+        try {
+            filteredDados = new FilteredList<>(dadosgrupos, p -> true);  // Filtrando a lista de grupos, não a view.
+            searchG.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredDados.setPredicate(grupo -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+                    String min = newValue.toLowerCase();
+                    return grupo.getNomeGrupo().toLowerCase().contains(min);  // Verifique se getNomeGrupo() existe em Grupo.
+                });
+            });
+            viewGrupoH.setItems(filteredDados);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void filterGroups(String filterText) {
+        if (filterText == null || filterText.isEmpty()) {
+            viewGrupoH.setItems(dadosgrupos);
+        } else {
+
+            FilteredList<Grupo> filteredList = new FilteredList<>(dadosgrupos, grupo ->
+                    grupo.getNomeGrupo().toLowerCase().contains(filterText.toLowerCase())
+            );
+            viewGrupoH.setItems(filteredList);
+        }
+    }
 
     private String formatarData(LocalDate data) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -258,7 +286,6 @@ public class HomeController {
             dadosaluno.add(aluno.getNome());  // Adiciona o nome do aluno (String)
         }
 
-        viewAlunosH.setItems(dadosaluno);  // Atualiza a ListView com os novos dados
     }
 
     @FXML
@@ -273,7 +300,7 @@ public class HomeController {
     @FXML
     void carregarGrupos() {
         viewGrupoH.getItems().clear();
-        List<String> listaGrupos = OperacoesSQL.dadosGrupos(stm);
+        List<Grupo> listaGrupos = OperacoesSQL.dadosGrupos(stm);
         dadosgrupos.clear();
         dadosgrupos.addAll(listaGrupos);
         viewGrupoH.setItems(dadosgrupos);
@@ -293,7 +320,7 @@ public class HomeController {
     }
 
     public Integer getSprintGrupo(ActionEvent event) {
-        String sprint = sprintAluno.getValue();
+        String sprint = sprintGrupo.getValue();
         if (sprint == null || sprint.isEmpty()) {
             return null;
         }
@@ -324,10 +351,13 @@ public class HomeController {
                     if (path != null) {
                         String filePath = path.getAbsolutePath();
                         OperacoesSQL.gerarCSVAll(stm, filePath, sprintId);
+                        showOk("Relatório CSV", null, "Salvo com Sucesso!");
                     }
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    showAlert("Erro!", null, "Erro ao gerar o relatório CSV.");
                     throw new RuntimeException(e);
                 }
             } else {
@@ -345,7 +375,12 @@ public class HomeController {
         try {
             if (getSprintGrupo(actionEvent) != null) {
                 try {
+
+                    String nomeG = viewGrupoH.getSelectionModel().getSelectedItem().toString();
+
+                    int grupoId = OperacoesSQL.getIdGroupName(stm, nomeG);
                     int sprintId = OperacoesSQL.getIdSprintChoice(stm, getSprintGrupo(actionEvent));
+
                     FileChooser file = new FileChooser();
                     file.setTitle("Salvar Arquivo CSV");
                     file.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV", "*.csv"));
@@ -354,11 +389,14 @@ public class HomeController {
 
                     if (path != null) {
                         String filePath = path.getAbsolutePath();
-                        OperacoesSQL.gerarCSVGroup(stm, filePath, sprintId);
+                        OperacoesSQL.gerarCSVGroup(stm, filePath, sprintId, grupoId);
+                        showOk("Relatório CSV", null, "Salvo com Sucesso!");
+
                     }
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                    showAlert("Erro!", null, "Erro ao gerar o relatório CSV.");
                     throw new RuntimeException(e);
                 }
             } else {
@@ -374,6 +412,15 @@ public class HomeController {
 
     @FXML
     public void showAlert(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.show();
+    }
+
+    @FXML
+    public void showOk(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(header);

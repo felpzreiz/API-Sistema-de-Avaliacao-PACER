@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static javax.swing.UIManager.getInt;
+
 public class OperacoesSQL {
 
     //MÉTODOS PARA A TELA ALUNOCONTROLLER
@@ -881,13 +883,16 @@ public class OperacoesSQL {
         return listaCriterios;
     }
 
-    public static List<String> dadosGrupos(Statement stm) {
-        List<String> listaGrupos = new ArrayList<>();
+    public static List<Grupo> dadosGrupos(Statement stm) {
+        List<Grupo> listaGrupos = new ArrayList<>();
         String query = "select nome_grupo from grupo";
         try {
             ResultSet rs = stm.executeQuery(query);
             while (rs.next()) {
-                listaGrupos.add(rs.getString("nome_grupo"));
+                String nomeGrupo = rs.getString("nome_grupo");
+                Grupo grupo = new Grupo(nomeGrupo);
+
+                listaGrupos.add(grupo);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -904,7 +909,7 @@ public class OperacoesSQL {
             ps.setInt(1, nSprint);
             ps.execute();
             rs = ps.getResultSet();
-            while(rs.next()) {
+            while (rs.next()) {
                 sprint = rs.getInt("id");
             }
 
@@ -952,24 +957,25 @@ public class OperacoesSQL {
         }
     }
 
-    public static void gerarCSVGroup(Statement stm, String filePath, int sprintId) {
+    public static void gerarCSVGroup(Statement stm, String filePath, int sprintId, int grupoId) {
 
-        String query = "select aluno.nome, grupo.nome_grupo,  sprint.sprint, criterios.criterio, avg(avaliacao.nota) as media " +
+        String query = "select grupo.nome_grupo,  sprint.sprint, aluno.nome, criterios.criterio, avg(avaliacao.nota) as media " +
                 "from avaliacao " +
+                "inner join aluno on aluno.id = avaliacao.id_aluno_avaliado " +
                 "inner join grupo on grupo.id = avaliacao.id_grupo " +
-                "inner join  criterios on criterios.id = avaliacao.id_criterio " +
                 "inner join sprint on sprint.id = avaliacao.id_sprint " +
-                "inner join  aluno on aluno.id = avaliacao.id_aluno_avaliado " +
-                "where sprint.id = ? " +
-                "group by aluno.nome, grupo.nome_grupo, sprint.sprint, criterios.criterio ";
+                "inner join criterios on criterios.id = avaliacao.id_criterio " +
+                "where sprint.id = ?  and grupo.id = ? " +
+                "group by grupo.nome_grupo, aluno.nome, sprint.sprint, criterios.criterio ";
 
         try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
             ps.setInt(1, sprintId);
+            ps.setInt(2, grupoId);
             ResultSet rs = ps.executeQuery();
 
             try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), StandardCharsets.UTF_8))) {
                 writer.write((char) 0xfeff); // utilizado para formatação de arquivos CSV em codificação para abrir em programas externos - como excel
-                writer.write("Nome; Grupo; Sprint; Criterio; Media");
+                writer.write("Grupo; Nome; Sprint; Criterio; Media");
                 writer.newLine();
 
                 while (rs.next()) {
@@ -979,7 +985,7 @@ public class OperacoesSQL {
                     String criterio = rs.getString("criterio");
                     float media = rs.getFloat("media");
 
-                    writer.write(String.format("%s; %s; %d; %s; %.2f", nome, grupo, sprint, criterio, media));
+                    writer.write(String.format("%s; %d; %s; %s; %.2f", grupo, sprint, nome, criterio, media));
                     writer.newLine();
                 }
             }
@@ -988,4 +994,26 @@ public class OperacoesSQL {
             throw new RuntimeException(e);
         }
     }
+
+    public static int getIdGroupName(Statement stm, String nomeG) {
+        int grupoId = 0;
+        ResultSet rs = null;
+        String query = "select id from grupo where nome_grupo = ? ";
+
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setString(1, nomeG);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                grupoId = rs.getInt("id");
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return grupoId;
+    }
+
+
 }

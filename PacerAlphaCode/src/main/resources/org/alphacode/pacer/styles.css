@@ -679,3 +679,20 @@
     -fx-font-size: 14px;
     -fx-font-family: Arial;
 }
+
+
+#gerarrelatoriogrupo {
+    -fx-background-color: #008000;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#gerarrelatorioaluno {
+    -fx-background-color: #008000;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+

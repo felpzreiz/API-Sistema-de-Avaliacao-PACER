@@ -11,7 +11,7 @@
 
 * [Descrição do Projeto e Funcionalidades](#descrição-do-projeto-e-funcionalidades)
 * [Backlog do Produto](#backlog-do-produto)
-* [Definition of Ready]()
+* [Definition of Ready](#definition-of-ready)
 * [Wireframe do projeto](#wireframe-do-projeto)
 * [Modelo DER](#modelo-der)
 * [Guia de Instalação e Manual](#guia-de-instalação-e-manual)

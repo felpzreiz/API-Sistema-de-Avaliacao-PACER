@@ -134,6 +134,30 @@ public class OperacoesSQL {
         return listaGrupos; // Retorna a lista de alunos
     }
 
+
+    //MÉTODOS PARA LABEL REPOSITORIO
+    public static String getGit(Statement stm, String nomeGrupo) {
+        ResultSet rs = null;
+        String nomeG = "";
+
+        String query = "select git from aluno where grupo = ? ";
+
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setString(1, nomeGrupo);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                nomeG = rs.getString("git");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        return nomeG;
+    }
+
+
     //MÉTODOS PARA A TELA SRINTCONTROLLER
     public static List<Criterios> carregarCriterios(Statement stm) {
         List<Criterios> listaCriterios = new ArrayList<>();
@@ -1015,9 +1039,9 @@ public class OperacoesSQL {
     public static void removePontosGrupos(Statement stm, String grupo, Integer sprint) {
         System.out.println(sprint);
         String excluiPontos = "WITH grupo_tab AS (" +
-                "    SELECT id FROM grupo WHERE nome_grupo = '"+grupo+"'" +
+                "    SELECT id FROM grupo WHERE nome_grupo = '" + grupo + "'" +
                 "), sprint_tab AS( " +
-                "   SELECT id FROM sprint WHERE sprint = "+ sprint +" " +
+                "   SELECT id FROM sprint WHERE sprint = " + sprint + " " +
                 ") DELETE FROM pontos_grupo " +
                 "USING grupo_tab, sprint_tab " +
                 "WHERE pontos_grupo.id_grupo = grupo_tab.id " +

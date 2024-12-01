@@ -3,11 +3,13 @@ package org.alphacode.pacer.grupos;
 import conexao.OperacoesSQL;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -19,17 +21,19 @@ import org.alphacode.pacer.alunoacess.AlunosInterface;
 import org.alphacode.pacer.alunos.Alunos;
 
 
-import java.awt.event.MouseEvent;
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 
 public class GrupoController {
+
 
     Statement stm = OperacoesSQL.conectarBanco();
 
@@ -73,6 +77,13 @@ public class GrupoController {
 
     @FXML
     private Label nameSelectedGroup;
+
+    @FXML
+    private Label gitGroup;
+
+    @FXML
+    private Hyperlink linkGit;
+
 
     @FXML
     private TableView<Alunos> tableGrupoSelecionado;
@@ -254,6 +265,11 @@ public class GrupoController {
         Grupo grupoSelecionado = telagrupos.getSelectionModel().getSelectedItem();
         if (grupoSelecionado != null) {
             nameSelectedGroup.setText("Grupo selecionado: " + grupoSelecionado.nomeGrupo);
+            linkGit.setVisible(true);
+
+            String linkGitHub = OperacoesSQL.getGit(stm, grupoSelecionado.nomeGrupo);
+            linkGit.setText(linkGitHub);
+            linkGit.setOnAction(event -> abrirLinkGitHub(linkGitHub));
             tableGrupoSelecionado.setItems(listaDados);
             carregarAlunos(grupoSelecionado.nomeGrupo);
             setGrupoSelecionado(grupoSelecionado.nomeGrupo);
@@ -311,16 +327,16 @@ public class GrupoController {
 
     @FXML
     void addPointsGroup(ActionEvent event) {
-        if(OperacoesSQL.testPointsSprint(stm, getSprintChoice(event), getGrupoSelecionado()) == true){
+        if (OperacoesSQL.testPointsSprint(stm, getSprintChoice(event), getGrupoSelecionado()) == true) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Operação Bloqueada");
             alert.setHeaderText("Você já adicionou a pontuação desse grupo para essa sprint!");
 
             ButtonType okButton = new ButtonType("OK");
-            alert.getButtonTypes().setAll( okButton);
+            alert.getButtonTypes().setAll(okButton);
 
             alert.showAndWait();
-        }else{
+        } else {
             OperacoesSQL.insertPontosGrupos(stm, getSprintChoice(event), getGrupoSelecionado(), Double.parseDouble(pontosGrupo.getText()));
             carregarSprints(getIdGrupo());
         }
@@ -348,7 +364,8 @@ public class GrupoController {
     void carregarResultados(Integer id, ActionEvent event) {
         List<AlunosInterface> lista = OperacoesSQL.getRAvaliacao(stm, id, getSprintChoice2(event));
 
-        int nAlunos = OperacoesSQL.getCountStudents(stm, id);;
+        int nAlunos = OperacoesSQL.getCountStudents(stm, id);
+        ;
 
         for (AlunosInterface aluno : lista) {
             aluno.carregarNotas(nAlunos);
@@ -357,5 +374,18 @@ public class GrupoController {
         resultados.addAll(lista);
         tableResults.setItems(resultados);
 
+    }
+
+    private void abrirLinkGitHub(String link) {
+        try {
+            URI uri = new URI(link);
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().browse(uri);  // Abre o link no navegador
+            }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

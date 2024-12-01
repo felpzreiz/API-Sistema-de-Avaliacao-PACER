@@ -124,12 +124,12 @@
             <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
         </rowConstraints>
         <children>
-            <Button fx:id="btnStartSprint" mnemonicParsing="false" onAction="#startSprint" prefHeight="30.0" prefWidth="160.0" text="INICIAR SPRINT" textAlignment="CENTER">
+            <Button fx:id="btnStartSprint" alignment="CENTER" mnemonicParsing="false" onAction="#startSprint" prefHeight="30.0" prefWidth="160.0" text="INICIAR SEMESTRE" textAlignment="CENTER">
                 <font>
                     <Font name="Arial Bold" size="15.0" />
                 </font>
             </Button>
-            <Button fx:id="btnEncerrarSprint" mnemonicParsing="false" onAction="#encerrarSprint" prefHeight="30.0" prefWidth="160.0" text="ENCERRAR SPRINT" textAlignment="CENTER" GridPane.columnIndex="1">
+            <Button fx:id="btnEncerrarSprint" mnemonicParsing="false" onAction="#encerrarSprint" prefHeight="30.0" prefWidth="160.0" text="ENCERRAR" textAlignment="CENTER" GridPane.columnIndex="1">
                 <font>
                     <Font name="Arial Bold" size="15.0" />
                 </font>

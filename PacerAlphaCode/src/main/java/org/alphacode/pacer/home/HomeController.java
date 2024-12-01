@@ -10,6 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -22,7 +24,10 @@ import org.alphacode.pacer.grupos.Grupo;
 import org.alphacode.pacer.password.RedefinirSenha;
 import org.alphacode.pacer.sprintsCriterios.Datas;
 
+import java.awt.*;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -38,6 +43,7 @@ import static java.lang.Integer.valueOf;
 public class HomeController {
 
 
+
     Statement stm = OperacoesSQL.conectarBanco();
 
     @FXML
@@ -45,6 +51,9 @@ public class HomeController {
 
     @FXML
     private Button botaogerenciaraluno;
+
+    @FXML
+    private Button instruction;
 
     @FXML
     private Button alphaCode;
@@ -108,9 +117,6 @@ public class HomeController {
 
     @FXML
     private ListView<String> viewCriteriosH;
-
-    @FXML
-    private Button btnSearchG;
 
     @FXML
     private TextField searchG;
@@ -185,12 +191,19 @@ public class HomeController {
     @FXML
     public void initialize() {
         getSprint();
+        sprintAluno.setTooltip(new Tooltip("Selecione uma Sprint"));
+        sprintGrupo.setTooltip(new Tooltip("Selecione uma Sprint"));
+        searchG.setTooltip(new Tooltip("Informe o nome do Grupo"));
+        btnConfig.setTooltip(new Tooltip("Alterar senha de Usuário"));
+        instruction.setTooltip(new Tooltip("Manual do Usuário"));
+        exit.setTooltip(new Tooltip("Sair"));
 
         sprintAluno.getItems().addAll(sprints);
         sprintAluno.setOnAction(this::getSprintAluno);
 
         sprintGrupo.getItems().addAll(sprints);
         sprintGrupo.setOnAction(this::getSprintGrupo);
+
 
         searchG.textProperty().addListener((observable, oldValue, newValue) -> {
             filterGroups(newValue);
@@ -217,23 +230,6 @@ public class HomeController {
         menuFix.getStylesheets().add(css);
     }
 
-    public void buttonBuscarStudent(ActionEvent actionEvent) {
-        try {
-            filteredDados = new FilteredList<>(dadosgrupos, p -> true);  // Filtrando a lista de grupos, não a view.
-            searchG.textProperty().addListener((observable, oldValue, newValue) -> {
-                filteredDados.setPredicate(grupo -> {
-                    if (newValue == null || newValue.isEmpty()) {
-                        return true;
-                    }
-                    String min = newValue.toLowerCase();
-                    return grupo.getNomeGrupo().toLowerCase().contains(min);  // Verifique se getNomeGrupo() existe em Grupo.
-                });
-            });
-            viewGrupoH.setItems(filteredDados);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void filterGroups(String filterText) {
         if (filterText == null || filterText.isEmpty()) {
@@ -375,9 +371,7 @@ public class HomeController {
         try {
             if (getSprintGrupo(actionEvent) != null) {
                 try {
-
                     String nomeG = viewGrupoH.getSelectionModel().getSelectedItem().toString();
-
                     int grupoId = OperacoesSQL.getIdGroupName(stm, nomeG);
                     int sprintId = OperacoesSQL.getIdSprintChoice(stm, getSprintGrupo(actionEvent));
 
@@ -390,23 +384,55 @@ public class HomeController {
                     if (path != null) {
                         String filePath = path.getAbsolutePath();
                         OperacoesSQL.gerarCSVGroup(stm, filePath, sprintId, grupoId);
-                        showOk("Relatório CSV", null, "Salvo com Sucesso!");
 
+                        File csvFile = new File(filePath);
+                        if (csvFile.length() > 0) {
+                            try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+                                String linha;
+                                int contLinhas = 0;
+                                boolean linha2 = true;
+
+                                while ((linha = br.readLine()) != null) {
+                                    contLinhas++;
+                                    if (contLinhas == 2 && !linha.trim().isEmpty()) {
+                                        linha2 = false;
+                                    }
+                                }
+
+                                if (contLinhas == 1 || linha2) {
+                                    showAlert("Aviso!", "O arquivo CSV está vazio.", "Não foram identificadas avaliações para o grupo selecionado.");
+                                } else {
+                                    showOk("Relatório CSV", null, "Salvo com Sucesso!");
+                                }
+                            }
+                        } else {
+                            showAlert("Erro!", null, "O arquivo CSV está vazio.");
+                        }
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                     showAlert("Erro!", null, "Erro ao gerar o relatório CSV.");
-                    throw new RuntimeException(e);
                 }
             } else {
                 showAlert("Erro!", null, "Informe a Sprint desejada!");
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
+            showAlert("Erro!", null, "Erro inesperado.");
+        }
+    }
+
+
+    public void openIntruction(ActionEvent actionEvent) {
+        try {
+            File pdf = new File("PacerAlphaCode/src/main/resources/org/alphacode/pacer/arquivos/instAluno.pdf");
+            if (pdf.exists()) {
+                Desktop.getDesktop().open(pdf);
+            } else {
+                System.out.println("Arquivo não encontrado");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

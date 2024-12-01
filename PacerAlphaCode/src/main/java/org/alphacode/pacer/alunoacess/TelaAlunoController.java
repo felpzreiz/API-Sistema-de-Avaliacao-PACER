@@ -11,6 +11,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.ImageView;
@@ -22,16 +24,19 @@ import org.alphacode.pacer.grupos.Sprint;
 import org.alphacode.pacer.password.RedefinirSenha;
 import org.alphacode.pacer.sprintsCriterios.Datas;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 
 public class TelaAlunoController {
 
-    Statement stm = OperacoesSQL.conectarBanco();
 
+    Statement stm = OperacoesSQL.conectarBanco();
 
     private String email;
 
@@ -80,9 +85,6 @@ public class TelaAlunoController {
 
     @FXML
     private Button btsalvar;
-
-    @FXML
-    private Button btnIniciarAv;
 
     @FXML
     private TableView<Datas> tableSprint;
@@ -151,6 +153,9 @@ public class TelaAlunoController {
     @FXML
     private Label textpacer;
 
+    @FXML
+    private Button instruction;
+
     private ObservableList<AlunosInterface> listaAlunos;
     private List<AlunosInterface> alunos;              // Declaro a lista de alunos diretamente com a query
     private Map<String, Integer> notaColunas;
@@ -180,6 +185,9 @@ public class TelaAlunoController {
         tableSprints.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
         tableSprint.setItems(dataSprint);
         carregarDatas();
+        btnconfig.setTooltip(new Tooltip("Alterar senha de Usuário"));
+        btnsair.setTooltip(new Tooltip("Sair"));
+        instruction.setTooltip(new Tooltip("Manual do Usuário"));
         style();
     }
 
@@ -475,6 +483,19 @@ public class TelaAlunoController {
                     showAlert("Avaliação", "Concluída com Sucesso", "A avaliação foi concluída com sucesso. Não há mais ações pendentes.");
                 }
             }
+        }
+    }
+
+    public void openIntruction(ActionEvent actionEvent) {
+        try {
+            File pdf = new File("PacerAlphaCode/src/main/resources/org/alphacode/pacer/arquivos/instAluno.pdf");
+            if (pdf.exists()) {
+                Desktop.getDesktop().open(pdf);
+            } else {
+                System.out.println("Arquivo não encontrado");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

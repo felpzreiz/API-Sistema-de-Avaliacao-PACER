@@ -116,7 +116,9 @@ public class AlunoController {
             viewGroup.setCellValueFactory(new PropertyValueFactory<>("grupo"));
             viewStudent.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
             refreshBD();
+            refresh.setTooltip(new Tooltip("Atualizar Banco de Dados"));
             style();
+
         } catch (SQLException e) {
             e.printStackTrace(); // Para ver a exceção específica
         }
@@ -365,19 +367,6 @@ public class AlunoController {
         nStudents();
         nStudentsnull();
         nGroup();
-    }
-
-    public void openIntruction(ActionEvent actionEvent) {
-        try {
-            File pdf = new File("PacerAlphaCode/src/main/resources/org/alphacode/pacer/arquivos/instAluno.pdf");
-            if (pdf.exists()) {
-                Desktop.getDesktop().open(pdf);
-            } else {
-                System.out.println("Arquivo não encontrado");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void cleanFilter(ActionEvent actionEvent) {

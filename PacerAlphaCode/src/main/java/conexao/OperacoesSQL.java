@@ -35,7 +35,7 @@ public class OperacoesSQL {
     public static List<Alunos> consultarDados(Statement stm) { // METHOD PARA FAZER UM SELECT.
         List<Alunos> listaAlunos = new ArrayList<>();
         try {
-            ResultSet result = stm.executeQuery("SELECT senha,email,grupo,* FROM aluno ORDER BY id ASC");
+            ResultSet result = stm.executeQuery("SELECT nome,email,grupo,* FROM aluno ORDER BY id ASC");
             while (result.next()) { // result.next() roda enquanto existirem dados no banco.
                 String nome = result.getString("nome");
                 String email = result.getString("email");
@@ -337,7 +337,7 @@ public class OperacoesSQL {
     public static List<Alunos> consultarDadosAlunos(Statement stm, String grupo) { // METHOD PARA FAZER UM SELECT.
         List<Alunos> listaAlunos = new ArrayList<>();
         try {
-            ResultSet result = stm.executeQuery("SELECT senha,email,grupo,* FROM aluno WHERE grupo='" + grupo + "'ORDER BY id ASC");
+            ResultSet result = stm.executeQuery("SELECT nome,email,grupo,* FROM aluno WHERE grupo='" + grupo + "'ORDER BY id ASC");
             while (result.next()) { // result.next() roda enquanto existirem dados no banco.
                 String nome = result.getString("nome");
                 String email = result.getString("email");
@@ -355,7 +355,7 @@ public class OperacoesSQL {
     public static List<AlunosInterface> consultarDadosAlunos1(Statement stm, String grupo) { // METHOD PARA FAZER UM SELECT.
         List<AlunosInterface> listaAlunos = new ArrayList<>();
         try {
-            ResultSet result = stm.executeQuery("SELECT senha,email,grupo,* FROM aluno WHERE grupo='" + grupo + "'ORDER BY id ASC");
+            ResultSet result = stm.executeQuery("SELECT nome,email,grupo,* FROM aluno WHERE grupo='" + grupo + "'ORDER BY id ASC");
             while (result.next()) { // result.next() roda enquanto existirem dados no banco.
                 String nome = result.getString("nome");
                 String email = result.getString("email");
@@ -853,6 +853,36 @@ public class OperacoesSQL {
         }
     }
 
+    public static boolean checkStatus(Statement stm) {
+        String query = "select status from sprint where status = true";
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            if (rs.next()) {
+                return rs.getBoolean("status");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void clearAllSprints(Statement stm) {
+        try {
+            String q1 = "delete from avaliacao";
+            String q2 = "delete from pontos_grupo";
+            String q3 = "delete from sprint";
+            String q4 = "delete from criterios";
+
+            stm.executeUpdate(q1);
+            stm.executeUpdate(q2);
+            stm.executeUpdate(q3);
+            stm.executeUpdate(q4);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static Boolean getStatus(Statement stm) {
         Boolean resultado = false;
         try {
@@ -996,7 +1026,7 @@ public class OperacoesSQL {
 
             try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), StandardCharsets.UTF_8))) {
                 writer.write((char) 0xfeff); // utilizado para formatação de arquivos CSV em codificação para abrir em programas externos - como excel
-                writer.write("Grupo; Nome; Sprint; Criterio; Media");
+                writer.write("Grupo; Sprint; Nome; Critério; Média");
                 writer.newLine();
 
                 while (rs.next()) {

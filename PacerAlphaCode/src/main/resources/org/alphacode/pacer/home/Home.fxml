@@ -187,6 +187,7 @@
                 <Insets right="4.0" />
             </padding>
         </Label>
+      <Button fx:id="instruction" alignment="CENTER" layoutX="1147.0" layoutY="729.0" mnemonicParsing="false" onAction="#openIntruction" prefHeight="40.0" prefWidth="40.0" />
         <cursor>
             <Cursor fx:constant="DEFAULT" />
         </cursor>

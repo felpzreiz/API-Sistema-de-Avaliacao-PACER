@@ -79,11 +79,17 @@ public class SprintController {
     private ObservableList<String> column = FXCollections.observableArrayList();
     private ObservableList<Criterios> lista = FXCollections.observableArrayList();
     private ObservableList<Datas> dataSprint = FXCollections.observableArrayList();
+    private boolean isSprintStarted = false;
 
     public SprintController() throws SQLException {
     }
 
     public void initialize() {
+        isSprintStarted = verificarSprintI();
+
+        if (isSprintStarted) {
+            sprintIniciada(); // Configurar elementos bloqueados
+        }
         // Configuração das colunas da TableView
         nSprint.setCellValueFactory(new PropertyValueFactory<>("idSprint"));
         inicioSprint.setCellValueFactory(cellData -> new SimpleStringProperty(formatarData(cellData.getValue().getDataInicial())));
@@ -190,8 +196,6 @@ public class SprintController {
                 nomeCriterio.clear();
                 OperacoesSQL.inserirCriterio(stm, coluna);
             }
-        }else{
-            showWarning("Erro!", "Existem sprints ativas.", "Não é possível manipular criterios, quando existem sprints ativas.");
         }
     }
 
@@ -245,7 +249,7 @@ public class SprintController {
                            - Para remover um critério, selecione o item desejado na lista e clique em **Remover**.
                         
                         * ATENÇÃO!
-                        Uma vez que o período de avaliação comece, não será possível remover critérios.
+                        Uma vez que o período de avaliação comece, não será possível adicionar ou remover critérios.
                         Certifique-se de que todos os critérios estejam corretos antes de iniciar a avaliação.""";
 
         String instrucoesS =
@@ -261,7 +265,7 @@ public class SprintController {
                            - Uma vez iniciado, o período de avaliação não pode ser alterado.
                         
                         3. Encerrar a Sprint:
-                           - O botão **Encerrar Sprint** pode ser utilizado caso deseje interromper o período de avaliação.
+                           - O botão **Encerrar Semestre** pode ser utilizado caso deseje interromper o período de avaliação.
                            - Lembre-se: após iniciar, não será possível adicionar, remover as datas.
                         
                         * ATENÇÃO!
@@ -283,13 +287,124 @@ public class SprintController {
     public void acaodataF(ActionEvent actionEvent) {
     }
 
+    @FXML
     public void startSprint(ActionEvent actionEvent) {
-        Datas selectedSprint = tableSprint.getSelectionModel().getSelectedItem();
-        OperacoesSQL.updateStatus(stm, selectedSprint.getIdSprint());
+        try {
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setTitle("Iniciar Semestre");
+            confirm.setHeaderText("Você está prestes a iniciar o Semestre.");
+            confirm.setContentText("Após o início do Semestre, não será possível adicionar ou remover critérios e sprints. Deseja continuar?");
+
+            ButtonType btnSim = new ButtonType("Sim");
+            ButtonType btnNao = new ButtonType("Não", ButtonBar.ButtonData.CANCEL_CLOSE);
+            confirm.getButtonTypes().setAll(btnSim, btnNao);
+
+            confirm.showAndWait().ifPresent(response -> {
+                if (response == btnSim) {
+                    ObservableList<Datas> allSprints = tableSprint.getItems();
+
+                    for (Datas sprint : allSprints) {
+                        OperacoesSQL.updateStatus(stm, sprint.getIdSprint());
+                    }
+                    isSprintStarted = true;
+                    sprintIniciada();
+                    showWarning("Informação", "Semestre Iniciado", "O Semestre foi iniciado com sucesso e não pode mais ser alterado.");
+                } else {
+                    showWarning("Informação", "Início do Semestre Cancelado", "O Semestre não foi iniciada.");
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void sprintIniciada() {
+        nomeCriterio.setEditable(false);
+        addDataI.setEditable(false);
+        addDataF.setEditable(false);
+        btnAddC.setDisable(true);
+        btnDeleteC.setDisable(true);
+        btnAdicionarS.setDisable(true);
+        btnRemoverS.setDisable(true);
+        btnStartSprint.setDisable(true);
+        btnEncerrarSprint.setDisable(false);
+
+        btnAddC.setOnMouseClicked(event -> showWarning("Ação Bloqueada", "Sprint já iniciada", "Não é possível adicionar critérios após o início da Sprint."));
+        btnDeleteC.setOnMouseClicked(event -> showWarning("Ação Bloqueada", "Sprint já iniciada", "Não é possível deletar critérios após o início da Sprint."));
+        btnRemoverS.setOnMouseClicked(event -> showWarning("Ação Bloqueada", "Sprint já iniciada", "Não é possível remover Sprints após o início."));
+        btnAdicionarS.setOnMouseClicked(event -> showWarning("Ação Bloqueada", "Sprint já iniciada", "Não é possível adicionar Sprints após o início."));
+        addDataI.setOnMouseClicked(event -> showWarning("Campo Bloqueado", "Sprint já iniciada", "Não é possível editar a data inicial após o início da Sprint."));
+        addDataF.setOnMouseClicked(event -> showWarning("Campo Bloqueado", "Sprint já iniciada", "Não é possível editar a data final após o início da Sprint."));
+        nomeCriterio.setOnMouseClicked(event -> showWarning("Campo Bloqueado", "Sprint já iniciada", "Não é possível editar critérios após o início da Sprint."));
+
+        tableSprint.refresh();
+    }
+
+    private boolean verificarSprintI() {
+        return OperacoesSQL.checkStatus(stm);
     }
 
     public void encerrarSprint(ActionEvent actionEvent) {
+
+        if (!isSprintStarted) {
+            showWarning("Erro!", "Semestre não iniciado", "O Semestre ainda não foi iniciado. Não é possível encerrá-la.");
+            return;
+        }
+        try {
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setTitle("Confirmar Encerramento");
+            confirm.setHeaderText("Você está prestes a encerrar o Semestre");
+            confirm.setContentText("ATENÇÃO: Todos os dados do banco serão deletados. Deseja continuar?");
+
+            ButtonType btnSim = new ButtonType("Sim");
+            ButtonType btnNao = new ButtonType("Não", ButtonBar.ButtonData.CANCEL_CLOSE);
+            confirm.getButtonTypes().setAll(btnSim, btnNao);
+            confirm.showAndWait().ifPresent(response -> {
+                if (response == btnSim) {
+                    try {
+                        OperacoesSQL.clearAllSprints(stm);
+                        newSprint();
+                        resetSprint();
+
+                        showWarning("Informação", "Semestre Encerrado", "O Semestre foi encerrado e os dados foram limpos com sucesso.");
+                    } catch (Exception e) {
+                        showWarning("Erro!", "Falha ao encerrar Semestre", "Erro: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+
+    private void newSprint() {
+
+        dataSprint.clear();
+        lista.clear();
+        criterios.setItems(lista);
+        tableSprint.setItems(dataSprint);
+        carregarDatas();
+        criterios();
+    }
+
+    private void resetSprint() {
+        nomeCriterio.setEditable(true);
+        addDataI.setEditable(true);
+        addDataF.setEditable(true);
+        btnAddC.setDisable(false);
+        btnDeleteC.setDisable(false);
+        btnAdicionarS.setDisable(false);
+        btnRemoverS.setDisable(false);
+        btnStartSprint.setDisable(false);
+        btnEncerrarSprint.setDisable(true);
+
+        tableSprint.refresh();
+        criterios.refresh();
+    }
+
 
     @FXML
     public void showWarning(String title, String header, String content){

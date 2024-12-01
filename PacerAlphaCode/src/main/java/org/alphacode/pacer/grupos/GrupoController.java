@@ -141,6 +141,9 @@ public class GrupoController {
     @FXML
     void initialize() {
         getSprint();
+        SprintChoice.setTooltip(new Tooltip("Selecione uma Sprint"));
+        SprintChoice2.setTooltip(new Tooltip("Selecione uma Sprint"));
+
         resultados = FXCollections.observableArrayList();
         listaDados1 = FXCollections.observableArrayList();
         grupos = FXCollections.observableArrayList(); // Inicializa a ObservableList
@@ -380,11 +383,9 @@ public class GrupoController {
         try {
             URI uri = new URI(link);
             if (Desktop.isDesktopSupported()) {
-                Desktop.getDesktop().browse(uri);  // Abre o link no navegador
+                Desktop.getDesktop().browse(uri);
             }
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (URISyntaxException | IOException e) {
             e.printStackTrace();
         }
     }

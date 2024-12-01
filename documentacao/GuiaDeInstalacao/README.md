@@ -1,6 +1,11 @@
 # Sistema de Avaliação PACER
 
-<i>Um projeto da equipe Alpha Code!</i>
+<i>Projeto desenvolvido pela da equipe Alpha Code</i>
+
+<div style="text-align: left;">
+<img src="/documentacao/Imagens/logo.png" alt="AlphaCode" width="400
+">
+</div>
 
 ## Guia de Instalação
 
@@ -42,11 +47,13 @@ No Query Tool, clique em File > Open e selecione o arquivo SQL baixado.
 
 O arquivo está disponível no link abaixo:
 
-> [Script Banco de Dados](../SchemaSQL/schema.sql)
+> [Script Banco de Dados](../SchemaSQL/Schema.sql)
 
 Após, execute o seguinte comando para criar o acesso do professor à aplicação.
 
 >` INSERT INTO usuario (email, senha) VALUES ('professor@fatec.sp.gov.br' , 'Informe aqui a senha de acesso desejada');`
+
+> `Por padrão a senha de acesso dos alunos é a primeira String do e-mail de acesso.`
 
 ### 4. Executável
 
@@ -57,6 +64,7 @@ Agora que o banco de dados está configurado, faça o download do JDK para que s
 Após baixado e instalado você pode baixar o executável do Sistema de Avaliação para utilizá-lo
 localmente.
 
-Faça o download do executável que encontra-se no README principal do projeto e execute o arquivo `.jar`.
+> [Executável](/out/artifacts/PacerAlphaCode_jar)
+
 
 

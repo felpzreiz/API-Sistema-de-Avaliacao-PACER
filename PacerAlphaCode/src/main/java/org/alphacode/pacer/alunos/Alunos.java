@@ -5,6 +5,7 @@ public class Alunos {
     String nome, email, grupo, repo;
     Double nota;
 
+
     public Alunos(String nome, String email, String grupo, String repo) {
         this.nome = nome;
         this.email = email;
@@ -12,20 +13,30 @@ public class Alunos {
         this.repo = repo;
     }
 
+
     public Alunos(String nome, String email, String grupo) {
         this.nome = nome;
         this.email = email;
         this.grupo = grupo;
+        this.repo = "";
     }
 
-    public Alunos(String email) {
-    }
 
     public Alunos(String nome, Double nota) {
         this.nome = nome;
         this.nota = nota;
     }
 
+    public Alunos(String email) {
+        this.email = email;
+        this.nome = "Desconhecido";
+    }
+
+    public Alunos() {
+
+    }
+
+    // Métodos de acesso (getters e setters)
     public String getNome() {
         return nome;
     }
@@ -65,8 +76,10 @@ public class Alunos {
     public void setNota(Double nota) {
         this.nota = nota;
     }
+
+    // Sobrescreve o método toString() para retornar o nome
+    @Override
+    public String toString() {
+        return nome;
+    }
 }
-
-
-
-

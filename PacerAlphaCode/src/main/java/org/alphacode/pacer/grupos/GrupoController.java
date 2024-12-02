@@ -7,6 +7,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -18,19 +21,27 @@ import org.alphacode.pacer.alunoacess.AlunosInterface;
 import org.alphacode.pacer.alunos.Alunos;
 
 
-import java.awt.event.MouseEvent;
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 
 public class GrupoController {
 
+
     Statement stm = OperacoesSQL.conectarBanco();
+
+    @FXML
+    private Button buttonRemovePoints;
+
+    @FXML
+    private Button generateReportButton;
 
     private String grupoSelecao;
 
@@ -68,6 +79,13 @@ public class GrupoController {
     private Label nameSelectedGroup;
 
     @FXML
+    private Label gitGroup;
+
+    @FXML
+    private Hyperlink linkGit;
+
+
+    @FXML
     private TableView<Alunos> tableGrupoSelecionado;
 
     @FXML
@@ -82,6 +100,9 @@ public class GrupoController {
     @FXML
     private ChoiceBox<String> SprintChoice;
     ArrayList<String> sprints = new ArrayList<String>();
+
+    @FXML
+    public ChoiceBox<String> SprintChoice2;
 
     @FXML
     private TextField pontosGrupo;
@@ -120,6 +141,9 @@ public class GrupoController {
     @FXML
     void initialize() {
         getSprint();
+        SprintChoice.setTooltip(new Tooltip("Selecione uma Sprint"));
+        SprintChoice2.setTooltip(new Tooltip("Selecione uma Sprint"));
+
         resultados = FXCollections.observableArrayList();
         listaDados1 = FXCollections.observableArrayList();
         grupos = FXCollections.observableArrayList(); // Inicializa a ObservableList
@@ -151,6 +175,9 @@ public class GrupoController {
 
         SprintChoice.getItems().addAll(sprints);
         SprintChoice.setOnAction(this::getSprintChoice);
+
+        SprintChoice2.getItems().addAll(sprints);
+        SprintChoice2.setOnAction(this::getSprintChoice2);
     }
 
     @FXML
@@ -241,15 +268,18 @@ public class GrupoController {
         Grupo grupoSelecionado = telagrupos.getSelectionModel().getSelectedItem();
         if (grupoSelecionado != null) {
             nameSelectedGroup.setText("Grupo selecionado: " + grupoSelecionado.nomeGrupo);
+            linkGit.setVisible(true);
+
+            String linkGitHub = OperacoesSQL.getGit(stm, grupoSelecionado.nomeGrupo);
+            linkGit.setText(linkGitHub);
+            linkGit.setOnAction(event -> abrirLinkGitHub(linkGitHub));
             tableGrupoSelecionado.setItems(listaDados);
             carregarAlunos(grupoSelecionado.nomeGrupo);
             setGrupoSelecionado(grupoSelecionado.nomeGrupo);
-            System.out.println(getGrupoSelecionado());
             setIdGrupo(OperacoesSQL.SelectIDGrupo(stm, getGrupoSelecionado()));
             carregarSprints(idGrupo);
             List<String> colunas = OperacoesSQL.carregarColunas(stm);
             initializeTable(colunas);
-            carregarResultados(idGrupo);
         }
     }
 
@@ -285,6 +315,11 @@ public class GrupoController {
         return (sprint);
     }
 
+    public Integer getSprintChoice2(ActionEvent event) {
+        Integer sprint = Integer.parseInt(SprintChoice2.getValue());
+        return (sprint);
+    }
+
     public void setGrupoSelecionado(String grupo) {
         this.grupoSelecao = grupo;
     }
@@ -293,11 +328,27 @@ public class GrupoController {
         return (grupoSelecao);
     }
 
-    ;
-
     @FXML
     void addPointsGroup(ActionEvent event) {
-        OperacoesSQL.insertPontosGrupos(stm, getSprintChoice(event), getGrupoSelecionado(), Double.parseDouble(pontosGrupo.getText()));
+        if (OperacoesSQL.testPointsSprint(stm, getSprintChoice(event), getGrupoSelecionado()) == true) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Operação Bloqueada");
+            alert.setHeaderText("Você já adicionou a pontuação desse grupo para essa sprint!");
+
+            ButtonType okButton = new ButtonType("OK");
+            alert.getButtonTypes().setAll(okButton);
+
+            alert.showAndWait();
+        } else {
+            OperacoesSQL.insertPontosGrupos(stm, getSprintChoice(event), getGrupoSelecionado(), Double.parseDouble(pontosGrupo.getText()));
+            carregarSprints(getIdGrupo());
+        }
+    }
+
+    @FXML
+    void removePointsGroup(ActionEvent event) {
+        Sprint sprintSelecionada = tableSprints.getSelectionModel().getSelectedItem();
+        OperacoesSQL.removePontosGrupos(stm, getGrupoSelecionado(), sprintSelecionada.getSprint());
         carregarSprints(getIdGrupo());
     }
 
@@ -308,10 +359,16 @@ public class GrupoController {
         tableSprints.setItems(dataSprint);
     }
 
-    void carregarResultados(Integer id) {
-        List<AlunosInterface> lista = OperacoesSQL.getRAvaliacao(stm, id);
+    @FXML
+    void generateReport(ActionEvent event) {
+        carregarResultados(idGrupo, event);
+    }
 
-        int nAlunos = lista.size();
+    void carregarResultados(Integer id, ActionEvent event) {
+        List<AlunosInterface> lista = OperacoesSQL.getRAvaliacao(stm, id, getSprintChoice2(event));
+
+        int nAlunos = OperacoesSQL.getCountStudents(stm, id);
+        ;
 
         for (AlunosInterface aluno : lista) {
             aluno.carregarNotas(nAlunos);
@@ -320,5 +377,16 @@ public class GrupoController {
         resultados.addAll(lista);
         tableResults.setItems(resultados);
 
+    }
+
+    private void abrirLinkGitHub(String link) {
+        try {
+            URI uri = new URI(link);
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().browse(uri);
+            }
+        } catch (URISyntaxException | IOException e) {
+            e.printStackTrace();
+        }
     }
 }

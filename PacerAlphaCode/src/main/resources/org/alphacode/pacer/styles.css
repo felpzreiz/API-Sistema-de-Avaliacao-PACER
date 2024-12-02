@@ -463,32 +463,32 @@
     -fx-font-family: Arial;
 }
 
-#tableSprints {
+#viewSprintH {
     -fx-background-color: #e7e7e7;
     -fx-border-color: #e5dfdf;
     -fx-border-width: 1px;
 }
 
-#tableSprints .table-cell {
+#viewSprintH .table-cell {
     -fx-font-family: Arial;
     -fx-font-size: 14px;
 }
 
-#tableSprints .table-column {
+#viewSprintH .table-column {
     -fx-alignment: center;
 }
 
-#tableSprints .table-row-cell:hover {
+#viewSprintH .table-row-cell:hover {
     -fx-background-color: #bbbbbb;
 }
 
-#tableSprints .table-row-cell:selected {
+#viewSprintH .table-row-cell:selected {
     -fx-background-color: #829ebd;
     -fx-text-fill: white;
     -fx-font-weight: bold;
 }
 
-#tableSprints .column-header {
+#viewSprintH .column-header {
     -fx-background-color: #bebfc5;
     -fx-font-weight: bold;
     -fx-border-color: #aaaaaa;
@@ -554,3 +554,145 @@
     -fx-font-size: 14px;
     -fx-font-family: Arial;
 }
+
+#confirmarSenha {
+    -fx-background-color: transparent;
+    -fx-border-color: #696969;
+    -fx-border-width: 0px 0px 2px 0px;
+}
+
+#nvSenha {
+    -fx-background-color: transparent;
+    -fx-border-color: #696969;
+    -fx-border-width: 0px 0px 2px 0px;
+}
+
+#nvSenha1 {
+    -fx-background-color: transparent;
+    -fx-border-color: #696969;
+    -fx-border-width: 0px 0px 2px 0px;
+}
+
+#exitPass{    -fx-background-color: #dd2828;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+
+}
+
+
+#viewAlunosH {
+    -fx-background-color: #e7e7e7;
+    -fx-border-color: #e5dfdf;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+}
+
+#viewAlunosH .list-cell {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+#viewAlunosH .list-cell:hover {
+    -fx-background-color: #bbbbbb;
+}
+
+#viewAlunosH .list-cell:selected {
+    -fx-background-color: #829ebd;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+#viewCriteriosH {
+    -fx-background-color: #e7e7e7;
+    -fx-border-color: #e5dfdf;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+}
+
+#viewCriteriosH .list-cell {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+#viewCriteriosH .list-cell:hover {
+    -fx-background-color: #bbbbbb;
+}
+
+#viewCriteriosH .list-cell:selected {
+    -fx-background-color: #829ebd;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+#viewGrupoH {
+    -fx-background-color: #e7e7e7;
+    -fx-border-color: #e5dfdf;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+}
+
+#viewGrupoH .list-cell {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+#viewGrupoH .list-cell:hover {
+    -fx-background-color: #bbbbbb;
+}
+
+#viewGrupoH .list-cell:selected {
+    -fx-background-color: #829ebd;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+#tableSprints {
+    -fx-background-color: #e7e7e7;
+    -fx-border-color: #e5dfdf;
+    -fx-border-width: 1px;
+}
+
+#tableSprints .table-cell {
+    -fx-font-family: Arial;
+    -fx-font-size: 14px;
+}
+
+#tableSprints .table-column {
+    -fx-alignment: center;
+}
+
+#tableSprints .table-row-cell:hover {
+    -fx-background-color: #bbbbbb;
+}
+
+#tableSprints .table-row-cell:selected {
+    -fx-background-color: #829ebd;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+#tableSprints .column-header {
+    -fx-background-color: #bebfc5;
+    -fx-font-weight: bold;
+    -fx-border-color: #aaaaaa;
+    -fx-font-size: 14px;
+    -fx-font-family: Arial;
+}
+
+
+#gerarrelatoriogrupo {
+    -fx-background-color: #008000;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#gerarrelatorioaluno {
+    -fx-background-color: #008000;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+

@@ -1,7 +1,6 @@
 package conexao;
 
 import org.alphacode.pacer.alunoacess.AlunosInterface;
-import org.alphacode.pacer.alunoacess.Dados;
 import org.alphacode.pacer.alunoacess.Notas;
 import org.alphacode.pacer.alunos.Alunos;
 import org.alphacode.pacer.grupos.Grupo;
@@ -9,12 +8,16 @@ import org.alphacode.pacer.grupos.Sprint;
 import org.alphacode.pacer.sprintsCriterios.Criterios;
 import org.alphacode.pacer.sprintsCriterios.Datas;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static javax.swing.UIManager.getInt;
 
 public class OperacoesSQL {
 
@@ -32,7 +35,7 @@ public class OperacoesSQL {
     public static List<Alunos> consultarDados(Statement stm) { // METHOD PARA FAZER UM SELECT.
         List<Alunos> listaAlunos = new ArrayList<>();
         try {
-            ResultSet result = stm.executeQuery("SELECT senha,email,grupo,* FROM aluno ORDER BY id ASC");
+            ResultSet result = stm.executeQuery("SELECT nome,email,grupo,* FROM aluno ORDER BY id ASC");
             while (result.next()) { // result.next() roda enquanto existirem dados no banco.
                 String nome = result.getString("nome");
                 String email = result.getString("email");
@@ -75,8 +78,9 @@ public class OperacoesSQL {
     }
 
     public static void excluir(Statement stm, String email) {
-        String excluiAluno = "DELETE FROM usuario WHERE email = '" + email + "';" +
-                "DELETE FROM aluno WHERE email = '" + email + "'";
+        String excluiAluno =
+                "DELETE FROM aluno WHERE email = '" + email + "';" +
+                        "DELETE FROM usuario WHERE email = '" + email + "'";
         try {
             stm.executeUpdate(excluiAluno);
 
@@ -130,6 +134,30 @@ public class OperacoesSQL {
         return listaGrupos; // Retorna a lista de alunos
     }
 
+
+    //MÉTODOS PARA LABEL REPOSITORIO
+    public static String getGit(Statement stm, String nomeGrupo) {
+        ResultSet rs = null;
+        String nomeG = "";
+
+        String query = "select git from aluno where grupo = ? ";
+
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setString(1, nomeGrupo);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                nomeG = rs.getString("git");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        return nomeG;
+    }
+
+
     //MÉTODOS PARA A TELA SRINTCONTROLLER
     public static List<Criterios> carregarCriterios(Statement stm) {
         List<Criterios> listaCriterios = new ArrayList<>();
@@ -182,12 +210,15 @@ public class OperacoesSQL {
 
     }
 
-
     //MÉTODOS PARA ADICIONAR SPRINTS
     public static void addSprint(Statement stm, int idSprint, LocalDate dataInicial, LocalDate dataFinal) {
-        String dataSprint = "INSERT INTO sprint (sprint, data_inicio, data_fim) VALUES ('" + idSprint + "','" + dataInicial + "','" + dataFinal + "')";
-        try {
-            stm.execute(dataSprint);
+        String query = "INSERT INTO sprint (sprint, data_inicio, data_fim, fim_avaliacao) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setInt(1, idSprint);
+            ps.setObject(2, dataInicial);
+            ps.setObject(3, dataFinal);
+            ps.setObject(4, dataFinal.plusDays(7));
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -198,12 +229,13 @@ public class OperacoesSQL {
     public static List<Datas> carregarDatas(Statement stm) {
         List<Datas> listaDatas = new ArrayList<>();
         try {
-            ResultSet rs = stm.executeQuery("SELECT  sprint, data_inicio, data_fim FROM  sprint ORDER BY(sprint)");
+            ResultSet rs = stm.executeQuery("SELECT  sprint, data_inicio, data_fim, fim_avaliacao FROM  sprint ORDER BY(sprint)");
             while (rs.next()) {
                 int idSprint = rs.getInt("sprint");
                 LocalDate dataInicial = rs.getDate("data_inicio").toLocalDate();
                 LocalDate dataFinal = rs.getDate("data_fim").toLocalDate();
-                listaDatas.add(new Datas(idSprint, dataInicial, dataFinal));
+                LocalDate dataFinalAv = rs.getDate("fim_avaliacao").toLocalDate();
+                listaDatas.add(new Datas(idSprint, dataInicial, dataFinal, dataFinalAv));
             }
 
         } catch (SQLException e) {
@@ -228,8 +260,32 @@ public class OperacoesSQL {
 
     //FIM DOS MÉTODOS PARA CARREGAR AS DATAS DAS SPRINTS -------------
 
-
     //MÉTODOS PARA A TELA DE GRUPOS ----------------------------------
+
+    public static Boolean testPointsSprint(Statement stm, Integer sprint, String grupo) {
+        Boolean resultado = false;
+        try {
+            ResultSet result = stm.executeQuery("SELECT count(pontos_grupo.id) " +
+                    "FROM pontos_grupo " +
+                    "LEFT JOIN grupo ON pontos_grupo.id_grupo = grupo.id " +
+                    "LEFT JOIN sprint ON pontos_grupo.id_sprint = sprint.id " +
+                    "WHERE grupo.nome_grupo = '" + grupo + "' " +
+                    "AND sprint.sprint = " + sprint);
+            while (result.next()) { // result.next() roda enquanto existirem dados no banco.
+                Integer Contagem = Integer.parseInt(result.getString("count"));
+
+                if (Contagem == 0) {
+                    resultado = false;
+                } else {
+                    resultado = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultado; //
+    }
 
     public static Boolean lookGroup(Statement stm, String grupo) {
         Boolean resultado = false;
@@ -281,7 +337,7 @@ public class OperacoesSQL {
     public static List<Alunos> consultarDadosAlunos(Statement stm, String grupo) { // METHOD PARA FAZER UM SELECT.
         List<Alunos> listaAlunos = new ArrayList<>();
         try {
-            ResultSet result = stm.executeQuery("SELECT senha,email,grupo,* FROM aluno WHERE grupo='" + grupo + "'ORDER BY id ASC");
+            ResultSet result = stm.executeQuery("SELECT nome,email,grupo,* FROM aluno WHERE grupo='" + grupo + "'ORDER BY id ASC");
             while (result.next()) { // result.next() roda enquanto existirem dados no banco.
                 String nome = result.getString("nome");
                 String email = result.getString("email");
@@ -299,7 +355,7 @@ public class OperacoesSQL {
     public static List<AlunosInterface> consultarDadosAlunos1(Statement stm, String grupo) { // METHOD PARA FAZER UM SELECT.
         List<AlunosInterface> listaAlunos = new ArrayList<>();
         try {
-            ResultSet result = stm.executeQuery("SELECT senha,email,grupo,* FROM aluno WHERE grupo='" + grupo + "'ORDER BY id ASC");
+            ResultSet result = stm.executeQuery("SELECT nome,email,grupo,* FROM aluno WHERE grupo='" + grupo + "'ORDER BY id ASC");
             while (result.next()) { // result.next() roda enquanto existirem dados no banco.
                 String nome = result.getString("nome");
                 String email = result.getString("email");
@@ -374,8 +430,6 @@ public class OperacoesSQL {
             ResultSet result = stm.executeQuery(query);
             if (result.next()) { // Muda para if, pois esperamos apenas um valor
                 idGrupo = Integer.parseInt(result.getString("id"));
-            } else {
-                System.out.println("Nenhum resultado encontrado para o grupo: " + grupoteste);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -421,7 +475,6 @@ public class OperacoesSQL {
 
     //MÉTODOS PARA A TELA DE AVAVALIAÇÃO ALUNO -----------------------------------
 
-
     public static String nomeAluno(Statement stm, String email) {
         String nAluno = "";
         String query = "select nome from aluno where email = '" + email + "'";
@@ -438,7 +491,6 @@ public class OperacoesSQL {
 
     }
 
-
     public static String carregarInfo(Statement stm, String idAluno) {
         String query = "select grupo from aluno where email =    '" + idAluno + "'";
         String grupo = null;
@@ -452,6 +504,7 @@ public class OperacoesSQL {
         }
         return grupo;
     }
+
 
     public static String idGrupo(Statement stm, String email) {
         String nomeGrupo = "";
@@ -556,6 +609,28 @@ public class OperacoesSQL {
         return id;
     }
 
+    public static int getIdGrupoEmail(Statement stm, String email) {
+        int id = 0;
+        String grupo = "";
+        String query = "select grupo from aluno where email = '" + email + "'";
+
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                grupo = rs.getString("grupo");
+            }
+            String query1 = "select id from grupo where nome_grupo = '" + grupo + "'";
+            ResultSet rs1 = stm.executeQuery(query1);
+            while (rs1.next()) {
+                id = rs1.getInt("id");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
     public static int getIdCriterio(Statement stm, String criterio) {
         int id = 0;
         String query = "select id from criterios where criterio = '" + criterio + "'";
@@ -570,74 +645,86 @@ public class OperacoesSQL {
         return id;
     }
 
-    public static int getIdSprint(Statement stm, LocalDate localDate) {
-        int id = 0;
-        localDate = java.time.LocalDate.now();
-        String query = "select id from sprint where  data_inicio < '" + localDate + "' and  data_fim > '" + localDate + "' ";
+    public static int getIdSprint(Statement stm) {
+        int idSprint = 0;
+        String query = "select id from sprint where current_date between data_fim + 1 and fim_avaliacao";
         try {
             ResultSet rs = stm.executeQuery(query);
             while (rs.next()) {
-                id = rs.getInt("id");
+                idSprint = rs.getInt("id");
             }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return id;
+        return idSprint;
     }
 
-    public static float getPontosSprint(Statement stm, String email) {
-        LocalDate localDate = java.time.LocalDate.now();
-        int idSprint = getIdSprint(stm, localDate);
-        float pontosS = 0;
-        int idGrupo = 0;
-        String grupo = "";
-        String query = "select grupo from aluno where email = '" + email + "'";
-        try {
-            ResultSet rs = stm.executeQuery(query);
-            while (rs.next()) {
-                grupo = rs.getString("grupo");
-            }
-            String query1 = "select id from grupo where nome_grupo = '" + grupo + "'";
-            ResultSet rs1 = stm.executeQuery(query1);
-            while (rs1.next()) {
-                idGrupo = rs1.getInt("id");
-            }
-            String query2 = "select pontos from pontos_grupo where id_grupo = '" + idGrupo + "' and id_sprint ='" + idSprint + "'";
-            ResultSet rs2 = stm.executeQuery(query2);
-            while (rs2.next()) {
-                pontosS = rs2.getFloat("pontos");
-            }
+    public static float getPontosSprint(Statement stm, int idGrupo, int idSprint) {
+        float pontosS = 0f;
 
+
+        String query = "select pontos from pontos_grupo where id_grupo = ? and id_sprint = ?";
+
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setInt(1, idGrupo);
+            ps.setInt(2, idSprint);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                pontosS = rs.getFloat("pontos");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
         return pontosS;
     }
 
-    public static int getNSprint(Statement stm, LocalDate localDate) {
+    public static int getNSprint(Statement stm) {
         int sprint = 0;
-        localDate = java.time.LocalDate.now();
-        String query = "select sprint from sprint where  data_inicio < '" + localDate + "' and  data_fim > '" + localDate + "' ";
-        try {
-            ResultSet rs = stm.executeQuery(query);
-            while (rs.next()) {
+        String query = "SELECT sprint " +
+                "FROM sprint " +
+                "WHERE CURRENT_DATE BETWEEN data_fim + 1 AND fim_avaliacao";
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
                 sprint = rs.getInt("sprint");
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return sprint;
     }
 
-    public static List<AlunosInterface> getRAvaliacao(Statement stm, Integer idGrupo) {
+    public static Sprint getSprintID(Statement stm, Integer idSprint) throws SQLException {
+        Sprint sprint = null;
+        String query = "select sprint, data_inicio, data_fim, fim_avaliacao from sprint where sprint = ?";
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setInt(1, idSprint);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                sprint = new Sprint(
+                        rs.getInt("sprint"), rs.getDate("data_inicio").toLocalDate(),
+                        rs.getDate("data_fim").toLocalDate(), rs.getDate("fim_avaliacao").toLocalDate()
+                );
+            }
+        }
+        return sprint;
+    }
+
+    public static List<AlunosInterface> getRAvaliacao(Statement stm, Integer idGrupo, Integer idSprint) {
         List<AlunosInterface> listaAlunos = new ArrayList<>();
 
-        String query = "select aluno.nome, coalesce(avg(avaliacao.nota), 0) as nota, aluno.grupo, criterios.criterio " +
+        String query = "with sprint_tab as (select id from sprint where sprint = " + idSprint + " )" +
+                "select aluno.nome, coalesce(sum(avaliacao.nota), 0) as nota, aluno.grupo, criterios.criterio " +
                 "from aluno " +
-                "inner join avaliacao on avaliacao.id_aluno_avaliado = aluno.id " + "inner join criterios on avaliacao.id_criterio = criterios.id where avaliacao.id_grupo = " + idGrupo + " " +
+                "inner join avaliacao on avaliacao.id_aluno_avaliado = aluno.id " +
+                "inner join sprint_tab on avaliacao.id_sprint = sprint_tab.id " +
+                "inner join criterios on avaliacao.id_criterio = criterios.id " +
+                "where avaliacao.id_grupo = " + idGrupo + " " +
+                "and avaliacao.id_sprint = sprint_tab.id " +
                 "group by aluno.id, aluno.nome, aluno.grupo, criterios.id " +
                 "order by aluno.nome";
         try {
@@ -664,7 +751,338 @@ public class OperacoesSQL {
         return listaAlunos;
 
     }
+
+    public static Boolean checkAvaliacao(Statement stm, Integer idAluno, Integer idSprint) throws SQLException {
+        boolean check = false;
+        String query = "select id_aluno_avaliador, id_sprint from avaliacao where id_aluno_avaliador = ? and id_sprint = ?";
+
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setInt(1, idAluno);
+            ps.setInt(2, idSprint);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                if (rs.getInt("id_aluno_avaliador") == idAluno && rs.getInt("id_sprint") == idSprint) {
+                    check = true;
+                }
+            }
+        }
+        return check;
+    }
+
+    //MÉTODOS PARA ALTERAÇÃO DE SENHA DO USUÁRIO
+
+    public static void updatePassword(Statement stm, String senha, String email) {
+        String query = "update usuario set senha = '" + senha + "' where email = '" + email + "'";
+        try {
+            stm.executeUpdate(query);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String getPassword(Statement stm, String email) {
+        String password = "";
+        String query = "select senha from usuario where email = '" + email + "'";
+
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                password = rs.getString("senha");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return password;
+    }
+
+    public static Integer getCountStudents(Statement stm, Integer idGrupo) {
+        Integer count = 0;
+        String query = "with teste as(" +
+                "select nome_grupo " +
+                "from grupo " +
+                "where id = " + idGrupo + " " +
+                ") select count(email) as num_alunos " +
+                "from aluno " +
+                "inner join teste on teste.nome_grupo = aluno.grupo " +
+                "where aluno.grupo = teste.nome_grupo";
+
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                count = rs.getInt("num_alunos");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    public static Boolean testDateSprint(Statement stm, LocalDate start_date, LocalDate end_date) {
+        Boolean resultado = false;
+        try {
+            ResultSet result = stm.executeQuery("SELECT count(id) " +
+                    "FROM sprint " +
+                    "WHERE '" + start_date + "' BETWEEN data_inicio AND data_fim " +
+                    "OR '" + end_date + "' BETWEEN data_inicio AND data_fim");
+            while (result.next()) { // result.next() roda enquanto existirem dados no banco.
+                Integer Contagem = Integer.parseInt(result.getString("count"));
+
+                if (Contagem == 0) {
+                    resultado = false;
+                } else {
+                    resultado = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultado; //
+    }
+
+    public static void updateStatus(Statement stm, Integer id) {
+        String query = "update sprint set status = true where sprint = '" + id + "'";
+        try {
+            stm.executeUpdate(query);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean checkStatus(Statement stm) {
+        String query = "select status from sprint where status = true";
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            if (rs.next()) {
+                return rs.getBoolean("status");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void clearAllSprints(Statement stm) {
+        try {
+            String q1 = "delete from avaliacao";
+            String q2 = "delete from pontos_grupo";
+            String q3 = "delete from sprint";
+            String q4 = "delete from criterios";
+
+            stm.executeUpdate(q1);
+            stm.executeUpdate(q2);
+            stm.executeUpdate(q3);
+            stm.executeUpdate(q4);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Boolean getStatus(Statement stm) {
+        Boolean resultado = false;
+        try {
+            ResultSet result = stm.executeQuery("SELECT count(status) FROM sprint WHERE status = true");
+            while (result.next()) { // result.next() roda enquanto existirem dados no banco.
+                Integer Contagem = Integer.parseInt(result.getString("count"));
+
+                if (Contagem == 0) {
+                    resultado = false;
+                } else {
+                    resultado = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultado; //
+    }
+
+    //MÉTODOS PARA ALTERAÇÃO DA HOME
+    public static List<Alunos> dadosaluno(Statement stm) {
+        List<Alunos> listaAlunos = new ArrayList<>();
+        String query = "SELECT nome FROM aluno";
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                Alunos aluno = new Alunos();
+                aluno.setNome(rs.getString("nome"));
+                listaAlunos.add(aluno);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaAlunos;
+    }
+
+    public static List<String> dadosCriterios(Statement stm) {
+        List<String> listaCriterios = new ArrayList<>();
+        String query = "select criterio from criterios";
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                listaCriterios.add(rs.getString("criterio"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaCriterios;
+    }
+
+    public static List<Grupo> dadosGrupos(Statement stm) {
+        List<Grupo> listaGrupos = new ArrayList<>();
+        String query = "select nome_grupo from grupo";
+        try {
+            ResultSet rs = stm.executeQuery(query);
+            while (rs.next()) {
+                String nomeGrupo = rs.getString("nome_grupo");
+                Grupo grupo = new Grupo(nomeGrupo);
+
+                listaGrupos.add(grupo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listaGrupos;
+    }
+
+    public static int getIdSprintChoice(Statement stm, int nSprint) {
+        int sprint = 0;
+        ResultSet rs;
+        String query = "select id from sprint where sprint =? ";
+
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setInt(1, nSprint);
+            ps.execute();
+            rs = ps.getResultSet();
+            while (rs.next()) {
+                sprint = rs.getInt("id");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return sprint;
+    }
+
+    public static void gerarCSVAll(Statement stm, String filePath, int sprintId) {
+
+        String query = "select aluno.nome, grupo.nome_grupo,  sprint.sprint, criterios.criterio, avg(avaliacao.nota) as media " +
+                "from avaliacao " +
+                "inner join grupo on grupo.id = avaliacao.id_grupo " +
+                "inner join  criterios on criterios.id = avaliacao.id_criterio " +
+                "inner join sprint on sprint.id = avaliacao.id_sprint " +
+                "inner join  aluno on aluno.id = avaliacao.id_aluno_avaliado " +
+                "where sprint.id = ? " +
+                "group by aluno.nome, grupo.nome_grupo, sprint.sprint, criterios.criterio ";
+
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setInt(1, sprintId);
+            ResultSet rs = ps.executeQuery();
+
+            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), StandardCharsets.UTF_8))) {
+                writer.write((char) 0xfeff); // utilizado para formatação de arquivos CSV em codificação para abrir em programas externos - como excel
+                writer.write("Nome; Grupo; Sprint; Criterio; Media");
+                writer.newLine();
+
+                while (rs.next()) {
+                    String nome = rs.getString("nome");
+                    String grupo = rs.getString("nome_grupo");
+                    int sprint = rs.getInt("sprint");
+                    String criterio = rs.getString("criterio");
+                    float media = rs.getFloat("media");
+
+                    writer.write(String.format("%s; %s; %d; %s; %.2f", nome, grupo, sprint, criterio, media));
+                    writer.newLine();
+                }
+            }
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void gerarCSVGroup(Statement stm, String filePath, int sprintId, int grupoId) {
+
+        String query = "select grupo.nome_grupo,  sprint.sprint, aluno.nome, criterios.criterio, avg(avaliacao.nota) as media " +
+                "from avaliacao " +
+                "inner join aluno on aluno.id = avaliacao.id_aluno_avaliado " +
+                "inner join grupo on grupo.id = avaliacao.id_grupo " +
+                "inner join sprint on sprint.id = avaliacao.id_sprint " +
+                "inner join criterios on criterios.id = avaliacao.id_criterio " +
+                "where sprint.id = ?  and grupo.id = ? " +
+                "group by grupo.nome_grupo, aluno.nome, sprint.sprint, criterios.criterio ";
+
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setInt(1, sprintId);
+            ps.setInt(2, grupoId);
+            ResultSet rs = ps.executeQuery();
+
+            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), StandardCharsets.UTF_8))) {
+                writer.write((char) 0xfeff); // utilizado para formatação de arquivos CSV em codificação para abrir em programas externos - como excel
+                writer.write("Grupo; Sprint; Nome; Critério; Média");
+                writer.newLine();
+
+                while (rs.next()) {
+                    String nome = rs.getString("nome");
+                    String grupo = rs.getString("nome_grupo");
+                    int sprint = rs.getInt("sprint");
+                    String criterio = rs.getString("criterio");
+                    float media = rs.getFloat("media");
+
+                    writer.write(String.format("%s; %d; %s; %s; %.2f", grupo, sprint, nome, criterio, media));
+                    writer.newLine();
+                }
+            }
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static int getIdGroupName(Statement stm, String nomeG) {
+        int grupoId = 0;
+        ResultSet rs = null;
+        String query = "select id from grupo where nome_grupo = ? ";
+
+        try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
+            ps.setString(1, nomeG);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                grupoId = rs.getInt("id");
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return grupoId;
+    }
+
+    public static void removePontosGrupos(Statement stm, String grupo, Integer sprint) {
+        System.out.println(sprint);
+        String excluiPontos = "WITH grupo_tab AS (" +
+                "    SELECT id FROM grupo WHERE nome_grupo = '" + grupo + "'" +
+                "), sprint_tab AS( " +
+                "   SELECT id FROM sprint WHERE sprint = " + sprint + " " +
+                ") DELETE FROM pontos_grupo " +
+                "USING grupo_tab, sprint_tab " +
+                "WHERE pontos_grupo.id_grupo = grupo_tab.id " +
+                "AND pontos_grupo.id_sprint = sprint_tab.id ";
+
+        try {
+            stm.executeUpdate(excluiPontos);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
-
-
-

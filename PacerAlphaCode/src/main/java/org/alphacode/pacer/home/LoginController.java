@@ -40,16 +40,9 @@ public class LoginController {
     public LoginController() throws SQLException {
     }
 
-    protected void idEmail() {
-        idEmail.setText("professor@fatec.sp.gov.br");            //Defini que o email padrão
-    }
 
     @FXML
     private PasswordField idSenha;
-
-    protected void idSenha() {
-        idSenha.setText("acessoprofessor");                                                        //Defini que a senha padrão
-    }
 
 
     @FXML

@@ -1,11 +1,17 @@
-# Sistema de Avaliação PACER
+# Sistema de Avaliação
 
-<i>Um projeto da equipe Alpha Code!</i>
+<i>Projeto desenvolvido pela da equipe Alpha Code</i>
+
+<div style="text-align: left;">
+<img src="documentacao/Imagens/logo.png" alt="AlphaCode" width="400
+">
+</div>
 
 ### Índice
 
 * [Descrição do Projeto e Funcionalidades](#descrição-do-projeto-e-funcionalidades)
 * [Backlog do Produto](#backlog-do-produto)
+* [Definition of Ready](#definition-of-ready)
 * [Wireframe do projeto](#wireframe-do-projeto)
 * [Modelo DER](#modelo-der)
 * [Guia de Instalação e Manual](#guia-de-instalação-e-manual)
@@ -29,8 +35,6 @@
 * Permite o gerenciamento dos critérios de avaliação;
 
 * Permite que o professor cadastre o calendário de Sprints para cada semestre;
-
-<br>
 
 ### Metodologia de Desenvolvimento
 
@@ -61,63 +65,223 @@
 |:----:|:----------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:----------:|:------:|:---------------------:|
 |  1   |   MÉDIA    | Como professor, eu quero definir quais alunos irão participar dos processos de avaliação de forma simples e intuitiva, para que posteriormente eu possa formar grupos de avaliação. |  15 Dias   |   1    |           1           |
 |  2   |   MÉDIA    |              Como professor, eu quero informar os alunos e grupos que vão se avaliar de forma fácil e rápida, a fim de otimizar o meu tempo e evitar possíveis erros.               |  15 Dias   |   2    |           2           |
-|  3   |    ALTA    |              Como professor, eu quero que os alunos possam se autoavaliar e avaliar o grupo, para que eu não precise digitar as notas, afim de evitar possíveis erros.              |  15 Dias   |   2    |           3           |
+|  3   |    ALTA    |              Como professor, eu quero que os alunos possam se autoavaliar e avaliar o grupo, para que eu não precise digitar as notas, afim de evitar possíveis erros.              |  15 Dias   |   3    |           3           |
 |  4   |   MÉDIA    |      Como professor, eu quero definir os critérios de avaliação que irão compor as notas dos grupos, para que sejam consideradas competências relevantes para fins acadêmicos.      |  21 Dias   |   3    |           4           |
 |  5   |    ALTA    |                          Como professor, eu quero definir o início e o fim das Sprints, para que os alunos tenham prazos para participarem das avaliações.                          |  21 Dias   |   3    |           5           |
 |  6   |    ALTA    |                Como professor, eu desejo ver as notas e médias dos alunos e grupos avaliados, para que eu possa acompanhar os resultados de forma simples e rápida.                 |  21 Dias   |   4    |           6           |
 
 </div>
 
+<br>
+
+## **Definition of Ready**
+
+O Definition of Ready (DoR) deste projeto define o que é necessário para que uma User Story esteja pronta para ser
+desenvolvida. Nos tópicos a seguir, são expostos os requisitos definidos, os critérios de aceitação e os recursos
+necessários para o desenvolvimento da aplicação, como o banco de dados e as interfaces de usuário.
+
+<details>
+<summary>Interações com o Cliente</summary>
+
+> [Perguntas realizados ao Cliente](documentacao/Cliente/interacaocomCliente.pdf)
+
+> [Entregas](documentacao/Cliente/entregas.pdf)
+
+
+</details>
+
+<details>
+  <summary>Sprint 1: Concepção e Planejamento de Sprints</summary>
+
+**Definition of Ready (DoR) - Sprint 1: Concepção e Planejamento de Sprints**
+
+User Story 1 - Definição dos Alunos
+
+|  USER STORY  |                                                                 Como professor, eu quero definir quais alunos irão participar dos processos de avaliação de forma simples e intuitiva, para que posteriormente eu possa formar grupos de avaliação.                                                                  |
+|:------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| **OBJETIVO** | **Desenvolver um sistema que permita ao professor gerenciar a participação dos alunos nas avaliações. Isso inclui a criação de grupos de avaliação, cadastro de alunos e a implementação de uma interface amigável para facilitar a navegação.  Nesta User Story será desenvolvido os aspectos inicias do projeto.** |
+
+* ### **Critérios de Aceitação**
+
+_<b>TELA DE LOGIN_
+
+1. [X] O sistema deve permitir ao professor definir facilmente quais alunos participarão do processo de avaliação.
+2. [X] A interface deve ser simples e intuitiva para garantir a rápida identificação e seleção dos alunos.
+
+_<b>DEPENDÊNCIAS_
+
+1. [X] O banco de dados deve estar configurado para armazenar as informações dos alunos.
+2. [X] A interface para gestão dos alunos deve estar preparada para exibir, selecionar e alterar o status dos alunos.
+
+_<b>DESIGN E USABILIDADE_
+
+1. [X] O design da tela deve ser simples, com foco na usabilidade e clareza na seleção dos alunos.
+
+</details>
+
+<details>
+<summary>Sprint 2: Desenvolvimento do Projeto</summary>
+
+**Definition of Ready (DoR) - Sprint 2: Desenvolvimento do Projeto**
+
+User Story 2 - Importação dos Dados de Alunos e Grupos
+
+| USER STORY |                              Como professor, eu quero informar os alunos e grupos que vão se avaliar de forma fácil e rápida, a fim de otimizar o meu tempo e evitar possíveis erros.                               |
+|:----------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|  OBJETIVO  | Facilitar as tarefas do professor, a importação de dados de alunos e grupos através de um arquivo CSV, garante que o processo seja intuitivo e seguro, contribuindo para uma gestão mais eficiente das informações. |
+
+* ### **Critérios de Aceitação**
+
+_<b>INTEGRAÇÃO COM O BANCO DE DADOS_
+
+1. [X] O banco de dados deve estar pronto para receber os dados dos alunos e grupos.
+
+_<b>DESIGN E USABILIDADE_
+
+1. [X] O fluxo de importação deve ser visualmente claro, sem etapas complexas.
+2. [X] Mensagens de feedback (erro ou sucesso) devem ser exibidas de forma clara e objetiva.
+
+</details>
+
+<details>
+<summary>Sprint 3: Avaliação de Alunos</summary>
+
+**Definition of Ready (DoR) - Avaliação de Alunos**
+
+User Story 3 - Autoavaliação e Avaliação de Grupos
+
+| USER STORY | Como professor, eu quero que os alunos possam se autoavaliar e avaliar o grupo, para que eu não precise digitar as notas, afim de evitar possíveis erros. |
+|:----------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|  OBJETIVO  |        Facilitar a autoavaliação e avaliação em grupo dos alunos, permitindo que os professores economizem tempo na digitação de notas dos alunos.        |
+
+* ### **Critérios de Aceitação**
+
+_<b>BANCO DE DADOS_
+
+1. [X] O código para exibir as avaliações de forma clara para os alunos deve estar pronto.
+2. [X] As tabelas de avaliação devem estar configuradas no banco de dados.
+
+_<b>TELA HOME DO ALUNO_
+
+1. [X] A tela de home do aluno deve permitir a autoavaliação e a avaliação dos integrantes de grupo de forma intuitiva e
+   clara.
+2. [X] Mensagens de erro e confirmação de sucesso devem ser implementadas corretamente.
+
+_<b>DESIGN E USABILIDADE_
+
+1. [X] O design da tela de avaliação deve ser simples e direto, com opções claras para os alunos.
+2. [X] Mensagens de erro e confirmação de sucesso devem ser implementadas corretamente.
+
+User Story 4 - Definição dos Critérios de Avaliação
+
+| USER STORY |    Como professor, eu quero definir os critérios de avaliação que irão compor as notas dos grupos, para que sejam consideradas competências relevantes para fins acadêmicos    |
+|:----------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|  OBJETIVO  | Permitir que o professor crie e gerencie critérios de avaliação, para que as notas reflitam habilidades e competências essenciais para o desenvolvimento acadêmico dos alunos. |
+
+* ### **Critérios de Aceitação**
+
+_<b>BANCO DE DADOS_
+
+1.[X] O banco de dados deve estar configurado para armazenar os critérios de avaliação.
+
+_<b>TELA DE CRITÉRIOS_
+
+1.[X] O sistema deve permitir ao professor definir critérios de avaliação.
+2. [X] Os critérios devem ser aplicáveis às notas dos alunos e grupos.
+
+_<b>DESIGN E USABILIDADE_
+
+1.[X] O processo de definição dos critérios deve ser intuitivo, sem etapas complicadas.
+2. [X] A tela para a criação e gerenciamento dos critérios deve estar pronta.
+
+User Story 5 - Definição das Sprints
+
+| USER STORY | Como professor, eu quero definir o início e o fim das Sprints, para que os alunos tenham prazos para participarem das avaliações. |
+|:----------:|:---------------------------------------------------------------------------------------------------------------------------------:|
+|  OBJETIVO  |                                   Permitir que o professor controle os periodos das avaliações.                                   |
+
+* ### **Critérios de Aceitação**
+
+_<b>BANCO DE DADOS_
+
+1.[X] O banco de dados deve estar configurado para armazenar as datas de início e fim das Sprints.
+
+_<b>TELA DE SPRINTS_
+
+1. [X] O professor deve ser capaz de definir o início e o fim das Sprints.
+2. [X] O sistema deve permitir a visualização clara dessas datas.
+
+_<b>DESIGN E USABILIDADE_
+
+1.[X] A interface para configurar as Sprints deve ser clara, com campos visíveis para a entrada das datas e visualização
+  das configurações de cada Sprint.
+2.[X] A interface para a criação e visualização das Sprints deve estar implementada.
+
+</details>
+
+<details>
+<summary>Sprint 4: Acesso aos Resultados de Avaliação</summary>
+
+**Definition of Ready (DoR) - Acesso aos Resultados de Avaliação**
+
+User Story 6 - Visualização das Notas e Médias
+
+| USER STORY | Como professor, eu desejo ver as notas e médias dos alunos e grupos avaliados, para que eu possa acompanhar os resultados de forma simples e rápida, |
+|:----------:|:----------------------------------------------------------------------------------------------------------------------------------------------------:|
+|  OBJETIVO  |                                     Permitir que o professor visualize de forma clara as informações existentes.                                     |
+
+* ### **Critérios de Aceitação**
+
+_<b>BANCO DE DADOS_
+
+1. [X] O sistema deve ter as tabelas configuradas para armazenar e exibir as notas e médias.
+
+_<b>TELA DE RESULTADOS_
+
+1. [X] A funcionalidade de cálculo das médias deve estar implementada corretamente.
+2. [X] O professor deve ser capaz de ver as notas e médias de cada aluno e grupo.
+
+_<b>DESIGN E USABILIDADE_
+
+1.[X] A interface de visualização de notas deve ser limpa, com os dados organizados de forma lógica (por aluno, por
+  grupo, etc.).
+2. [X] A interface de visualização das notas deve ser simples, clara e fácil de entender.
+
+</details>
+
 # Backlog por Sprint
 
 ### Sprint 1. Concepção e Planejamento de Sprints
+
+User Story 1 - Definição dos Alunos
 
 |  USER STORY  |                                                                                         Como professor, eu quero criar e verificar, grupos de avaliação, para que eu possa obter as informações de forma rápida e intuitiva.                                                                                         |
 |:------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 | **OBJETIVO** | **Desenvolver um sistema que permita ao professor gerenciar a participação dos alunos nas avaliações. Isso inclui a criação de grupos de avaliação, cadastro de alunos e a implementação de uma interface amigável para facilitar a navegação.  Nesta User Story será desenvolvido os aspectos inicias do projeto.** |
 
-### Definition of Ready (DoR) - Sprint 1: Concepção e Planejamento de Sprints
+### Definition of Done (DoD) - Sprint 1: Concepção e Planejamento de Sprints
 
-* ### **Composição de Critérios para inicio da Sprint**
+_<b>BANCO DE DADOS_
 
-_<b>TELA DE LOGIN_
+1. [X] A tabela de alunos está configurada e contém as informações necessárias para a participação na avaliação.
 
-1. [X] Definição de Metodologia e recursos a serem utilizados no projeto.
-2. [X] Desenvolmento de Tela de Login e Home para acesso do usuário (A tela de Login deve solicitar e-mail e senha).
-3. [X] Verificação se as credenciais estão corretas (Em caso de erro retornar mensagem)
+_<b>FUNCIONALIDADE_
+
+1.[X] O sistema permite que o professor selecione e defina quais alunos participarão do processo de avaliação.
+2. [X] Mensagens de erro ou sucesso são exibidas corretamente, dependendo da interação do professor.
 
 <div style="display: flex; justify-content: center; gap: 20px;">
 <img src="documentacao/ImagesReadME/img1.png" alt="Tela de Login" width="280" height="320">
 <img src="documentacao/ImagesReadME/img2.png" alt="Tela de Login" width="280" height="320">
 </div>
 
-1. [X] Após Login direcionar para a tela Home do usuário.
-
 _<b>TELA HOME_
 
-1. [X] Desenvolmento da Tela Home
-2. [X] A tela deve possuir os principais atalhos para navegação para utilização do professor.
+1. [X] A tela Home está desenvolvida com os principais atalhos de navegação e permite a navegação entre as interfaces.
 
 <div style="text-align: center;">
 <img src="documentacao/ImagesReadME/img.png" alt="Tela Home" width="600">
 </div>
-
-_<b>LAYOUT/DESIGN_
-
-1. [X] Apresentação das informações de forma intuitiva
-2. [X] O design das telas deve estar de acordo com a usabilidade e identidade visual da aplicação.
-
-### Definition of Done (DoD) - Sprint 1: Concepção e Planejamento de Sprints
-
-_<b>TELA DE LOGIN_
-
-1. [X] O código para a tela de login foi desenvolvido e funciona corretamente.
-2. [X] A tela de Login solicita as credenciais do usuário, caso seja inválido, uma alerta de erro é exibida.
-3. [X] Após login correto, o usuário é direcionado para a tela Home.
-
-_<b>TELA HOME_
-
-1. [X] A tela Home está desenvolvida com os principais atalhos de navegação e permite a navegação entre as interfaces.
 
 _<b>LAYOUT/DESIGN_
 
@@ -131,53 +295,17 @@ _<b>SEGURANÇA E FUNCIONALIDADE_
 
 ### Sprint 2. Desenvolvimento do Projeto
 
+User Story 2 - Importação dos Dados de Alunos e Grupos
+
 | USER STORY |                              Como professor, eu quero informar os alunos e grupos que vão se avaliar de forma fácil e rápida, a fim de otimizar o meu tempo e evitar possíveis erros.                               |
 |:----------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 |  OBJETIVO  | Facilitar as tarefas do professor, a importação de dados de alunos e grupos através de um arquivo CSV, garante que o processo seja intuitivo e seguro, contribuindo para uma gestão mais eficiente das informações. |
-
-### Definition of Ready (DoR) - Sprint 2: Desenvolvimento do Projeto
-
-* ### **Critérios de Aceitação**
-
-_<b>INTEGRAÇÃO COM O BANCO DE DADOS_
-
-1. [X] Criação do código de conexão com o Banco de Dados e Classe de operações SQL utilizando modelo DAO.
-2. [X] A estrutura do banco de dados está configurada e pronta para armazenar os dados de alunos e grupos.
-3. [X] Validação da estrutura de informações do arquivo CSV para integrar ao Banco de Dados.
-
-_<b>TELA DE ALUNOS_
-
-1. [X] O design da tela de importação desenvolvido para atender as necessidades do usuário.
-2. [X] Funções de Adicionar, Editar, Excluir e Importar CSV.
-
-<div style="text-align: center;">
-<img src="documentacao/ImagesReadME/img3.png" alt="Botões da interface" width="600" height="200" title="Tela Alunos">
-</div>
-
-_<b>LAYOUT/DESIGN_
-
-1. [X] Apresentação das informações de forma intuitiva
-2. [X] O design das telas deve estar de acordo com a usabilidade e identidade visual da aplicação.
-
-_<b>USABILIDADE_
-
-1. [X] Análise do Código e Realização de Testes
-2. [X] O processo de importação de dados deve ser intuitivo e seguro.
-3. [X] As mensagens de erro, como falhas de importação, dados ausentes ou incorretos, estão especificadas.
-
-<div style="display: flex; justify-content: center; gap: 20px;">
-<img src="documentacao/ImagesReadME/img4.png" alt="Validação" width="280" height="200">
-<img src="documentacao/ImagesReadME/img5.png" alt="Validação" width="320" height="140">
-<img src="documentacao/ImagesReadME/img6.png" alt="Validação" width="280" height="150">
-</div>
 
 ### Definition of Done (DoD) - Sprint 2: Desenvolvimento do Projeto
 
 _<b>INTEGRAÇÃO COM O BANCO DE DADOS_
 
-1. [X] A integração com o Banco de Dados foi concluída.
-2. [X] O código de conexão com o Banco de Dados está funcional.
-3. [X] Os dados do arquivo CSV estão sendo incluidos com sucesso no Banco de Dados.
+1. [X] Os dados importados via CSV são armazenados corretamente no banco de dados
 
 _<b>TELA DE ALUNOS_
 
@@ -185,61 +313,37 @@ _<b>TELA DE ALUNOS_
 2. [X] O sistema exibe uma mensagem de sucesso ou erro, dependendo do resultado da importação.
 3. [X] A tela de alunos permite que o professor busque, visualize e manipule os dados se necessário.
 
-_<b>LAYOUT/DESIGN_
+<div style="text-align: center;">
+<img src="documentacao/ImagesReadME/img3.png" alt="Botões da interface" width="600" height="200" title="Tela Alunos">
+</div>
+
+_<b>DESIGN E USABILIDADE_
 
 1. [X] O processo de importação de CSV foi integrado de forma intuitiva.
+2. [X]  A importação de dados foi validada com diferentes cenários de dados (CSV com dados corretos, incompletos ou
+3. [X]   inválidos).
+4. [X] As funções de buscar, adicionar, editar e remover estão testadas e validadas.
 
-_<b>USABILIDADE_
-
-1. [X]  A importação de dados foi validada com diferentes cenários de dados (CSV com dados corretos, incompletos ou
-2. [X]   inválidos).
-3. [X] As funções de buscar, adicionar, editar e remover estão testadas e validadas.
+<div style="display: flex; justify-content: center; gap: 20px;">
+<img src="documentacao/ImagesReadME/img4.png" alt="Validação" width="280" height="200">
+<img src="documentacao/ImagesReadME/img5.png" alt="Validação" width="320" height="140">
+<img src="documentacao/ImagesReadME/img6.png" alt="Validação" width="280" height="150">
+</div>
 
 _<b>TESTES_
 
 1.[X] O código foi analisado, testado e revisado.
-
 <br>
 
 ### Sprint 3 . Desenvolvimento do Projeto
 
-<br>
-
 ##### **Na Sprint 3 serão desenvolvidas 3 User Stories**
 
-<div style="text-align: center;">
-    1. <strong>Título: Avaliação de Alunos</strong>
-</div>
+User Story 3 - Autoavaliação e Avaliação de Grupos
 
 | USER STORY | Como professor, eu quero que os alunos possam se autoavaliar e avaliar o grupo, para que eu não precise digitar as notas, afim de evitar possíveis erros. |
 |:----------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------:|
 |  OBJETIVO  |        Facilitar a autoavaliação e avaliação em grupo dos alunos, permitindo que os professores economizem tempo na digitação de notas dos alunos.        |
-
-### Definition of Ready (DoR) - Avaliação de Alunos
-
-* ### **Critérios de Aceitação**
-
-_<b>BANCO DE DADOS_
-
-1. [X] As tabelas e relações necessárias para armazenar as avaliações de alunos e grupos estão planejadas.
-2. [X] As operações SQL necessárias para estão em desenvolvimento.
-3. [X] A estrutura do banco de dados está definida para armazenar os dados
-
-_<b>TELA HOME DO ALUNO_
-
-1. [X] A tela de home do aluno deve permitir que ele vizualize os dados do seu grupo (outros integrantes) e realize
-   avaliação com base nos critérios definidos pelo professor.
-
-_<b>USABILIDADE_
-
-1. [X] O processo de autoavaliação e avaliação dos integrantes do grupo deve ser claro.
-2. [X] O sistema deve fornecer mensagens de erro caso o aluno ultrapasse a quantidade de pontos estabelecidos para
-   avaliação.
-
-<div style="display: flex; justify-content: center; gap: 20px;">
-<img src="documentacao/ImagesReadME/img8.png" alt="Validação" width="600" height="250">
-<img src="documentacao/ImagesReadME/img7.png" alt="Validação" width="300" height="160">
-</div>
 
 ### Definition of Done (DoD) - Avaliação de Alunos
 
@@ -257,20 +361,23 @@ _<b>USABILIDADE_
 
 1. [X] O código foi revisado e testado para garantir a integridade e funcionalidade das avaliações.
 2. [X] Mensagens de erro e confirmações de sucesso foram implementadas corretamente.
+   <br><br>
+
+<div style="display: flex; justify-content: center; gap: 20px;">
+<img src="documentacao/ImagesReadME/img8.png" alt="Validação" width="600" height="250">
+<img src="documentacao/ImagesReadME/img7.png" alt="Validação" width="300" height="160">
+</div>
 
 <br>
 <br>
-<div style="text-align: center;">
-    2. <strong>Título: Definição de Sprints</strong>
-</div>
+User Story 4 - Definição das Sprints
 
 | USER STORY | Como professor, eu quero definir o início e o fim das Sprints, para que os alunos tenham prazos para participarem das avaliações. |
 |:----------:|:---------------------------------------------------------------------------------------------------------------------------------:|
 |  OBJETIVO  |                                   Permitir que o professor controle os periodos das avaliações.                                   |
 
-### Definition of Ready (DoR) - Definição de Sprints
+### Definition of Done (DoD) - Definição de Sprints
 
-* ### **Critérios de Aceitação**
 
 _<b>BANCO DE DADOS_
 
@@ -308,19 +415,14 @@ _<b>TESTES_
 1. [X] O código foi analisado, testado e revisado.
 
    <br>
-   <br>
 
-<div style="text-align: center;">
-    3. <strong>Título: Critérios de Avaliação</strong>
-</div>
+User Story 5 - Definição dos Critérios de Avaliação
 
 | USER STORY |    Como professor, eu quero definir os critérios de avaliação que irão compor as notas dos grupos, para que sejam consideradas competências relevantes para fins acadêmicos    |
 |:----------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 |  OBJETIVO  | Permitir que o professor crie e gerencie critérios de avaliação, para que as notas reflitam habilidades e competências essenciais para o desenvolvimento acadêmico dos alunos. |
 
-### Definition of Ready (DoR) - Critérios de Avaliação
-
-* ### **Critérios de Aceitação**
+### Definition of Done (DoD)  - Critérios de Avaliação
 
 _<b>BANCO DE DADOS_
 
@@ -351,18 +453,20 @@ _<b>TELA DE CRITÉRIOS_
 
 1. [X] A tela para criação de critérios e está funcional.
 
-_<b>LAYOUT/DESIGN_
+_<b>DESIGN E USABILIDADE_
 
 1. [X] O design da tela de critérios foi implementado, com foco na usabilidade e identidade visual.
 
 _<b>TESTES_
 
 1. [X] O código foi analisado, testado e revisado.
+<br><br>
 
-<br>
-<br>
+
 
 ### Sprint 4. Finalização do Projeto
+
+User Story 6 - Visualização das Notas e Médias
 
 | USER STORY | Como professor, eu desejo ver as notas e médias dos alunos e grupos avaliados, para que eu possa acompanhar os resultados de forma simples e rápida, |
 |:----------:|:----------------------------------------------------------------------------------------------------------------------------------------------------:|
@@ -370,53 +474,42 @@ _<b>TESTES_
 
 ### Definition of Done (DoD) - Acesso aos Resultados de Avaliação
 
-* ### **Critérios de Aceitação**
-
 _<b>BANCO DE DADOS_
 
-1. [X] As tabelas que armazenam as notas dos alunos e grupos foram criadas e estão funcionando corretamente.
-2. [X] As operações SQL para calcular as notas dos alunos estão em desenvolvimento.
-3. [X] As relações entre as tabelas de avaliação, alunos e grupos estão definidas.
+1. [X] As notas e médias dos alunos e grupos são armazenadas corretamente e podem ser recuperadas para visualização.
 
 _<b>TELA DE RESULTADOS_
 
-1. [X] O design da tela que exibirá as notas alunos.
-2. [X] O fluxo de navegação da tela está claro: o professor poderá acessar os resultados de maneira intuitiva, com
-   filtros e visualização rápida das informações.
-3. [X] A tela deverá permitir que o professor visualize os resultados detalhados (notas individuais e médias) para cada
-   aluno e grupo, além de permitir o filtro por turma, sprint ou critério de avaliação.
+1.[X] O professor pode visualizar facilmente as notas e médias dos alunos e grupos.
+
+_<b>DESIGN E USABILIDADE_
+
+1. [X] A interface de visualização de notas está clara, organizada e fácil de usar.
 
 <div style="display: flex; justify-content: center; gap: 20px;">
-<img src="documentacao/ImagesReadME/img10.png" alt="Validação" width="450" height="300">
+<img src="documentacao/ImagesReadME/img11.png" alt="Validação" width="550" height="300">
+<img src="documentacao/ImagesReadME/img12.png" alt="Validação" width="500" height="300">
 </div>
 
-_<b>USABILIDADE_
+_<b>TESTES_
 
-1. [X] A interface de resultados deve ser clara e organizada, com as informações dispostas de maneira fácil.
-2. [X] Mensagens de erro  (se necessário) devem ser implementadas, como quando não houver resultados ou quando ocorrerem
-   problemas na consulta.
-3. [X] A página deve ser carregada de forma rápida, mesmo com grandes volumes de dados (notas de muitos alunos e
-   grupos).
-
-### Definition of Done (DoD) - Acesso aos Resultados de Avaliação
-
-######            * **Em desenvolvimento, disponibilizado no fim da Sprint**
-
-<br>
+1. [X] O código foi testado para garantir a correta exibição das notas e médias.
 
 ## Wireframe do projeto
 
-> [Link Wireframe](https://www.figma.com/board/Ipnah7761NPMoBxkENVr4Y/Wireframe---Sistema-Pacer---Alpha-Code?node-id=2-6163&node-type=section&t=dFksliHYnWDUNbxQ-0)
+> [Wireframe](documentacao/Wireframe/WireframeInterface.pdf)
 
 ## Modelo DER
 
-> [Link Modelo DER](documentacao/Modelo%20conceitual.png)
+> [Modelo DER](documentacao/Imagens/modeloDER.png)
 
 ## Guia de Instalação e Manual
 
 > [Guia de Instalação](documentacao/GuiaDeInstalacao/README.md)
 
-> [Manual do Usuário](documentacao/Manual/Instruções%20de%20Uso%20Interface%20Aluno.pdf)  `"Em desenvolvimento"`
+> [Manual do Professor](documentacao/Manual/ManualProfessor.pdf)
+
+>[Manual do Aluno](documentacao/Manual/ManualAluno.pdf)
 
 > [Executável](out/artifacts/PacerAlphaCode_jar/PacerAlphaCode.jar)
 

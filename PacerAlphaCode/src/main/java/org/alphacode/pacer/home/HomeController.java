@@ -425,7 +425,7 @@ public class HomeController {
 
     public void openIntruction(ActionEvent actionEvent) {
         try {
-            File pdf = new File("PacerAlphaCode/src/main/resources/org/alphacode/pacer/arquivos/instAluno.pdf");
+            File pdf = new File("PacerAlphaCode/src/main/resources/org/alphacode/pacer/arquivos/ManualProfessor.pdf");
             if (pdf.exists()) {
                 Desktop.getDesktop().open(pdf);
             } else {

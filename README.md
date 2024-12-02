@@ -507,7 +507,9 @@ _<b>TESTES_
 
 > [Guia de Instalação](documentacao/GuiaDeInstalacao/README.md)
 
-> [Manual do Usuário](documentacao/Manual/Instruções%20de%20Uso%20Interface%20Aluno.pdf)
+> [Manual do Professor](documentacao/Manual/ManualProfessor.pdf)
+
+>[Manual do Aluno]()
 
 > [Executável](out/artifacts/PacerAlphaCode_jar/PacerAlphaCode.jar)
 

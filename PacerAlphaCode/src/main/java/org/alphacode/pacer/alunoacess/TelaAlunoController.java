@@ -488,7 +488,7 @@ public class TelaAlunoController {
 
     public void openIntruction(ActionEvent actionEvent) {
         try {
-            File pdf = new File("PacerAlphaCode/src/main/resources/org/alphacode/pacer/arquivos/instAluno.pdf");
+            File pdf = new File("");
             if (pdf.exists()) {
                 Desktop.getDesktop().open(pdf);
             } else {

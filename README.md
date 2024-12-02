@@ -509,6 +509,8 @@ _<b>TESTES_
 
 > [Manual do Professor](documentacao/Manual/ManualProfessor.pdf)
 
+>[Manual do Aluno](documentacao/Manual/ManualAluno.pdf)
+
 > [Executável](out/artifacts/PacerAlphaCode_jar/PacerAlphaCode.jar)
 
 ## Autores do Projeto Equipe Alpha Code

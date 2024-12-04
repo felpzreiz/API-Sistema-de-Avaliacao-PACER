@@ -182,16 +182,16 @@ User Story 4 - Definição dos Critérios de Avaliação
 
 _<b>BANCO DE DADOS_
 
-1.[X] O banco de dados deve estar configurado para armazenar os critérios de avaliação.
+1. [X] O banco de dados deve estar configurado para armazenar os critérios de avaliação.
 
 _<b>TELA DE CRITÉRIOS_
 
-1.[X] O sistema deve permitir ao professor definir critérios de avaliação.
+1. [X] O sistema deve permitir ao professor definir critérios de avaliação.
 2. [X] Os critérios devem ser aplicáveis às notas dos alunos e grupos.
 
 _<b>DESIGN E USABILIDADE_
 
-1.[X] O processo de definição dos critérios deve ser intuitivo, sem etapas complicadas.
+1. [X] O processo de definição dos critérios deve ser intuitivo, sem etapas complicadas.
 2. [X] A tela para a criação e gerenciamento dos critérios deve estar pronta.
 
 User Story 5 - Definição das Sprints
@@ -204,7 +204,7 @@ User Story 5 - Definição das Sprints
 
 _<b>BANCO DE DADOS_
 
-1.[X] O banco de dados deve estar configurado para armazenar as datas de início e fim das Sprints.
+1. [X] O banco de dados deve estar configurado para armazenar as datas de início e fim das Sprints.
 
 _<b>TELA DE SPRINTS_
 
@@ -213,9 +213,9 @@ _<b>TELA DE SPRINTS_
 
 _<b>DESIGN E USABILIDADE_
 
-1.[X] A interface para configurar as Sprints deve ser clara, com campos visíveis para a entrada das datas e visualização
+1. [X] A interface para configurar as Sprints deve ser clara, com campos visíveis para a entrada das datas e visualização
   das configurações de cada Sprint.
-2.[X] A interface para a criação e visualização das Sprints deve estar implementada.
+2. [X] A interface para a criação e visualização das Sprints deve estar implementada.
 
 </details>
 
@@ -243,7 +243,7 @@ _<b>TELA DE RESULTADOS_
 
 _<b>DESIGN E USABILIDADE_
 
-1.[X] A interface de visualização de notas deve ser limpa, com os dados organizados de forma lógica (por aluno, por
+1. [X] A interface de visualização de notas deve ser limpa, com os dados organizados de forma lógica (por aluno, por
   grupo, etc.).
 2. [X] A interface de visualização das notas deve ser simples, clara e fácil de entender.
 
@@ -267,7 +267,7 @@ _<b>BANCO DE DADOS_
 
 _<b>FUNCIONALIDADE_
 
-1.[X] O sistema permite que o professor selecione e defina quais alunos participarão do processo de avaliação.
+1. [X] O sistema permite que o professor selecione e defina quais alunos participarão do processo de avaliação.
 2. [X] Mensagens de erro ou sucesso são exibidas corretamente, dependendo da interação do professor.
 
 <div style="display: flex; justify-content: center; gap: 20px;">
@@ -332,7 +332,7 @@ _<b>DESIGN E USABILIDADE_
 
 _<b>TESTES_
 
-1.[X] O código foi analisado, testado e revisado.
+1. [X] O código foi analisado, testado e revisado.
 <br>
 
 ### Sprint 3 . Desenvolvimento do Projeto
@@ -403,7 +403,7 @@ O código para definir as datas de início e fim das Sprints foi implementado co
 
 _<b>TELA DE SPRINTS_
 
-1. [ ] O fluxo de configuração das Sprints está funcionando corretamente.
+1. [X] O fluxo de configuração das Sprints está funcionando corretamente.
 
 _<b>LAYOUT/DESIGN_
 
@@ -480,7 +480,7 @@ _<b>BANCO DE DADOS_
 
 _<b>TELA DE RESULTADOS_
 
-1.[X] O professor pode visualizar facilmente as notas e médias dos alunos e grupos.
+1. [X] O professor pode visualizar facilmente as notas e médias dos alunos e grupos.
 
 _<b>DESIGN E USABILIDADE_
 
@@ -509,7 +509,7 @@ _<b>TESTES_
 
 > [Manual do Professor](documentacao/Manual/ManualProfessor.pdf)
 
->[Manual do Aluno](documentacao/Manual/ManualAluno.pdf)
+> [Manual do Aluno](documentacao/Manual/ManualAluno.pdf)
 
 > [Executável](out/artifacts/PacerAlphaCode_jar/PacerAlphaCode.jar)
 

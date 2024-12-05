@@ -973,14 +973,27 @@ public class OperacoesSQL {
 
     public static void gerarCSVAll(Statement stm, String filePath, int sprintId) {
 
-        String query = "select aluno.nome, grupo.nome_grupo,  sprint.sprint, criterios.criterio, avg(avaliacao.nota) as media " +
-                "from avaliacao " +
-                "inner join grupo on grupo.id = avaliacao.id_grupo " +
-                "inner join  criterios on criterios.id = avaliacao.id_criterio " +
-                "inner join sprint on sprint.id = avaliacao.id_sprint " +
-                "inner join  aluno on aluno.id = avaliacao.id_aluno_avaliado " +
-                "where sprint.id = ? " +
-                "group by aluno.nome, grupo.nome_grupo, sprint.sprint, criterios.criterio ";
+        String query = "WITH tabGrupo AS ( " +
+                "    SELECT grupo.id, COUNT(aluno.email) " +
+                "    FROM aluno " +
+                "    INNER JOIN grupo ON grupo.nome_grupo = aluno.grupo " +
+                "    GROUP BY grupo.id " +
+                ") " +
+                "SELECT " +
+                "    grupo.nome_grupo, " +
+                "    sprint.sprint, " +
+                "    aluno.nome, " +
+                "    criterios.criterio, " +
+                "    avaliacao.nota / tabGrupo.count AS media " +
+                "FROM " +
+                "    avaliacao " +
+                "INNER JOIN aluno ON aluno.id = avaliacao.id_aluno_avaliado " +
+                "INNER JOIN grupo ON grupo.id = avaliacao.id_grupo " +
+                "INNER JOIN sprint ON sprint.id = avaliacao.id_sprint " +
+                "INNER JOIN criterios ON criterios.id = avaliacao.id_criterio " +
+                "INNER JOIN tabGrupo ON tabGrupo.id = avaliacao.id_grupo " +
+                "WHERE " +
+                "    sprint.id = ?";
 
         try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
             ps.setInt(1, sprintId);
@@ -988,7 +1001,7 @@ public class OperacoesSQL {
 
             try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), StandardCharsets.UTF_8))) {
                 writer.write((char) 0xfeff); // utilizado para formatação de arquivos CSV em codificação para abrir em programas externos - como excel
-                writer.write("Nome; Grupo; Sprint; Criterio; Media");
+                writer.write("Nome; Grupo; Sprint; Critério; Média");
                 writer.newLine();
 
                 while (rs.next()) {
@@ -1008,20 +1021,39 @@ public class OperacoesSQL {
         }
     }
 
-    public static void gerarCSVGroup(Statement stm, String filePath, int sprintId, int grupoId) {
+    public static void gerarCSVGroup(Statement stm, String filePath, int grupoId, int sprintId, int grupoId1) {
 
-        String query = "select grupo.nome_grupo,  sprint.sprint, aluno.nome, criterios.criterio, avg(avaliacao.nota) as media " +
-                "from avaliacao " +
-                "inner join aluno on aluno.id = avaliacao.id_aluno_avaliado " +
-                "inner join grupo on grupo.id = avaliacao.id_grupo " +
-                "inner join sprint on sprint.id = avaliacao.id_sprint " +
-                "inner join criterios on criterios.id = avaliacao.id_criterio " +
-                "where sprint.id = ?  and grupo.id = ? " +
-                "group by grupo.nome_grupo, aluno.nome, sprint.sprint, criterios.criterio ";
+        String query = "WITH tabGrupo AS ( " +
+                "    SELECT grupo.id, COUNT(aluno.email)  " +
+                "    FROM aluno " +
+                "    INNER JOIN grupo ON grupo.nome_grupo = aluno.grupo " +
+                "    WHERE grupo = ( " +
+                "        SELECT nome_grupo " +
+                "        FROM grupo " +
+                "        WHERE id = ? " +
+                "    ) GROUP BY grupo.id " +
+                ") " +
+                "SELECT " +
+                "    grupo.nome_grupo, " +
+                "    sprint.sprint, " +
+                "    aluno.nome, " +
+                "    criterios.criterio, " +
+                "    avaliacao.nota / tabGrupo.count AS media " +
+                "FROM " +
+                "    avaliacao " +
+                "INNER JOIN aluno ON aluno.id = avaliacao.id_aluno_avaliado " +
+                "INNER JOIN grupo ON grupo.id = avaliacao.id_grupo " +
+                "INNER JOIN sprint ON sprint.id = avaliacao.id_sprint " +
+                "INNER JOIN criterios ON criterios.id = avaliacao.id_criterio " +
+                "INNER JOIN tabGrupo ON tabGrupo.id = avaliacao.id_grupo " +
+                "WHERE  " +
+                "    sprint.id = ? " +
+                "    AND grupo.id = ?;";
 
         try (PreparedStatement ps = stm.getConnection().prepareStatement(query)) {
-            ps.setInt(1, sprintId);
-            ps.setInt(2, grupoId);
+            ps.setInt(1, grupoId);
+            ps.setInt(2, sprintId);
+            ps.setInt(3, grupoId1);
             ResultSet rs = ps.executeQuery();
 
             try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), StandardCharsets.UTF_8))) {

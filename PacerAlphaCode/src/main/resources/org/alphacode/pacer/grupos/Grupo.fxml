@@ -105,7 +105,7 @@
             <Button fx:id="buttonRemovePoints" layoutX="600.0" layoutY="141.0" mnemonicParsing="false" onAction="#removePointsGroup" prefHeight="30.0" prefWidth="194.0" style="-fx-background-color: #DE0000;" text="REMOVER" />
             <Hyperlink fx:id="linkGit" layoutX="139.0" layoutY="31.0" prefHeight="29.0" prefWidth="465.0" visible="false">
                <font>
-                  <Font name="Arial" size="16.0" />
+                  <Font name="Arial" size="14.0" />
                </font>
             </Hyperlink>
             </children>

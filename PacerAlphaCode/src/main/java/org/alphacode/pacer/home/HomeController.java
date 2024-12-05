@@ -373,6 +373,7 @@ public class HomeController {
                 try {
                     String nomeG = viewGrupoH.getSelectionModel().getSelectedItem().toString();
                     int grupoId = OperacoesSQL.getIdGroupName(stm, nomeG);
+                    int grupoId1 = OperacoesSQL.getIdGroupName(stm, nomeG);
                     int sprintId = OperacoesSQL.getIdSprintChoice(stm, getSprintGrupo(actionEvent));
 
                     FileChooser file = new FileChooser();
@@ -383,7 +384,7 @@ public class HomeController {
 
                     if (path != null) {
                         String filePath = path.getAbsolutePath();
-                        OperacoesSQL.gerarCSVGroup(stm, filePath, sprintId, grupoId);
+                        OperacoesSQL.gerarCSVGroup(stm, filePath, grupoId, sprintId, grupoId1);
 
                         File csvFile = new File(filePath);
                         if (csvFile.length() > 0) {
